@@ -8,22 +8,15 @@
     :root {
       --color-primary: #c8102e;
       --color-primary-dark: #990c22;
-      --color-secondary: #f8f9fa;
       --color-text: #212529;
       --color-muted: #6c757d;
       --color-border: #dee2e6;
       --color-success: #198754;
-      --color-warning: #ffc107;
-      --color-danger: #dc3545;
       --color-bg: #f5f5f5;
-      --transition-fast: 0.15s ease-in-out;
-      --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
     }
 
-    * { box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--color-bg);
       color: var(--color-text);
@@ -34,7 +27,7 @@
     header {
       background: white;
       border-bottom: 1px solid var(--color-border);
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
       position: sticky;
       top: 0;
       z-index: 999;
@@ -54,7 +47,6 @@
       height: 40px;
       flex-shrink: 0;
       border-radius: 50%;
-      overflow: hidden;
       border: 2px solid var(--color-primary);
       background: #fff;
       display: flex;
@@ -62,7 +54,7 @@
       justify-content: center;
     }
 
-    .logo-img { max-width: 30px; max-height: 30px; display: block; }
+    .logo-img { max-width: 30px; max-height: 30px; }
 
     .brand { display: flex; flex-direction: column; }
     .brand-line1 {
@@ -72,15 +64,9 @@
       text-transform: uppercase;
       color: var(--color-primary-dark);
     }
-    .brand-line2 { font-weight: 600; font-size: 1.1rem; color: var(--color-text); }
+    .brand-line2 { font-weight: 600; font-size: 1.1rem; }
 
-    .header-right {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.85rem;
-    }
+    .header-right { margin-left: auto; display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; }
 
     .user-pill {
       background: #f1f3f5;
@@ -92,8 +78,6 @@
       color: var(--color-muted);
     }
 
-    .user-pill span { font-weight: 500; }
-
     .btn-logout {
       border: none;
       background: transparent;
@@ -102,17 +86,13 @@
       cursor: pointer;
       padding: 0.2rem 0.5rem;
       border-radius: 999px;
-      transition: background var(--transition-fast), color var(--transition-fast);
+      transition: all 0.15s;
     }
-    .btn-logout:hover {
-      background: #ffe3e3;
-      color: var(--color-danger);
-    }
+    .btn-logout:hover { background: #ffe3e3; color: #dc3545; }
 
-    .main { flex: 1; display: flex; justify-content: center; padding: 1.5rem 1rem 2rem 1rem; }
+    .main { flex: 1; padding: 1.5rem 1rem; }
 
     .container {
-      width: 100%;
       max-width: 1100px;
       margin: 0 auto;
       display: grid;
@@ -124,91 +104,48 @@
       background: white;
       border-radius: 12px;
       padding: 1.25rem 1.4rem;
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
       border: 1px solid rgba(0,0,0,0.03);
     }
 
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.75rem;
-    }
-
-    .card-title {
-      font-size: 1.05rem;
-      font-weight: 650;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
+    .card-header { display: flex; justify-content: space-between; margin-bottom: 0.75rem; }
+    .card-title { font-size: 1.05rem; font-weight: 650; }
     .card-subtitle { font-size: 0.8rem; color: var(--color-muted); }
 
-    .status-pill {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 0.15rem 0.55rem;
-      border-radius: 999px;
-      border: 1px solid var(--color-primary);
-      color: var(--color-primary);
-      background: #fff5f5;
-    }
-
-    .mute { color: var(--color-muted); font-size: 0.86rem; }
-
-    .login-section { grid-column: 1 / -1; margin-bottom: 1.5rem; }
-
-    .login-inner {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      flex-wrap: wrap;
-    }
-
-    .login-form {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      gap: 0.75rem;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      min-width: 180px;
-    }
-
+    .form-group { margin-bottom: 16px; }
     .form-group label {
+      display: block;
       font-size: 0.78rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--color-muted);
+      margin-bottom: 0.25rem;
     }
 
-    .form-group input[type="email"],
-    .form-group input[type="password"],
-    .form-group input[type="text"] {
+    input[type="email"],
+    input[type="password"],
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
       padding: 0.45rem 0.6rem;
       border-radius: 6px;
       border: 1px solid var(--color-border);
       font-size: 0.9rem;
+      font-family: inherit;
       outline: none;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      transition: all 0.15s;
     }
 
-    .form-group input:focus {
+    input:focus, textarea:focus, select:focus {
       border-color: var(--color-primary);
       box-shadow: 0 0 0 3px rgba(200,16,46,0.1);
     }
 
+    textarea { resize: vertical; min-height: 80px; }
+
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
       padding: 0.48rem 0.9rem;
       border-radius: 999px;
       border: none;
@@ -216,7 +153,7 @@
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
-      transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+      transition: all 0.15s;
     }
 
     .btn-primary {
@@ -224,13 +161,10 @@
       color: white;
       box-shadow: 0 2px 6px rgba(200,16,46,0.35);
     }
-
     .btn-primary:hover {
       background: var(--color-primary-dark);
       transform: translateY(-1px);
-      box-shadow: 0 4px 10px rgba(200,16,46,0.4);
     }
-
     .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .btn-secondary { background: #f1f3f5; color: var(--color-text); }
@@ -243,38 +177,74 @@
       font-size: 0.82rem;
       margin-bottom: 0.5rem;
     }
-
-    .alert-info { background: #e7f5ff; border: 1px solid #a5d8ff; color: #1971c2; }
     .alert-warning { background: #fff9db; border: 1px solid #ffe066; color: #e67700; }
     .alert-success { background: #ebfbee; border: 1px solid #8ce99a; color: #2f9e44; }
     .alert-danger { background: #fff5f5; border: 1px solid #ffc9c9; color: #c92a2a; }
 
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      padding: 0.16rem 0.6rem;
-      background: #f1f3f5;
-      color: var(--color-muted);
+    .login-section { grid-column: 1 / -1; }
+
+    .categories { margin-top: 10px; }
+    .category-block {
+      background: #ffffff;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      margin-bottom: 10px;
+    }
+    .category-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .category-header h3 { font-size: 15px; margin: 0; }
+    .category-header small { color: #666; font-size: 12px; }
+
+    .slider-row { display: flex; align-items: center; gap: 10px; }
+    .slider { flex: 1; }
+    .thumb-label { font-size: 13px; color: #333; min-width: 40px; text-align: right; }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 5px;
+      background: #e0e0e0;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      cursor: pointer;
     }
 
-    .pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--color-success);
+    .proposal {
+      background: #f8f9fa;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      margin-bottom: 10px;
     }
+    .proposal-title { font-weight: 600; font-size: 14px; }
+    .proposal-meta { font-size: 11px; color: #777; }
+    .proposal-desc { font-size: 13px; margin: 6px 0; }
+
+    .vote-buttons { display: flex; gap: 4px; margin-top: 6px; }
+    .vote-btn {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid #ddd;
+      background: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      min-width: 36px;
+    }
+    .vote-btn.active-pos { background: #28a745; color: white; }
+    .vote-btn.active-neg { background: #dc3545; color: white; }
 
     .user-badge-admin {
       background: #fff4e6;
       color: #d9480f;
       border-radius: 999px;
       padding: 0.08rem 0.4rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.2rem;
       border: 1px solid #ffd8a8;
       font-size: 0.75rem;
     }
@@ -290,8 +260,6 @@
       padding: 1rem;
     }
 
-    .password-change-modal.hidden { display: none; }
-
     .modal-content {
       background: white;
       border-radius: 14px;
@@ -299,18 +267,6 @@
       width: 100%;
       padding: 1.25rem 1.5rem;
       box-shadow: 0 18px 45px rgba(15,23,42,0.45);
-      animation: modalIn 0.16s ease-out;
-    }
-
-    @keyframes modalIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px) scale(0.98);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
     }
 
     .modal-actions {
@@ -328,17 +284,16 @@
       border-radius: 50%;
       animation: spin 0.6s linear infinite;
       margin-right: 0.25rem;
+      display: inline-block;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     .hidden { display: none; }
+    .mute { color: var(--color-muted); font-size: 0.86rem; }
 
     @media (max-width: 768px) {
-      .container { grid-template-columns: minmax(0,1fr); }
-      header { position: static; }
+      .container { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -361,105 +316,94 @@
 
     <main class="main">
       <div class="container">
+        <!-- LOGIN -->
         <section class="card login-section" id="loginSection">
-          <div class="login-inner">
-            <div>
-              <div class="card-title">Inicia sessió per participar</div>
-              <div class="card-subtitle">
-                Pots valorar les propostes i indicar el teu nivell de satisfacció general.
-              </div>
-            </div>
-            <form id="loginForm" class="login-form">
-              <div class="form-group">
-                <label>Correu electrònic</label>
-                <input type="email" id="loginEmail" placeholder="el.teu@correu.cat" required />
-              </div>
-              <div class="form-group">
-                <label>Contrasenya</label>
-                <input type="password" id="loginPassword" placeholder="••••••••" required />
-              </div>
-              <button type="submit" class="btn btn-primary" id="loginButton">
-                Inicia sessió
-              </button>
-            </form>
+          <div class="card-title">Inicia sessió per participar</div>
+          <div class="card-subtitle" style="margin-bottom:1rem;">
+            Avalua categories i proposa millores per al nostre poble.
           </div>
-          <div id="loginAlert"></div>
+          <form id="loginForm" style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:flex-end;">
+            <div class="form-group" style="min-width:200px;margin:0;">
+              <label>Correu electrònic</label>
+              <input type="email" id="loginEmail" placeholder="el.teu@correu.cat" required />
+            </div>
+            <div class="form-group" style="min-width:150px;margin:0;">
+              <label>Contrasenya</label>
+              <input type="password" id="loginPassword" placeholder="••••••••" required />
+            </div>
+            <button type="submit" class="btn btn-primary" id="loginButton">Inicia sessió</button>
+          </form>
+          <div id="loginAlert" style="margin-top:0.5rem;"></div>
         </section>
 
-        <section class="card" id="proposalsCard" style="display:none;">
+        <!-- CATEGORIES -->
+        <section class="card" id="categoriesCard" style="display:none;">
           <div class="card-header">
             <div>
-              <div class="card-title">Propostes per a Matadepera</div>
-              <div class="card-subtitle">Sistema de votació (proper)</div>
-            </div>
-            <div class="pill">
-              <span class="pill-dot"></span>
-              Sessió activa
+              <div class="card-title">Necessitat d'acció per categories</div>
+              <div class="card-subtitle">Avalua la situació actual en diferents àmbits</div>
             </div>
           </div>
-          <p class="mute">Les propostes i el sistema de votació estaran disponibles aviat.</p>
+          <div class="categories" id="categoriesList"></div>
+          <small class="mute" style="display:block;margin-top:0.5rem;">
+            0 = No cal acció · 50 = Caldria millorar · 100 = Urgència màxima
+          </small>
         </section>
 
-        <section class="card" id="analysisCard" style="display:none;">
+        <!-- PROPOSTES + ADMIN -->
+        <section class="card" id="sidebarCard" style="display:none;">
           <div class="card-header">
             <div>
-              <div class="card-title">La teva participació</div>
-              <div class="card-subtitle">Gestió del compte</div>
+              <div class="card-title">Crear proposta</div>
+              <div class="card-subtitle">Afegeix una idea de millora</div>
             </div>
-            <div class="status-pill">Actiu</div>
           </div>
 
-          <div style="margin-top:1rem;">
-            <h3 style="font-size:0.9rem;margin-bottom:0.5rem;">Canviar contrasenya</h3>
-            <div id="accountAlert"></div>
-            <div class="form-group">
-              <label>Contrasenya actual</label>
-              <input type="password" id="currentPassword" />
-            </div>
-            <div class="form-group">
-              <label>Nova contrasenya (mínim 8 caràcters)</label>
-              <input type="password" id="newPassword" />
-            </div>
-            <div class="form-group">
-              <label>Confirmar nova contrasenya</label>
-              <input type="password" id="confirmPassword" />
-            </div>
-            <button class="btn btn-secondary btn-small" onclick="changePassword()">
-              Canviar contrasenya
-            </button>
+          <div class="form-group">
+            <label>Títol breu</label>
+            <input type="text" id="proposalTitle" placeholder="Ex: Millora il·luminació" />
           </div>
+          <div class="form-group">
+            <label>Categoria</label>
+            <select id="proposalCategory"></select>
+          </div>
+          <div class="form-group">
+            <label>Descripció</label>
+            <textarea id="proposalDesc" placeholder="Descriu la proposta..."></textarea>
+          </div>
+          <button class="btn btn-secondary btn-small" onclick="addProposal()">Afegir proposta</button>
+
+          <div id="myProposalsList" style="margin-top:1rem;"></div>
 
           <div id="adminPanel" style="display:none;margin-top:1.5rem;border-top:1px solid #f1f3f5;padding-top:1rem;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
-              <h3 style="font-size:0.9rem;">Panell d'administració</h3>
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+              <h3 style="font-size:0.9rem;">Admin</h3>
               <span class="user-badge-admin">Admin</span>
             </div>
             <div id="adminAlert"></div>
             <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem;">
-              <div class="form-group" style="min-width:200px;">
-                <label>Nou usuari (email)</label>
+              <div class="form-group" style="min-width:200px;margin:0;">
+                <label>Nou usuari</label>
                 <input type="email" id="adminNewUserEmail" placeholder="nou@correu.cat" />
               </div>
-              <div class="form-group" style="min-width:150px;">
-                <label>Contrasenya admin</label>
+              <div class="form-group" style="min-width:150px;margin:0;">
+                <label>Password admin</label>
                 <input type="password" id="adminPasswordConfirm" placeholder="••••••••" />
               </div>
               <button class="btn btn-secondary btn-small" style="align-self:flex-end;" onclick="handleAdminCreateUser()">
-                Crear usuari
+                Crear
               </button>
             </div>
-            <div style="margin-top:0.5rem;">
-              <button class="btn btn-secondary btn-small" onclick="loadAdminUsers()">
-                Actualitzar llista
-              </button>
-            </div>
+            <button class="btn btn-secondary btn-small" style="margin-top:0.5rem;" onclick="loadAdminUsers()">
+              Actualitzar llista
+            </button>
             <div id="adminUsersList" style="margin-top:0.5rem;"></div>
           </div>
         </section>
       </div>
     </main>
 
-    <!-- PASSWORD CHANGE MODAL -->
+    <!-- PASSWORD MODAL -->
     <div id="passwordChangeModal" class="password-change-modal hidden">
       <div class="modal-content">
         <h2 style="margin-bottom:1rem;font-size:1.1rem;">Canvi de contrasenya obligatori</h2>
@@ -470,24 +414,22 @@
           <input type="email" id="modalEmail" readonly style="background:#f8f9fa" />
         </div>
         <div class="form-group">
-          <label>Contrasenya actual (temporal)</label>
-          <input type="password" id="modalCurrentPassword" placeholder="Contrasenya temporal" />
+          <label>Contrasenya actual</label>
+          <input type="password" id="modalCurrentPassword" />
         </div>
         <div class="form-group">
-          <label>Nova contrasenya (mínim 8 caràcters)</label>
-          <input type="password" id="modalNewPassword" placeholder="Nova contrasenya" />
+          <label>Nova contrasenya (mínim 8)</label>
+          <input type="password" id="modalNewPassword" />
         </div>
         <div class="form-group">
-          <label>Confirmar nova contrasenya</label>
-          <input type="password" id="modalConfirmPassword" placeholder="Repeteix la contrasenya" />
+          <label>Confirmar</label>
+          <input type="password" id="modalConfirmPassword" />
         </div>
         <div class="modal-actions">
-          <button class="btn btn-secondary btn-small" onclick="handleModalLogout()">
-            Tancar sessió
-          </button>
+          <button class="btn btn-secondary btn-small" onclick="handleModalLogout()">Sortir</button>
           <button class="btn btn-primary btn-small" id="modalSaveButton" onclick="handleChangePassword()">
             <span id="modalSpinner" class="spinner" style="display:none;"></span>
-            Establir contrasenya
+            Guardar
           </button>
         </div>
       </div>
@@ -496,13 +438,23 @@
 
   <script>
     const API_BASE = '/.netlify/functions';
-    let currentUser = null;
+    const MAX_POINTS = 30;
 
+    const CATEGORIES = [
+      { key: 'estat_poble', title: "Estat del poble", desc: "Estètica urbana, neteja, mobiliari, il·luminació" },
+      { key: 'entorn_natural', title: "Entorn natural", desc: "Zones verdes, bosc, prevenció incendis" },
+      { key: 'qualitat_vida', title: "Qualitat de vida", desc: "Cultura, esport, convivència" },
+      { key: 'vida_quotidiana', title: "Vida quotidiana", desc: "Transport, mobilitat, serveis" }
+    ];
+
+    let currentUser = null;
+    let proposals = [];
+    let votes = {};
+    let satisfaction = {};
+
+    // API
     async function apiRequest(path, method = 'POST', data = null) {
-      const options = {
-        method,
-        headers: { 'Content-Type': 'application/json' }
-      };
+      const options = { method, headers: { 'Content-Type': 'application/json' } };
       if (data) options.body = JSON.stringify(data);
 
       const response = await fetch(`${API_BASE}${path}`, options);
@@ -512,77 +464,63 @@
       if (contentType.includes('application/json')) {
         body = await response.json();
       } else {
-        const text = await response.text();
-        throw new Error(text || 'Resposta no vàlida del servidor');
+        throw new Error(await response.text() || 'Error del servidor');
       }
 
-      if (!response.ok) {
-        throw new Error(body?.error || 'Error del servidor');
-      }
+      if (!response.ok) throw new Error(body?.error || 'Error');
       return body;
     }
 
+    // HEADER
     function updateHeader() {
-      const headerRight = document.getElementById('headerRight');
+      const el = document.getElementById('headerRight');
       if (!currentUser) {
-        headerRight.innerHTML = '<span class="mute">No has iniciat sessió</span>';
+        el.innerHTML = '<span class="mute">No has iniciat sessió</span>';
         return;
       }
 
-      const adminBadge = currentUser.isAdmin 
-        ? '<span class="user-badge-admin">Admin</span>' 
-        : '';
-
-      headerRight.innerHTML = `
+      const adminBadge = currentUser.isAdmin ? '<span class="user-badge-admin">Admin</span>' : '';
+      el.innerHTML = `
         <div class="user-pill">
-          <span>Connectat com</span>
+          <span>Connectat:</span>
           <strong>${currentUser.email}</strong>
           ${adminBadge}
         </div>
-        <button class="btn-logout" onclick="logout()">Tancar sessió</button>
+        <button class="btn-logout" onclick="logout()">Sortir</button>
       `;
     }
 
-    function logout() {
-      currentUser = null;
-      document.getElementById('loginSection').style.display = 'block';
-      document.getElementById('proposalsCard').style.display = 'none';
-      document.getElementById('analysisCard').style.display = 'none';
-      document.getElementById('loginEmail').value = '';
-      document.getElementById('loginPassword').value = '';
-      updateHeader();
-    }
-
-    async function handleLogin(event) {
-      event.preventDefault();
+    // LOGIN
+    async function handleLogin(e) {
+      e.preventDefault();
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value.trim();
       const loginAlert = document.getElementById('loginAlert');
       const loginButton = document.getElementById('loginButton');
 
       loginAlert.innerHTML = '';
-
       if (!email || !password) {
-        loginAlert.innerHTML = '<div class="alert alert-warning">Cal indicar correu i contrasenya.</div>';
+        loginAlert.innerHTML = '<div class="alert alert-warning">Cal email i contrasenya.</div>';
         return;
       }
 
       loginButton.disabled = true;
-      loginButton.innerHTML = '<div class="spinner"></div>Iniciant sessió...';
+      loginButton.innerHTML = '<div class="spinner"></div>Iniciant...';
 
       try {
-        const result = await apiRequest('/auth', 'POST', {
-          action: 'login',
-          email,
-          password
-        });
-
+        const result = await apiRequest('/auth', 'POST', { action: 'login', email, password });
         currentUser = result.user;
+        votes = result.user.votes || {};
+        satisfaction = result.user.satisfaction || {};
 
         document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('proposalsCard').style.display = 'block';
-        document.getElementById('analysisCard').style.display = 'block';
+        document.getElementById('categoriesCard').style.display = 'block';
+        document.getElementById('sidebarCard').style.display = 'block';
         updateHeader();
+        populateCategories();
+        populateCategorySelect();
+        loadProposalsFromLocalStorage();
+        renderMyProposals();
 
         if (currentUser.isAdmin) {
           document.getElementById('adminPanel').style.display = 'block';
@@ -593,7 +531,6 @@
           showPasswordChangeModal();
         }
       } catch (error) {
-        console.error(error);
         loginAlert.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
       } finally {
         loginButton.disabled = false;
@@ -601,12 +538,165 @@
       }
     }
 
+    function logout() {
+      currentUser = null;
+      votes = {};
+      satisfaction = {};
+      document.getElementById('loginSection').style.display = 'block';
+      document.getElementById('categoriesCard').style.display = 'none';
+      document.getElementById('sidebarCard').style.display = 'none';
+      document.getElementById('loginEmail').value = '';
+      document.getElementById('loginPassword').value = '';
+      updateHeader();
+    }
+
+    // CATEGORIES
+    function populateCategories() {
+      const list = document.getElementById('categoriesList');
+      list.innerHTML = '';
+      CATEGORIES.forEach(cat => {
+        const val = satisfaction[cat.key] || 0;
+        const block = document.createElement('div');
+        block.className = 'category-block';
+        block.innerHTML = `
+          <div class="category-header">
+            <div>
+              <h3>${cat.title}</h3>
+              <small>${cat.desc}</small>
+            </div>
+          </div>
+          <div class="slider-row">
+            <input type="range" class="slider" id="slider_${cat.key}" min="0" max="100" step="5" value="${val}" />
+            <div class="thumb-label" id="thumb_${cat.key}">${val}</div>
+          </div>
+          <div id="props_${cat.key}" style="margin-top:10px;"></div>
+        `;
+        list.appendChild(block);
+
+        const slider = document.getElementById(`slider_${cat.key}`);
+        slider.addEventListener('input', () => {
+          satisfaction[cat.key] = parseInt(slider.value);
+          document.getElementById(`thumb_${cat.key}`).textContent = slider.value;
+          saveToLocalStorage();
+        });
+
+        renderProposalsForCategory(cat.key);
+      });
+    }
+
+    function renderProposalsForCategory(catKey) {
+      const container = document.getElementById(`props_${catKey}`);
+      const items = proposals.filter(p => p.category === catKey);
+      
+      if (items.length === 0) {
+        container.innerHTML = '<small class="mute">Encara no hi ha propostes en aquesta categoria.</small>';
+        return;
+      }
+
+      container.innerHTML = items.map(p => {
+        const myVote = votes[p.id] || 0;
+        return `
+          <div class="proposal">
+            <div class="proposal-title">${p.title}</div>
+            <div class="proposal-meta">${p.author} · ${new Date(p.createdAt).toLocaleDateString('ca')}</div>
+            <div class="proposal-desc">${p.desc}</div>
+            <div class="vote-buttons">
+              ${[-3,-2,-1,1,2,3].map(v => `
+                <button class="vote-btn ${v === myVote ? (v > 0 ? 'active-pos' : 'active-neg') : ''}" 
+                        onclick="setVote('${p.id}', ${v})">
+                  ${v > 0 ? '+' : ''}${v}
+                </button>
+              `).join('')}
+              <span style="margin-left:8px;font-size:11px;">Punts: ${myVote}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // PROPOSALS
+    function populateCategorySelect() {
+      const sel = document.getElementById('proposalCategory');
+      sel.innerHTML = '<option value="">-- Tria categoria --</option>';
+      CATEGORIES.forEach(cat => {
+        sel.innerHTML += `<option value="${cat.key}">${cat.title}</option>`;
+      });
+    }
+
+    function addProposal() {
+      const title = document.getElementById('proposalTitle').value.trim();
+      const category = document.getElementById('proposalCategory').value;
+      const desc = document.getElementById('proposalDesc').value.trim();
+
+      if (!title || !category || !desc) {
+        alert('Cal omplir tots els camps.');
+        return;
+      }
+
+      const proposal = {
+        id: 'p_' + Date.now(),
+        title,
+        category,
+        desc,
+        author: currentUser.username || currentUser.email.split('@')[0],
+        email: currentUser.email,
+        createdAt: new Date().toISOString()
+      };
+
+      proposals.push(proposal);
+      saveToLocalStorage();
+
+      document.getElementById('proposalTitle').value = '';
+      document.getElementById('proposalCategory').value = '';
+      document.getElementById('proposalDesc').value = '';
+
+      renderProposalsForCategory(category);
+      renderMyProposals();
+      alert('Proposta afegida!');
+    }
+
+    function renderMyProposals() {
+      const list = document.getElementById('myProposalsList');
+      const mine = proposals.filter(p => p.email === currentUser.email);
+      
+      if (mine.length === 0) {
+        list.innerHTML = '<small class="mute">Encara no has creat propostes.</small>';
+        return;
+      }
+
+      list.innerHTML = '<h3 style="font-size:0.9rem;margin-top:1rem;margin-bottom:0.5rem;">Les meves propostes</h3>';
+      mine.forEach(p => {
+        list.innerHTML += `
+          <div class="proposal">
+            <div class="proposal-title">${p.title}</div>
+            <div class="proposal-meta">${CATEGORIES.find(c => c.key === p.category)?.title || p.category}</div>
+          </div>
+        `;
+      });
+    }
+
+    // VOTES
+    function setVote(proposalId, delta) {
+      const prev = votes[proposalId] || 0;
+      const newVal = (prev === delta) ? 0 : delta;
+
+      const usedPoints = Object.values(votes).reduce((sum, v) => sum + Math.abs(v), 0) - Math.abs(prev);
+      
+      if (usedPoints + Math.abs(newVal) > MAX_POINTS) {
+        alert('Has superat el màxim de ' + MAX_POINTS + ' punts.');
+        return;
+      }
+
+      votes[proposalId] = newVal;
+      saveToLocalStorage();
+
+      const proposal = proposals.find(p => p.id === proposalId);
+      if (proposal) renderProposalsForCategory(proposal.category);
+    }
+
+    // PASSWORD MODAL
     function showPasswordChangeModal() {
-      document.getElementById('modalEmail').value = currentUser.email || '';
-      document.getElementById('modalCurrentPassword').value = '';
-      document.getElementById('modalNewPassword').value = '';
-      document.getElementById('modalConfirmPassword').value = '';
-      document.getElementById('modalAlert').innerHTML = '';
+      document.getElementById('modalEmail').value = currentUser.email;
       document.getElementById('passwordChangeModal').classList.remove('hidden');
     }
 
@@ -619,8 +709,6 @@
       const newPass = document.getElementById('modalNewPassword').value.trim();
       const confirm = document.getElementById('modalConfirmPassword').value.trim();
       const modalAlert = document.getElementById('modalAlert');
-      const saveButton = document.getElementById('modalSaveButton');
-      const spinner = document.getElementById('modalSpinner');
 
       modalAlert.innerHTML = '';
 
@@ -639,8 +727,8 @@
         return;
       }
 
-      saveButton.disabled = true;
-      spinner.style.display = 'inline-block';
+      document.getElementById('modalSaveButton').disabled = true;
+      document.getElementById('modalSpinner').style.display = 'inline-block';
 
       try {
         await apiRequest('/auth', 'POST', {
@@ -650,14 +738,14 @@
           newPassword: newPass
         });
 
-        modalAlert.innerHTML = '<div class="alert alert-success">Contrasenya canviada correctament.</div>';
+        modalAlert.innerHTML = '<div class="alert alert-success">Contrasenya canviada!</div>';
         currentUser.requiresPasswordChange = false;
         setTimeout(() => hidePasswordChangeModal(), 1200);
       } catch (error) {
         modalAlert.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
       } finally {
-        saveButton.disabled = false;
-        spinner.style.display = 'none';
+        document.getElementById('modalSaveButton').disabled = false;
+        document.getElementById('modalSpinner').style.display = 'none';
       }
     }
 
@@ -666,46 +754,7 @@
       logout();
     }
 
-    async function changePassword() {
-      const current = document.getElementById('currentPassword').value.trim();
-      const newPass = document.getElementById('newPassword').value.trim();
-      const confirm = document.getElementById('confirmPassword').value.trim();
-      const accountAlert = document.getElementById('accountAlert');
-
-      accountAlert.innerHTML = '';
-
-      if (!current || !newPass || !confirm) {
-        accountAlert.innerHTML = '<div class="alert alert-warning">Cal omplir tots els camps.</div>';
-        return;
-      }
-
-      if (newPass !== confirm) {
-        accountAlert.innerHTML = '<div class="alert alert-warning">Les contrasenyes no coincideixen.</div>';
-        return;
-      }
-
-      if (newPass.length < 8) {
-        accountAlert.innerHTML = '<div class="alert alert-warning">Mínim 8 caràcters.</div>';
-        return;
-      }
-
-      try {
-        await apiRequest('/auth', 'POST', {
-          action: 'changePassword',
-          userId: currentUser.id,
-          password: current,
-          newPassword: newPass
-        });
-
-        accountAlert.innerHTML = '<div class="alert alert-success">Contrasenya canviada correctament.</div>';
-        document.getElementById('currentPassword').value = '';
-        document.getElementById('newPassword').value = '';
-        document.getElementById('confirmPassword').value = '';
-      } catch (error) {
-        accountAlert.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
-      }
-    }
-
+    // ADMIN
     async function handleAdminCreateUser() {
       const email = document.getElementById('adminNewUserEmail').value.trim();
       const adminPass = document.getElementById('adminPasswordConfirm').value.trim();
@@ -725,7 +774,7 @@
         });
 
         adminAlert.innerHTML = `<div class="alert alert-success">
-          Usuari creat! Contrasenya temporal: <strong>${result.temporaryPassword}</strong>
+          Usuari creat! Password temporal: <strong>${result.temporaryPassword}</strong>
         </div>`;
 
         document.getElementById('adminNewUserEmail').value = '';
@@ -748,12 +797,12 @@
 
         const users = data.users || [];
         if (users.length === 0) {
-          list.innerHTML = '<div class="mute">Encara no hi ha usuaris.</div>';
+          list.innerHTML = '<div class="mute">Cap usuari.</div>';
           return;
         }
 
         list.innerHTML = users.map(u => `
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px dashed #f1f3f5;font-size:0.85rem;">
+          <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px dashed #f1f3f5;font-size:0.85rem;">
             <div>
               <div>${u.email}</div>
               <small style="color:#6c757d;">${u.is_admin ? 'Admin' : 'Usuari'} · ${u.is_active ? 'Actiu' : 'Inactiu'}</small>
@@ -764,7 +813,7 @@
           </div>
         `).join('');
       } catch (error) {
-        list.innerHTML = '<div class="alert alert-danger">Error en carregar usuaris.</div>';
+        list.innerHTML = '<div class="alert alert-danger">Error.</div>';
       }
     }
 
@@ -781,6 +830,21 @@
       }
     }
 
+    // LOCALSTORAGE
+    function saveToLocalStorage() {
+      if (!currentUser) return;
+      localStorage.setItem('proposals_data', JSON.stringify(proposals));
+      localStorage.setItem('votes_' + currentUser.email, JSON.stringify(votes));
+      localStorage.setItem('satisfaction_' + currentUser.email, JSON.stringify(satisfaction));
+    }
+
+    function loadProposalsFromLocalStorage() {
+      proposals = JSON.parse(localStorage.getItem('proposals_data') || '[]');
+      votes = JSON.parse(localStorage.getItem('votes_' + currentUser.email) || '{}');
+      satisfaction = JSON.parse(localStorage.getItem('satisfaction_' + currentUser.email) || '{}');
+    }
+
+    // INIT
     document.getElementById('loginForm').addEventListener('submit', handleLogin);
   </script>
 </body>
