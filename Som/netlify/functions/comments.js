@@ -1,0 +1,65 @@
+const { neon } = require('@neondatabase/serverless');
+
+exports.handler = async (event) => {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Content-Type': 'application/json'
+  };
+
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers, body: '' };
+  }
+
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
+  }
+
+  const sql = neon(process.env.NETLIFY_DATABASE_URL);
+  const { action, proposalId, userId, text, commentId, userEmail } = JSON.parse(event.body);
+
+  try {
+    if (action === 'add') {
+      const result = await sql`
+        INSERT INTO comments (proposal_id, user_id, text)
+        VALUES (${proposalId}, ${userId}, ${text})
+        RETURNING *
+      `;
+
+      return { statusCode: 200, headers, body: JSON.stringify(result[0]) };
+    }
+
+    if (action === 'like') {
+      // Prüfen ob bereits geliked
+      const existing = await sql`
+        SELECT * FROM comment_likes 
+        WHERE comment_id = ${commentId} AND user_email = ${userEmail}
+      `;
+
+      if (existing.length > 0) {
+        // Unlike
+        await sql`DELETE FROM comment_likes WHERE comment_id = ${commentId} AND user_email = ${userEmail}`;
+        await sql`UPDATE comments SET likes = likes - 1 WHERE id = ${commentId}`;
+      } else {
+        // Like
+        await sql`INSERT INTO comment_likes (comment_id, user_email) VALUES (${commentId}, ${userEmail})`;
+        await sql`UPDATE comments SET likes = likes + 1 WHERE id = ${commentId}`;
+      }
+
+      const updated = await sql`SELECT likes FROM comments WHERE id = ${commentId}`;
+      
+      return { 
+        statusCode: 200, 
+        headers, 
+        body: JSON.stringify({ likes: updated[0].likes, liked: existing.length === 0 }) 
+      };
+    }
+
+    return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid action' }) };
+
+  } catch (error) {
+    console.error('Comments error:', error);
+    return { statusCode: 500, headers, body: JSON.stringify({ error: error.message }) };
+  }
+};

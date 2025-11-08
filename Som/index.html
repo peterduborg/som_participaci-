@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Què hem de fer per millorar el nostre poble, Matadepera?</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+    .container { max-width: 1200px; margin: 0 auto; background: rgba(255,255,255,0.98); border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 30px; border-radius: 15px 15px 0 0; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    .header-logo { background: white; padding: 10px; border-radius: 8px; }
+    .header-logo img { height: 60px; width: auto; display: block; }
+    .header-text h1 { font-size: 28px; margin-bottom: 10px; }
+    .disclaimer { background: #fff3cd; border-left: 4px solid #ffecb5; margin: 10px 30px; padding: 10px 15px; border-radius: 5px; font-size: 14px; color: #856404; }
+    .content { padding: 30px; }
+    .auth-form { max-width: 480px; margin: 0 auto; }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; color: #333; }
+    input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; font-family: inherit; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: #667eea; }
+    .btn { padding: 12px 24px; background: linear-gradient(135deg,#667eea,#764ba2); border: none; color: white; border-radius: 8px; font-weight: 600; cursor: pointer; transition: transform 0.2s; font-size: 14px; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-secondary { background: #6c757d; }
+    .btn-danger { background: #dc3545; }
+    .btn-wide { width: 100%; }
+    .user-info { background: #f0f0f0; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:nowrap; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+    .user-main { display:flex; align-items:center; gap:10px; min-width:0; }
+    .user-badge { background:#667eea; color:white; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0; }
+    .user-text { min-width:0; }
+    .user-text div:first-child { font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .user-text small { color:#555; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; }
+    .user-actions { display:flex; gap:8px; flex-shrink:0; }
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tab-btn { padding: 8px 14px; border-radius: 20px; border: 1px solid #ccc; background: #f8f9fa; cursor: pointer; font-size: 14px; }
+    .tab-btn.active { background: #667eea; color: white; border-color: #667eea; }
+    .panel { background: #f8f9fa; border-radius: 10px; padding: 18px; border: 1px solid #e0e0e0; margin-bottom: 20px; }
+    .panel h2 { font-size: 20px; margin-bottom: 10px; }
+    .panel h3 { font-size: 16px; margin-bottom: 8px; }
+    .info { font-size: 14px; color: #555; }
+    .alert { padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+    .alert-warning { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+    .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .alert-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    .user-list { display: flex; flex-direction: column; gap: 10px; }
+    .user-item { background: white; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e0e0e0; }
+    .user-item-info { flex: 1; }
+    .user-item-info div:first-child { font-weight: 600; }
+    .user-item-info small { color: #666; }
+    .user-item-actions { display: flex; gap: 8px; }
+    .hidden { display: none; }
+    .password-change-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .modal-content { background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; }
+    @media (max-width: 600px) {
+      .header-text h1 { font-size: 22px; }
+      .content { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-logo">
+        <img src="som.jpg" alt="Escut Matadepera" />
+      </div>
+      <div class="header-text">
+        <h1>Què hem de fer per millorar el nostre poble, Matadepera?</h1>
+        <p>La teva veu compta - Avalua i proposa millores</p>
+      </div>
+    </div>
+
+    <div class="disclaimer"><strong>⚠️ Nota Important:</strong> Aquesta plataforma és consultiva i no oficial. Les dades recollides s'utilitzaran per elaborar propostes concretes per al municipi, però no substitueixen els canals institucionals de participació de l'Ajuntament.</div>
+
+    <div class="content">
+      <!-- LOGIN VIEW -->
+      <div id="loginView">
+        <div class="auth-form">
+          <h2 style="text-align:center;margin-bottom:20px">Iniciar Sessió</h2>
+          <div id="loginAlert"></div>
+          <div class="form-group">
+            <label>Correu electrònic</label>
+            <input type="email" id="loginEmail" placeholder="el.teu@correu.cat" />
+          </div>
+          <div class="form-group">
+            <label>Contrasenya</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" />
+          </div>
+          <button class="btn btn-wide" onclick="login()">Accedir</button>
+        </div>
+      </div>
+
+      <!-- MAIN VIEW -->
+      <div id="mainView" class="hidden">
+        <div class="user-info">
+          <div class="user-main">
+            <div class="user-badge" id="userBadge">U</div>
+            <div class="user-text">
+              <div id="userName">Usuari</div>
+              <small id="userEmail">correu@example.com</small>
+            </div>
+          </div>
+          <div class="user-actions">
+            <button class="btn btn-secondary" onclick="logout()">Sortir</button>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab-btn active" onclick="showTab('participacio')">Participació</button>
+          <button class="tab-btn" onclick="showTab('compte')">El meu compte</button>
+          <button class="tab-btn hidden" id="adminTab" onclick="showTab('admin')">Administració</button>
+        </div>
+
+        <!-- TAB: PARTICIPACIÓ -->
+        <div id="participacio">
+          <div class="panel">
+            <h2>Participació ciutadana</h2>
+            <p class="info">Aquí podràs avaluar categories i propostes. Pròximament disponible.</p>
+          </div>
+        </div>
+
+        <!-- TAB: EL MEU COMPTE -->
+        <div id="compte" class="hidden">
+          <div class="panel">
+            <h2>El meu compte</h2>
+            <div id="accountAlert"></div>
+            <div class="form-group">
+              <label>Nom d'usuari</label>
+              <input type="text" id="accountUsername" readonly style="background:#f0f0f0" />
+            </div>
+            <div class="form-group">
+              <label>Correu electrònic</label>
+              <input type="email" id="accountEmail" readonly style="background:#f0f0f0" />
+            </div>
+            <h3 style="margin-top:20px;margin-bottom:10px">Canviar contrasenya</h3>
+            <div class="form-group">
+              <label>Contrasenya actual</label>
+              <input type="password" id="currentPassword" />
+            </div>
+            <div class="form-group">
+              <label>Nova contrasenya (mínim 8 caràcters)</label>
+              <input type="password" id="newPassword" />
+            </div>
+            <div class="form-group">
+              <label>Confirmar nova contrasenya</label>
+              <input type="password" id="confirmPassword" />
+            </div>
+            <button class="btn" onclick="changePassword()">Canviar contrasenya</button>
+          </div>
+        </div>
+
+        <!-- TAB: ADMIN -->
+        <div id="admin" class="hidden">
+          <div class="panel">
+            <h2>Administració d'usuaris</h2>
+            <div id="adminAlert"></div>
+            
+            <h3 style="margin-top:20px;margin-bottom:10px">Crear nou usuari</h3>
+            <div class="form-group">
+              <label>Correu electrònic del nou usuari</label>
+              <input type="email" id="newUserEmail" />
+            </div>
+            <div class="form-group">
+              <label>La teva contrasenya d'admin (per confirmar)</label>
+              <input type="password" id="adminPasswordCreate" />
+            </div>
+            <button class="btn" onclick="createUser()">Crear usuari</button>
+
+            <h3 style="margin-top:30px;margin-bottom:10px">Usuaris registrats</h3>
+            <div id="usersList" class="user-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PASSWORD CHANGE MODAL -->
+      <div id="passwordChangeModal" class="password-change-modal hidden">
+        <div class="modal-content">
+          <h2 style="margin-bottom:20px">Canvi de contrasenya obligatori</h2>
+          <div class="alert alert-warning">Has d'establir una nova contrasenya abans de continuar.</div>
+          <div id="modalAlert"></div>
+          <div class="form-group">
+            <label>Correu electrònic</label>
+            <input type="email" id="modalEmail" readonly style="background:#f0f0f0" />
+          </div>
+          <div class="form-group">
+            <label>Contrasenya actual (temporal)</label>
+            <input type="password" id="modalCurrentPassword" placeholder="La contrasenya que has rebut" />
+          </div>
+          <div class="form-group">
+            <label>Nova contrasenya (mínim 8 caràcters)</label>
+            <input type="password" id="modalNewPassword" />
+          </div>
+          <div class="form-group">
+            <label>Confirmar nova contrasenya</label>
+            <input type="password" id="modalConfirmPassword" />
+          </div>
+          <button class="btn btn-wide" onclick="changePasswordModal()">Establir contrasenya</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = '/.netlify/functions';
+    let currentUser = null;
+
+    async function login() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      
+      if (!email || !password) {
+        showAlert('loginAlert', 'Cal omplir tots els camps', 'danger');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'login', email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          showAlert('loginAlert', data.error || 'Error al iniciar sessió', 'danger');
+          return;
+        }
+
+        currentUser = data.user;
+        document.getElementById('loginEmail').value = '';
+        document.getElementById('loginPassword').value = '';
+        
+        if (currentUser.requiresPasswordChange) {
+          showPasswordChangeModal();
+        } else {
+          showMainView();
+        }
+      } catch (error) {
+        showAlert('loginAlert', 'Error de connexió', 'danger');
+        console.error(error);
+      }
+    }
+
+    function showPasswordChangeModal() {
+      document.getElementById('modalEmail').value = currentUser.email;
+      document.getElementById('modalAlert').innerHTML = '';
+      document.getElementById('passwordChangeModal').classList.remove('hidden');
+    }
+
+    async function changePasswordModal() {
+      const current = document.getElementById('modalCurrentPassword').value;
+      const newPass = document.getElementById('modalNewPassword').value;
+      const confirm = document.getElementById('modalConfirmPassword').value;
+
+      if (!current || !newPass || !confirm) {
+        showModalAlert('Cal omplir tots els camps', 'danger');
+        return;
+      }
+
+      if (newPass.length < 8) {
+        showModalAlert('La contrasenya ha de tenir mínim 8 caràcters', 'danger');
+        return;
+      }
+
+      if (newPass !== confirm) {
+        showModalAlert('Les contrasenyes no coincideixen', 'danger');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'changePassword',
+            userId: currentUser.id,
+            password: current,
+            newPassword: newPass
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          showModalAlert(data.error || 'Error al canviar la contrasenya', 'danger');
+          return;
+        }
+
+        document.getElementById('passwordChangeModal').classList.add('hidden');
+        currentUser.requiresPasswordChange = false;
+        showMainView();
+      } catch (error) {
+        showModalAlert('Error de connexió', 'danger');
+        console.error(error);
+      }
+    }
+
+    function showModalAlert(message, type) {
+      const el = document.getElementById('modalAlert');
+      el.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+      setTimeout(() => el.innerHTML = '', 5000);
+    }
+
+    async function changePassword() {
+      const current = document.getElementById('currentPassword').value;
+      const newPass = document.getElementById('newPassword').value;
+      const confirm = document.getElementById('confirmPassword').value;
+
+      if (!current || !newPass || !confirm) {
+        showAlert('accountAlert', 'Cal omplir tots els camps', 'danger');
+        return;
+      }
+
+      if (newPass.length < 8) {
+        showAlert('accountAlert', 'La contrasenya ha de tenir mínim 8 caràcters', 'danger');
+        return;
+      }
+
+      if (newPass !== confirm) {
+        showAlert('accountAlert', 'Les contrasenyes no coincideixen', 'danger');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'changePassword',
+            userId: currentUser.id,
+            password: current,
+            newPassword: newPass
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          showAlert('accountAlert', data.error || 'Error al canviar la contrasenya', 'danger');
+          return;
+        }
+
+        showAlert('accountAlert', 'Contrasenya canviada correctament', 'success');
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+      } catch (error) {
+        showAlert('accountAlert', 'Error de connexió', 'danger');
+        console.error(error);
+      }
+    }
+
+    async function createUser() {
+      const email = document.getElementById('newUserEmail').value.trim();
+      const adminPassword = document.getElementById('adminPasswordCreate').value;
+
+      if (!email || !adminPassword) {
+        showAlert('adminAlert', 'Cal omplir tots els camps', 'danger');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'adminCreateUser',
+            userId: currentUser.id,
+            email,
+            adminPassword
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          showAlert('adminAlert', data.error || 'Error al crear l\'usuari', 'danger');
+          return;
+        }
+
+        showAlert('adminAlert', `Usuari creat! Contrasenya temporal: <strong>${data.temporaryPassword}</strong><br>Copia-la i comparteix-la de forma segura.`, 'success');
+        document.getElementById('newUserEmail').value = '';
+        document.getElementById('adminPasswordCreate').value = '';
+        loadUsers();
+      } catch (error) {
+        showAlert('adminAlert', 'Error de connexió', 'danger');
+        console.error(error);
+      }
+    }
+
+    async function loadUsers() {
+      try {
+        const response = await fetch(`${API_URL}/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'adminListUsers', userId: currentUser.id })
+        });
+
+        const data = await response.json();
+        if (!response.ok) return;
+
+        const list = document.getElementById('usersList');
+        list.innerHTML = data.users.map(u => `
+          <div class="user-item">
+            <div class="user-item-info">
+              <div>${u.username} ${u.is_admin ? '(Admin)' : ''}</div>
+              <small>${u.email} · Creat: ${new Date(u.created_at).toLocaleDateString('ca')}</small>
+            </div>
+            <div class="user-item-actions">
+              <button class="btn btn-secondary" onclick="resetUserPassword('${u.email}')">Reset password</button>
+              <button class="btn ${u.is_active ? 'btn-danger' : 'btn'}" onclick="toggleUser(${u.id})">
+                ${u.is_active ? 'Desactivar' : 'Activar'}
+              </button>
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    async function resetUserPassword(email) {
+      if (!confirm(`Vols restablir la contrasenya de ${email}?`)) return;
+
+      try {
+        const response = await fetch(`${API_URL}/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'adminResetPassword',
+            userId: currentUser.id,
+            email
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          alert(data.error || 'Error');
+          return;
+        }
+
+        alert(`Contrasenya restablerta!\nNova contrasenya temporal: ${data.temporaryPassword}\n\nCopia-la i comparteix-la de forma segura.`);
+      } catch (error) {
+        alert('Error de connexió');
+        console.error(error);
+      }
+    }
+
+    async function toggleUser(userId) {
+      try {
+        await fetch(`${API_URL}/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'adminToggleUser',
+            userId: currentUser.id,
+            targetUserId: userId
+          })
+        });
+        loadUsers();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    function showMainView() {
+      document.getElementById('loginView').classList.add('hidden');
+      document.getElementById('mainView').classList.remove('hidden');
+      document.getElementById('userBadge').textContent = (currentUser.username || '?').charAt(0).toUpperCase();
+      document.getElementById('userName').textContent = currentUser.username;
+      document.getElementById('userEmail').textContent = currentUser.email;
+      document.getElementById('accountUsername').value = currentUser.username;
+      document.getElementById('accountEmail').value = currentUser.email;
+
+      if (currentUser.isAdmin) {
+        document.getElementById('adminTab').classList.remove('hidden');
+        loadUsers();
+      }
+
+      showTab('participacio');
+    }
+
+    function logout() {
+      currentUser = null;
+      document.getElementById('mainView').classList.add('hidden');
+      document.getElementById('loginView').classList.remove('hidden');
+      showAlert('loginAlert', 'Sessió tancada correctament', 'success');
+    }
+
+    function showTab(tab) {
+      document.querySelectorAll('#mainView > div:not(.user-info):not(.tabs)').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      
+      const target = document.getElementById(tab);
+      if (target) target.classList.remove('hidden');
+      
+      const btn = document.querySelector(`.tab-btn[onclick*="${tab}"]`);
+      if (btn) btn.classList.add('active');
+    }
+
+    function showAlert(elementId, message, type) {
+      const el = document.getElementById(elementId);
+      el.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+      setTimeout(() => el.innerHTML = '', 5000);
+    }
+  </script>
+</body>
+</html>
