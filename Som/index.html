@@ -2,9 +2,8 @@
 <html lang="ca">
 <head>
   <meta charset="UTF-8" />
-  <title>Participació ciutadana Matadepera</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <title>Participació ciutadana Matadepera</title>
   <style>
     :root {
       --color-primary: #c8102e;
@@ -17,16 +16,12 @@
       --color-warning: #ffc107;
       --color-danger: #dc3545;
       --color-bg: #f5f5f5;
-
       --transition-fast: 0.15s ease-in-out;
       --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
       --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -34,11 +29,7 @@
       color: var(--color-text);
     }
 
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    .page { min-height: 100vh; display: flex; flex-direction: column; }
 
     header {
       background: white;
@@ -71,17 +62,9 @@
       justify-content: center;
     }
 
-    .logo-img {
-      max-width: 30px;
-      max-height: 30px;
-      display: block;
-    }
+    .logo-img { max-width: 30px; max-height: 30px; display: block; }
 
-    .brand {
-      display: flex;
-      flex-direction: column;
-    }
-
+    .brand { display: flex; flex-direction: column; }
     .brand-line1 {
       font-weight: 700;
       font-size: 0.85rem;
@@ -89,11 +72,7 @@
       text-transform: uppercase;
       color: var(--color-primary-dark);
     }
-    .brand-line2 {
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: var(--color-text);
-    }
+    .brand-line2 { font-weight: 600; font-size: 1.1rem; color: var(--color-text); }
 
     .header-right {
       margin-left: auto;
@@ -113,9 +92,7 @@
       color: var(--color-muted);
     }
 
-    .user-pill span {
-      font-weight: 500;
-    }
+    .user-pill span { font-weight: 500; }
 
     .btn-logout {
       border: none;
@@ -132,12 +109,7 @@
       color: var(--color-danger);
     }
 
-    .main {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      padding: 1.5rem 1rem 2rem 1rem;
-    }
+    .main { flex: 1; display: flex; justify-content: center; padding: 1.5rem 1rem 2rem 1rem; }
 
     .container {
       width: 100%;
@@ -171,10 +143,7 @@
       gap: 0.4rem;
     }
 
-    .card-subtitle {
-      font-size: 0.8rem;
-      color: var(--color-muted);
-    }
+    .card-subtitle { font-size: 0.8rem; color: var(--color-muted); }
 
     .status-pill {
       font-size: 0.7rem;
@@ -187,15 +156,9 @@
       background: #fff5f5;
     }
 
-    .mute {
-      color: var(--color-muted);
-      font-size: 0.86rem;
-    }
+    .mute { color: var(--color-muted); font-size: 0.86rem; }
 
-    .login-section {
-      grid-column: 1 / -1;
-      margin-bottom: 1.5rem;
-    }
+    .login-section { grid-column: 1 / -1; margin-bottom: 1.5rem; }
 
     .login-inner {
       display: flex;
@@ -227,7 +190,8 @@
     }
 
     .form-group input[type="email"],
-    .form-group input[type="password"] {
+    .form-group input[type="password"],
+    .form-group input[type="text"] {
       padding: 0.45rem 0.6rem;
       border-radius: 6px;
       border: 1px solid var(--color-border);
@@ -267,24 +231,11 @@
       box-shadow: 0 4px 10px rgba(200,16,46,0.4);
     }
 
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .btn-secondary {
-      background: #f1f3f5;
-      color: var(--color-text);
-    }
-
-    .btn-secondary:hover {
-      background: #e9ecef;
-    }
-
-    .btn-small {
-      padding: 0.3rem 0.6rem;
-      font-size: 0.8rem;
-    }
+    .btn-secondary { background: #f1f3f5; color: var(--color-text); }
+    .btn-secondary:hover { background: #e9ecef; }
+    .btn-small { padding: 0.3rem 0.6rem; font-size: 0.8rem; }
 
     .alert {
       border-radius: 8px;
@@ -293,29 +244,10 @@
       margin-bottom: 0.5rem;
     }
 
-    .alert-info {
-      background: #e7f5ff;
-      border: 1px solid #a5d8ff;
-      color: #1971c2;
-    }
-
-    .alert-warning {
-      background: #fff9db;
-      border: 1px solid #ffe066;
-      color: #e67700;
-    }
-
-    .alert-success {
-      background: #ebfbee;
-      border: 1px solid #8ce99a;
-      color: #2f9e44;
-    }
-
-    .alert-danger {
-      background: #fff5f5;
-      border: 1px solid #ffc9c9;
-      color: #c92a2a;
-    }
+    .alert-info { background: #e7f5ff; border: 1px solid #a5d8ff; color: #1971c2; }
+    .alert-warning { background: #fff9db; border: 1px solid #ffe066; color: #e67700; }
+    .alert-success { background: #ebfbee; border: 1px solid #8ce99a; color: #2f9e44; }
+    .alert-danger { background: #fff5f5; border: 1px solid #ffc9c9; color: #c92a2a; }
 
     .pill {
       display: inline-flex;
@@ -335,336 +267,6 @@
       background: var(--color-success);
     }
 
-    .proposals-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-
-    .proposal-card {
-      border-radius: 10px;
-      border: 1px solid #edf2f7;
-      padding: 0.75rem 0.85rem;
-      display: grid;
-      grid-template-columns: minmax(0,2fr) minmax(0,1.2fr);
-      gap: 0.5rem 0.75rem;
-      align-items: center;
-      background: #fcfcfd;
-      transition: box-shadow var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
-      cursor: pointer;
-    }
-
-    .proposal-card:hover {
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      transform: translateY(-1px);
-      border-color: #ced4da;
-      background: #ffffff;
-    }
-
-    .proposal-main {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .proposal-title {
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-
-    .proposal-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem;
-      font-size: 0.76rem;
-      color: var(--color-muted);
-    }
-
-    .proposal-category, .proposal-topic {
-      background: #f8f9fa;
-      border-radius: 999px;
-      padding: 0.14rem 0.45rem;
-      border: 1px solid #e9ecef;
-    }
-
-    .proposal-footer {
-      font-size: 0.75rem;
-      color: var(--color-muted);
-    }
-
-    .votes-controls {
-      text-align: right;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-    }
-
-    .btn-vote {
-      min-width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      border: 1px solid #ced4da;
-      background: white;
-      cursor: pointer;
-      font-size: 0.85rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: background var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
-    }
-
-    .btn-vote:hover {
-      background: #f1f3f5;
-    }
-
-    .btn-vote.active-positive {
-      background: #e7f5ff;
-      border-color: #4dabf7;
-      color: #1971c2;
-      box-shadow: 0 0 0 2px rgba(33,150,243,0.2);
-    }
-
-    .btn-vote.active-negative {
-      background: #fff5f5;
-      border-color: #ff8787;
-      color: #c92a2a;
-      box-shadow: 0 0 0 2px rgba(220,53,69,0.2);
-    }
-
-    .vote-value-badge {
-      min-width: 28px;
-      text-align: center;
-      font-weight: 600;
-      font-size: 0.9rem;
-      border-radius: 999px;
-      padding: 0.12rem 0.4rem;
-      background: #f1f3f5;
-      color: #495057;
-    }
-
-    .vote-value-badge.positive {
-      background: #e6fcf5;
-      color: #087f5b;
-    }
-
-    .vote-value-badge.negative {
-      background: #fff5f5;
-      color: #c92a2a;
-    }
-
-    .points-overview {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
-      font-size: 0.87rem;
-    }
-
-    .points-total {
-      font-weight: 600;
-      font-size: 1rem;
-    }
-
-    .points-remaining {
-      color: var(--color-muted);
-    }
-
-    .satisfaction-grid {
-      margin-top: 0.75rem;
-      display: grid;
-      grid-template-columns: minmax(0,1.6fr) minmax(0,1.4fr);
-      gap: 1rem;
-    }
-
-    .satisfaction-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-
-    .satisfaction-label {
-      font-size: 0.82rem;
-      font-weight: 600;
-    }
-
-    .satisfaction-controls {
-      display: flex;
-      gap: 0.35rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .satisfaction-button {
-      min-width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      border: 1px solid #ced4da;
-      background: #fff;
-      font-size: 0.82rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), color var(--transition-fast);
-    }
-
-    .satisfaction-button:hover {
-      background: #f1f3f5;
-    }
-
-    .satisfaction-button.active {
-      background: #e7f5ff;
-      border-color: #4dabf7;
-      color: #1971c2;
-      box-shadow: 0 0 0 2px rgba(33,150,243,0.18);
-    }
-
-    .satisfaction-description {
-      font-size: 0.78rem;
-      color: var(--color-muted);
-    }
-
-    .top-info {
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .top-info strong {
-      font-weight: 600;
-    }
-
-    .top-proposals-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 0.35rem;
-      font-size: 0.82rem;
-    }
-
-    .top-proposals-table th {
-      text-align: left;
-      padding: 0.35rem 0.3rem;
-      border-bottom: 1px solid var(--color-border);
-      font-weight: 600;
-      color: var(--color-muted);
-    }
-
-    .top-proposals-table td {
-      padding: 0.3rem 0.3rem;
-      border-bottom: 1px dashed rgba(222,226,230,0.8);
-    }
-
-    .top-proposals-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .top-score-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.15rem;
-      font-size: 0.78rem;
-      padding: 0.1rem 0.35rem;
-      border-radius: 999px;
-      background: #ebfbee;
-      color: #2b8a3e;
-      border: 1px solid #8ce99a;
-    }
-
-    .badge-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #2b8a3e;
-    }
-
-    .top-category-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.2rem;
-      padding: 0.14rem 0.4rem;
-      border-radius: 999px;
-      background: #f1f3f5;
-      font-size: 0.78rem;
-      color: #495057;
-    }
-
-    .top-category-pill span {
-      font-weight: 500;
-    }
-
-    .footer-note {
-      font-size: 0.78rem;
-      color: var(--color-muted);
-      margin-top: 0.75rem;
-      line-height: 1.3;
-    }
-
-    .tags {
-      display: inline-flex;
-      flex-wrap: wrap;
-      gap: 0.3rem;
-      margin-top: 0.3rem;
-    }
-
-    .tag {
-      font-size: 0.78rem;
-      padding: 0.18rem 0.45rem;
-      border-radius: 999px;
-      background: #f1f3f5;
-      color: #495057;
-    }
-
-    .admin-panel {
-      margin-top: 1rem;
-      border-top: 1px solid #f1f3f5;
-      padding-top: 0.75rem;
-      font-size: 0.84rem;
-    }
-
-    .admin-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.4rem;
-    }
-
-    .admin-title {
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    .admin-section {
-      margin-top: 0.6rem;
-    }
-
-    .admin-form-inline {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      align-items: center;
-      margin-top: 0.4rem;
-    }
-
-    .admin-users-list {
-      margin-top: 0.5rem;
-      max-height: 200px;
-      overflow-y: auto;
-      border-top: 1px dashed #e9ecef;
-      padding-top: 0.4rem;
-    }
-
-    .admin-user-row {
-      display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(0, 0.9fr) minmax(0, 0.9fr) auto;
-      gap: 0.4rem;
-      align-items: center;
-      padding: 0.3rem 0;
-      border-bottom: 1px dashed #f1f3f5;
-      font-size: 0.8rem;
-    }
-
     .user-badge-admin {
       background: #fff4e6;
       color: #d9480f;
@@ -674,28 +276,7 @@
       align-items: center;
       gap: 0.2rem;
       border: 1px solid #ffd8a8;
-    }
-
-    .user-badge-locked {
-      background: #fff5f5;
-      color: #c92a2a;
-      border-radius: 999px;
-      padding: 0.08rem 0.4rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.2rem;
-      border: 1px solid #ffc9c9;
-    }
-
-    .user-badge-active {
-      background: #ebfbee;
-      color: #2f9e44;
-      border-radius: 999px;
-      padding: 0.08rem 0.4rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.2rem;
-      border: 1px solid #b2f2bb;
+      font-size: 0.75rem;
     }
 
     .password-change-modal {
@@ -709,16 +290,14 @@
       padding: 1rem;
     }
 
-    .password-change-modal.hidden {
-      display: none;
-    }
+    .password-change-modal.hidden { display: none; }
 
     .modal-content {
       background: white;
       border-radius: 14px;
       max-width: 420px;
       width: 100%;
-      padding: 1.25rem 1.5rem 1.1rem 1.5rem;
+      padding: 1.25rem 1.5rem;
       box-shadow: 0 18px 45px rgba(15,23,42,0.45);
       animation: modalIn 0.16s ease-out;
     }
@@ -741,64 +320,6 @@
       margin-top: 0.75rem;
     }
 
-    @media (max-width: 900px) {
-      .container {
-        grid-template-columns: minmax(0,1.7fr) minmax(0,1.3fr);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        grid-template-columns: minmax(0,1fr);
-      }
-      header {
-        position: static;
-      }
-      .header-inner {
-        flex-direction: row;
-        align-items: flex-start;
-      }
-      .header-right {
-        margin-left: 0;
-        margin-top: 0.25rem;
-        align-self: flex-start;
-      }
-      .main {
-        padding-top: 1rem;
-      }
-      .login-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .proposal-card {
-        grid-template-columns: minmax(0,1fr);
-        align-items: flex-start;
-      }
-      .votes-controls {
-        justify-content: flex-start;
-      }
-      .satisfaction-grid {
-        grid-template-columns: minmax(0,1fr);
-      }
-    }
-
-    @media (max-width: 480px) {
-      .header-inner {
-        padding-inline: 0.8rem;
-      }
-      .card {
-        padding-inline: 0.9rem;
-      }
-      .login-form {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .points-overview {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
     .spinner {
       width: 14px;
       height: 14px;
@@ -813,69 +334,12 @@
       to { transform: rotate(360deg); }
     }
 
-    .proposal-comments-link {
-      font-size: 0.78rem;
-      color: var(--color-primary);
-      cursor: pointer;
-      text-decoration: underline;
-    }
+    .hidden { display: none; }
 
-    .comments-counter {
-      background: #e7f5ff;
-      color: #1971c2;
-      border-radius: 999px;
-      padding: 0.1rem 0.35rem;
-      font-size: 0.78rem;
-      font-weight: 500;
+    @media (max-width: 768px) {
+      .container { grid-template-columns: minmax(0,1fr); }
+      header { position: static; }
     }
-
-    .link-muted {
-      color: var(--color-muted);
-      font-size: 0.8rem;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    .small-text {
-      font-size: 0.8rem;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 16px;
-      right: 16px;
-      background: #0b7285;
-      color: white;
-      border-radius: 999px;
-      padding: 0.5rem 0.9rem;
-      font-size: 0.8rem;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-      opacity: 0;
-      transform: translateY(5px);
-      pointer-events: none;
-      transition: opacity 0.18s ease-out, transform 0.18s ease-out;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      z-index: 3000;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .toast-icon {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.7);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.6rem;
-    }
-
   </style>
 </head>
 <body>
@@ -889,9 +353,8 @@
           <span class="brand-line1">Participació ciutadana</span>
           <span class="brand-line2">Matadepera</span>
         </div>
-
         <div class="header-right" id="headerRight">
-          <span class="mute small-text">No has iniciat sessió</span>
+          <span class="mute">No has iniciat sessió</span>
         </div>
       </div>
     </header>
@@ -909,328 +372,143 @@
             <form id="loginForm" class="login-form">
               <div class="form-group">
                 <label>Correu electrònic</label>
-                <input type="email" id="loginEmail" placeholder="el.teu@correu.cat" />
+                <input type="email" id="loginEmail" placeholder="el.teu@correu.cat" required />
               </div>
               <div class="form-group">
                 <label>Contrasenya</label>
-                <input type="password" id="loginPassword" placeholder="••••••••" />
+                <input type="password" id="loginPassword" placeholder="••••••••" required />
               </div>
               <button type="submit" class="btn btn-primary" id="loginButton">
                 Inicia sessió
               </button>
             </form>
           </div>
-          <div id="loginAlert" style="margin-top:0.5rem;"></div>
+          <div id="loginAlert"></div>
         </section>
 
         <section class="card" id="proposalsCard" style="display:none;">
           <div class="card-header">
             <div>
-              <div class="card-title">
-                Propostes per a Matadepera
-              </div>
-              <div class="card-subtitle">
-                Assigna punts a favor o en contra de cadascuna
-              </div>
+              <div class="card-title">Propostes per a Matadepera</div>
+              <div class="card-subtitle">Sistema de votació (proper)</div>
             </div>
             <div class="pill">
               <span class="pill-dot"></span>
-              Participació activa
+              Sessió activa
             </div>
           </div>
-
-          <div id="pointsOverview" class="points-overview">
-            <div class="points-total">
-              Punts restants: <span id="remainingPoints">30</span>
-            </div>
-            <div class="points-remaining" id="pointsSummaryText">
-              Pots distribuir punts positius i negatius entre les propostes.
-            </div>
-          </div>
-
-          <div id="proposalsList" class="proposals-list"></div>
-
-          <div class="footer-note">
-            <strong>Nota:</strong> Els punts no són un vot vinculant, sinó una forma de
-            conèixer les preferències i prioritats dels veïns i veïnes de Matadepera.
-          </div>
+          <p class="mute">Les propostes i el sistema de votació estaran disponibles aviat.</p>
         </section>
 
         <section class="card" id="analysisCard" style="display:none;">
           <div class="card-header">
             <div>
-              <div class="card-title">Resultat de la teva participació</div>
-              <div class="card-subtitle">
-                Resum dels punts assignats i nivell de satisfacció
-              </div>
+              <div class="card-title">La teva participació</div>
+              <div class="card-subtitle">Gestió del compte</div>
             </div>
-            <div id="sessionStatusPill" class="status-pill">
-              Sessió activa
-            </div>
+            <div class="status-pill">Actiu</div>
           </div>
 
-          <div id="analysisContent">
-            <div class="top-info">
-              <strong>Les teves propostes amb més punts:</strong>
-              <span id="topProposalsSummary" class="mute">Encara no has assignat punts.</span>
+          <div style="margin-top:1rem;">
+            <h3 style="font-size:0.9rem;margin-bottom:0.5rem;">Canviar contrasenya</h3>
+            <div id="accountAlert"></div>
+            <div class="form-group">
+              <label>Contrasenya actual</label>
+              <input type="password" id="currentPassword" />
             </div>
-
-            <table class="top-proposals-table" id="topProposalsTable" style="display:none;">
-              <thead>
-                <tr>
-                  <th>Proposta</th>
-                  <th>Punts</th>
-                </tr>
-              </thead>
-              <tbody id="topProposalsBody"></tbody>
-            </table>
-
-            <div class="satisfaction-grid">
-              <div>
-                <div class="satisfaction-item">
-                  <div class="satisfaction-label">
-                    Satisfacció general amb la qualitat de vida al poble
-                  </div>
-                  <div class="satisfaction-controls" data-category="qualitat_vida">
-                    <button type="button" class="satisfaction-button" data-value="1">1</button>
-                    <button type="button" class="satisfaction-button" data-value="2">2</button>
-                    <button type="button" class="satisfaction-button" data-value="3">3</button>
-                    <button type="button" class="satisfaction-button" data-value="4">4</button>
-                    <button type="button" class="satisfaction-button" data-value="5">5</button>
-                  </div>
-                  <div class="satisfaction-description">
-                    1 = molt insatisfet · 5 = molt satisfet
-                  </div>
-                </div>
-
-                <div class="satisfaction-item">
-                  <div class="satisfaction-label">
-                    Grau de satisfacció amb la gestió municipal
-                  </div>
-                  <div class="satisfaction-controls" data-category="gestio_municipal">
-                    <button type="button" class="satisfaction-button" data-value="1">1</button>
-                    <button type="button" class="satisfaction-button" data-value="2">2</button>
-                    <button type="button" class="satisfaction-button" data-value="3">3</button>
-                    <button type="button" class="satisfaction-button" data-value="4">4</button>
-                    <button type="button" class="satisfaction-button" data-value="5">5</button>
-                  </div>
-                  <div class="satisfaction-description">
-                    1 = molt insatisfet · 5 = molt satisfet
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <div class="satisfaction-item">
-                  <div class="satisfaction-label">
-                    Grau de satisfacció amb la comunicació de l'Ajuntament
-                  </div>
-                  <div class="satisfaction-controls" data-category="comunicacio">
-                    <button type="button" class="satisfaction-button" data-value="1">1</button>
-                    <button type="button" class="satisfaction-button" data-value="2">2</button>
-                    <button type="button" class="satisfaction-button" data-value="3">3</button>
-                    <button type="button" class="satisfaction-button" data-value="4">4</button>
-                    <button type="button" class="satisfaction-button" data-value="5">5</button>
-                  </div>
-                  <div class="satisfaction-description">
-                    1 = molt insatisfet · 5 = molt satisfet
-                  </div>
-                </div>
-
-                <div class="satisfaction-item">
-                  <div class="satisfaction-label">
-                    Grau de satisfacció amb les oportunitats de participació
-                  </div>
-                  <div class="satisfaction-controls" data-category="participacio">
-                    <button type="button" class="satisfaction-button" data-value="1">1</button>
-                    <button type="class="satisfaction-button" data-value="2">2</button>
-                    <button type="button" class="satisfaction-button" data-value="3">3</button>
-                    <button type="button" class="satisfaction-button" data-value="4">4</button>
-                    <button type="button" class="satisfaction-button" data-value="5">5</button>
-                  </div>
-                  <div class="satisfaction-description">
-                    1 = molt insatisfet · 5 = molt satisfet
-                  </div>
-                </div>
-              </div>
+            <div class="form-group">
+              <label>Nova contrasenya (mínim 8 caràcters)</label>
+              <input type="password" id="newPassword" />
             </div>
-
-            <div class="footer-note">
-              Aquesta informació ens ajuda a entendre millor la percepció global del poble i
-              a orientar les prioritats de futurs projectes.
+            <div class="form-group">
+              <label>Confirmar nova contrasenya</label>
+              <input type="password" id="confirmPassword" />
             </div>
+            <button class="btn btn-secondary btn-small" onclick="changePassword()">
+              Canviar contrasenya
+            </button>
           </div>
 
-          <div class="admin-panel" id="adminPanel" style="display:none;">
-            <div class="admin-header">
-              <div class="admin-title">Panell d'administració</div>
-              <span class="user-badge-admin">
-                <span style="width:6px;height:6px;border-radius:50%;background:#d9480f;"></span>
-                Admin
-              </span>
+          <div id="adminPanel" style="display:none;margin-top:1.5rem;border-top:1px solid #f1f3f5;padding-top:1rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
+              <h3 style="font-size:0.9rem;">Panell d'administració</h3>
+              <span class="user-badge-admin">Admin</span>
             </div>
-
-            <div class="admin-section">
-              <div class="small-text">
-                Pots crear nous comptes d'usuari, restablir contrasenyes i veure l'estat dels comptes.
+            <div id="adminAlert"></div>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem;">
+              <div class="form-group" style="min-width:200px;">
+                <label>Nou usuari (email)</label>
+                <input type="email" id="adminNewUserEmail" placeholder="nou@correu.cat" />
               </div>
-
-              <div class="admin-form-inline" style="margin-top:0.5rem;">
-                <div class="form-group" style="min-width:220px;">
-                  <label>Nou usuari (correu electrònic)</label>
-                  <input type="email" id="adminNewUserEmail" placeholder="nou.usuari@correu.cat" />
-                </div>
-                <div class="form-group" style="min-width:180px;">
-                  <label>Contrasenya admin (per confirmar)</label>
-                  <input type="password" id="adminPasswordConfirm" placeholder="••••••••" />
-                </div>
-                <button type="button" class="btn btn-secondary btn-small" id="adminCreateUserBtn">
-                  Crear usuari
-                </button>
+              <div class="form-group" style="min-width:150px;">
+                <label>Contrasenya admin</label>
+                <input type="password" id="adminPasswordConfirm" placeholder="••••••••" />
               </div>
-
-              <div class="admin-form-inline">
-                <div class="form-group" style="min-width:220px;">
-                  <label>Restablir contrasenya (correu usuari)</label>
-                  <input type="email" id="adminResetUserEmail" placeholder="usuari@correu.cat" />
-                </div>
-                <button type="button" class="btn btn-secondary btn-small" id="adminResetPasswordBtn">
-                  Restablir contrasenya
-                </button>
-              </div>
-
-              <div class="admin-form-inline">
-                <button type="button" class="btn btn-secondary btn-small" id="adminRefreshUsersBtn">
-                  Actualitzar llista d'usuaris
-                </button>
-              </div>
-
-              <div id="adminAlert" style="margin-top:0.4rem;"></div>
-
-              <div class="admin-users-list" id="adminUsersList"></div>
+              <button class="btn btn-secondary btn-small" style="align-self:flex-end;" onclick="handleAdminCreateUser()">
+                Crear usuari
+              </button>
             </div>
+            <div style="margin-top:0.5rem;">
+              <button class="btn btn-secondary btn-small" onclick="loadAdminUsers()">
+                Actualitzar llista
+              </button>
+            </div>
+            <div id="adminUsersList" style="margin-top:0.5rem;"></div>
           </div>
         </section>
       </div>
     </main>
-  </div>
 
-  <!-- PASSWORD CHANGE MODAL -->
-  <div id="passwordChangeModal" class="password-change-modal hidden">
-    <div class="modal-content">
-      <h2 style="margin-bottom:20px">Canvi de contrasenya obligatori</h2>
-      <div class="alert alert-warning">Has d'establir una nova contrasenya abans de continuar.</div>
-      <div id="modalAlert"></div>
-      <div class="form-group">
-        <label>Correu electrònic</label>
-        <input
-          type="email"
-          id="modalEmail"
-          placeholder="el.teu@correu.cat"
-          style="background:#ffffff"
-        />
-      </div>
-      <div class="form-group">
-        <label>Contrasenya actual (temporal)</label>
-        <input type="password" id="modalCurrentPassword" placeholder="Contrasenya actual" />
-      </div>
-      <div class="form-group">
-        <label>Nova contrasenya (mínim 8 caràcters)</label>
-        <input type="password" id="modalNewPassword" placeholder="Nova contrasenya" />
-      </div>
-      <div class="form-group">
-        <label>Confirmar nova contrasenya</label>
-        <input type="password" id="modalConfirmNewPassword" placeholder="Repeteix la nova contrasenya" />
-      </div>
-      <div class="modal-actions">
-        <button class="btn btn-secondary btn-small" id="modalLogoutButton">
-          Tancar sessió
-        </button>
-        <button class="btn btn-primary btn-small" id="modalSavePasswordButton">
-          <span id="modalSavePasswordSpinner" class="spinner" style="display:none;"></span>
-          Establir contrasenya
-        </button>
+    <!-- PASSWORD CHANGE MODAL -->
+    <div id="passwordChangeModal" class="password-change-modal hidden">
+      <div class="modal-content">
+        <h2 style="margin-bottom:1rem;font-size:1.1rem;">Canvi de contrasenya obligatori</h2>
+        <div class="alert alert-warning">Has d'establir una nova contrasenya abans de continuar.</div>
+        <div id="modalAlert"></div>
+        <div class="form-group">
+          <label>Correu electrònic</label>
+          <input type="email" id="modalEmail" readonly style="background:#f8f9fa" />
+        </div>
+        <div class="form-group">
+          <label>Contrasenya actual (temporal)</label>
+          <input type="password" id="modalCurrentPassword" placeholder="Contrasenya temporal" />
+        </div>
+        <div class="form-group">
+          <label>Nova contrasenya (mínim 8 caràcters)</label>
+          <input type="password" id="modalNewPassword" placeholder="Nova contrasenya" />
+        </div>
+        <div class="form-group">
+          <label>Confirmar nova contrasenya</label>
+          <input type="password" id="modalConfirmPassword" placeholder="Repeteix la contrasenya" />
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary btn-small" onclick="handleModalLogout()">
+            Tancar sessió
+          </button>
+          <button class="btn btn-primary btn-small" id="modalSaveButton" onclick="handleChangePassword()">
+            <span id="modalSpinner" class="spinner" style="display:none;"></span>
+            Establir contrasenya
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
-  <div id="toast" class="toast">
-    <div class="toast-icon">✓</div>
-    <div id="toastMessage"></div>
-  </div>
-
   <script>
     const API_BASE = '/.netlify/functions';
-
     let currentUser = null;
-    let proposals = [];
-    let votes = {};
-    let satisfaction = {};
-    let isSaving = false;
-    let maxPoints = 30;
-
-    const loginForm = document.getElementById('loginForm');
-    const loginEmailInput = document.getElementById('loginEmail');
-    const loginPasswordInput = document.getElementById('loginPassword');
-    const loginButton = document.getElementById('loginButton');
-    const loginAlert = document.getElementById('loginAlert');
-
-    const headerRight = document.getElementById('headerRight');
-    const loginSection = document.getElementById('loginSection');
-    const proposalsCard = document.getElementById('proposalsCard');
-    const analysisCard = document.getElementById('analysisCard');
-    const proposalsList = document.getElementById('proposalsList');
-    const remainingPointsElem = document.getElementById('remainingPoints');
-    const pointsSummaryTextElem = document.getElementById('pointsSummaryText');
-    const topProposalsSummaryElem = document.getElementById('topProposalsSummary');
-    const topProposalsTable = document.getElementById('topProposalsTable');
-    const topProposalsBody = document.getElementById('topProposalsBody');
-    const sessionStatusPill = document.getElementById('sessionStatusPill');
-    const adminPanel = document.getElementById('adminPanel');
-    const adminNewUserEmailInput = document.getElementById('adminNewUserEmail');
-    const adminPasswordConfirmInput = document.getElementById('adminPasswordConfirm');
-    const adminCreateUserBtn = document.getElementById('adminCreateUserBtn');
-    const adminResetUserEmailInput = document.getElementById('adminResetUserEmail');
-    const adminResetPasswordBtn = document.getElementById('adminResetPasswordBtn');
-    const adminRefreshUsersBtn = document.getElementById('adminRefreshUsersBtn');
-    const adminAlert = document.getElementById('adminAlert');
-    const adminUsersList = document.getElementById('adminUsersList');
-
-    const passwordChangeModal = document.getElementById('passwordChangeModal');
-    const modalEmailInput = document.getElementById('modalEmail');
-    const modalCurrentPasswordInput = document.getElementById('modalCurrentPassword');
-    const modalNewPasswordInput = document.getElementById('modalNewPassword');
-    const modalConfirmNewPasswordInput = document.getElementById('modalConfirmNewPassword');
-    const modalAlert = document.getElementById('modalAlert');
-    const modalSavePasswordButton = document.getElementById('modalSavePasswordButton');
-    const modalSavePasswordSpinner = document.getElementById('modalSavePasswordSpinner');
-    const modalLogoutButton = document.getElementById('modalLogoutButton');
-
-    const toastElem = document.getElementById('toast');
-    const toastMessageElem = document.getElementById('toastMessage');
-
-    function showToast(message) {
-      toastMessageElem.textContent = message;
-      toastElem.classList.add('show');
-      setTimeout(() => toastElem.classList.remove('show'), 4000);
-    }
 
     async function apiRequest(path, method = 'POST', data = null) {
       const options = {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       };
+      if (data) options.body = JSON.stringify(data);
 
-      if (data) {
-        options.body = JSON.stringify(data);
-      }
-
-      const url = `${API_BASE}${path}`;
-
-      const response = await fetch(url, options);
+      const response = await fetch(`${API_BASE}${path}`, options);
       const contentType = response.headers.get('Content-Type') || '';
+      
       let body = null;
-
       if (contentType.includes('application/json')) {
         body = await response.json();
       } else {
@@ -1239,20 +517,21 @@
       }
 
       if (!response.ok) {
-        const message = body && body.error ? body.error : 'Error del servidor';
-        throw new Error(message);
+        throw new Error(body?.error || 'Error del servidor');
       }
-
       return body;
     }
 
     function updateHeader() {
+      const headerRight = document.getElementById('headerRight');
       if (!currentUser) {
-        headerRight.innerHTML = '<span class="mute small-text">No has iniciat sessió</span>';
+        headerRight.innerHTML = '<span class="mute">No has iniciat sessió</span>';
         return;
       }
 
-      const adminBadge = currentUser.isAdmin ? '<span class="user-badge-admin">Admin</span>' : '';
+      const adminBadge = currentUser.isAdmin 
+        ? '<span class="user-badge-admin">Admin</span>' 
+        : '';
 
       headerRight.innerHTML = `
         <div class="user-pill">
@@ -1260,278 +539,26 @@
           <strong>${currentUser.email}</strong>
           ${adminBadge}
         </div>
-        <button class="btn-logout" id="logoutButton">Tancar sessió</button>
+        <button class="btn-logout" onclick="logout()">Tancar sessió</button>
       `;
-
-      const logoutButton = document.getElementById('logoutButton');
-      logoutButton.addEventListener('click', () => {
-        currentUser = null;
-        votes = {};
-        satisfaction = {};
-        loginEmailInput.value = '';
-        loginPasswordInput.value = '';
-        proposalsCard.style.display = 'none';
-        analysisCard.style.display = 'none';
-        loginSection.style.display = 'block';
-        updateHeader();
-      });
     }
 
-    function renderProposals() {
-      proposalsList.innerHTML = '';
-
-      if (!proposals || proposals.length === 0) {
-        proposalsList.innerHTML = '<div class="mute small-text">No hi ha propostes disponibles.</div>';
-        return;
-      }
-
-      proposals.forEach((proposal) => {
-        const userPoints = votes[proposal.id] || 0;
-        const positiveActive = userPoints > 0;
-        const negativeActive = userPoints < 0;
-
-        const card = document.createElement('div');
-        card.className = 'proposal-card';
-
-        const main = document.createElement('div');
-        main.className = 'proposal-main';
-
-        const title = document.createElement('div');
-        title.className = 'proposal-title';
-        title.textContent = proposal.title;
-
-        const meta = document.createElement('div');
-        meta.className = 'proposal-meta';
-        const category = document.createElement('div');
-        category.className = 'proposal-category';
-        category.textContent = proposal.category || 'General';
-
-        const topic = document.createElement('div');
-        topic.className = 'proposal-topic';
-        topic.textContent = proposal.topic || 'Tema general';
-
-        meta.appendChild(category);
-        meta.appendChild(topic);
-        main.appendChild(title);
-        main.appendChild(meta);
-
-        const footer = document.createElement('div');
-        footer.className = 'proposal-footer';
-        footer.textContent = proposal.description || '';
-
-        main.appendChild(footer);
-
-        const controls = document.createElement('div');
-        controls.className = 'votes-controls';
-
-        const voteValueBadge = document.createElement('div');
-        voteValueBadge.className = 'vote-value-badge';
-        if (userPoints > 0) {
-          voteValueBadge.classList.add('positive');
-        } else if (userPoints < 0) {
-          voteValueBadge.classList.add('negative');
-        }
-        voteValueBadge.textContent = userPoints > 0 ? `+${userPoints}` : `${userPoints}`;
-
-        const buttonsContainer = document.createElement('div');
-        buttonsContainer.style.display = 'inline-flex';
-        buttonsContainer.style.gap = '0.25rem';
-
-        const values = [-3,-2,-1,1,2,3];
-        values.forEach((val) => {
-          const b = document.createElement('button');
-          b.type = 'button';
-          b.className = 'btn-vote';
-          b.textContent = (val > 0 ? '+' : '') + val;
-          b.dataset.value = val;
-
-          if (val > 0 && positiveActive && val === userPoints) {
-            b.classList.add('active-positive');
-          }
-          if (val < 0 && negativeActive && val === userPoints) {
-            b.classList.add('active-negative');
-          }
-
-          b.addEventListener('click', () => {
-            handleVote(proposal.id, val);
-          });
-
-          buttonsContainer.appendChild(b);
-        });
-
-        controls.appendChild(voteValueBadge);
-        controls.appendChild(buttonsContainer);
-
-        card.appendChild(main);
-        card.appendChild(controls);
-
-        proposalsList.appendChild(card);
-      });
-    }
-
-    function updatePointsOverview() {
-      let usedPoints = 0;
-      Object.values(votes).forEach((v) => {
-        usedPoints += Math.abs(v);
-      });
-
-      const remaining = maxPoints - usedPoints;
-      remainingPointsElem.textContent = remaining;
-
-      if (remaining < 0) {
-        pointsSummaryTextElem.textContent = `Has superat el límit de punts. Cal reduir algun vot.`;
-        pointsSummaryTextElem.style.color = '#c92a2a';
-      } else if (remaining === 0) {
-        pointsSummaryTextElem.textContent = `Has distribuït tots els punts disponibles.`;
-        pointsSummaryTextElem.style.color = '#2f9e44';
-      } else {
-        pointsSummaryTextElem.textContent = `Encara disposes de ${remaining} punts per assignar.`;
-        pointsSummaryTextElem.style.color = '#495057';
-      }
-
-      updateAnalysis();
-    }
-
-    function updateAnalysis() {
-      const entries = Object.entries(votes)
-        .filter(([_, points]) => points !== 0)
-        .map(([proposalId, points]) => {
-          const proposal = proposals.find((p) => p.id === Number(proposalId));
-          return { proposal, points };
-        })
-        .filter((item) => !!item.proposal);
-
-      if (entries.length === 0) {
-        topProposalsSummaryElem.textContent = 'Encara no has assignat punts.';
-        topProposalsTable.style.display = 'none';
-        return;
-      }
-
-      entries.sort((a, b) => Math.abs(b.points) - Math.abs(a.points));
-
-      const top3 = entries.slice(0, 3);
-      const summaryTitles = top3.map((e) => e.proposal.title).join(', ');
-
-      topProposalsSummaryElem.textContent = `Has destacat especialment: ${summaryTitles}`;
-
-      topProposalsBody.innerHTML = '';
-      top3.forEach((entry) => {
-        const tr = document.createElement('tr');
-        const tdTitle = document.createElement('td');
-        const tdPoints = document.createElement('td');
-
-        tdTitle.textContent = entry.proposal.title;
-
-        const badge = document.createElement('span');
-        badge.className = 'top-score-badge';
-        const sign = entry.points > 0 ? '+' : '';
-        badge.innerHTML = `<span class="badge-dot"></span>${sign}${entry.points} pts`;
-        tdPoints.appendChild(badge);
-
-        tr.appendChild(tdTitle);
-        tr.appendChild(tdPoints);
-        topProposalsBody.appendChild(tr);
-      });
-
-      topProposalsTable.style.display = 'table';
-    }
-
-    function updateSatisfactionButtons() {
-      const allControls = document.querySelectorAll('.satisfaction-controls');
-      allControls.forEach((ctrl) => {
-        const category = ctrl.getAttribute('data-category');
-        const value = satisfaction[category];
-
-        const buttons = ctrl.querySelectorAll('.satisfaction-button');
-        buttons.forEach((b) => {
-          const btnValue = Number(b.getAttribute('data-value'));
-          if (btnValue === value) {
-            b.classList.add('active');
-          } else {
-            b.classList.remove('active');
-          }
-        });
-      });
-    }
-
-    function attachSatisfactionHandlers() {
-      const allControls = document.querySelectorAll('.satisfaction-controls');
-      allControls.forEach((ctrl) => {
-        const category = ctrl.getAttribute('data-category');
-
-        const buttons = ctrl.querySelectorAll('.satisfaction-button');
-        buttons.forEach((b) => {
-          b.addEventListener('click', async () => {
-            const value = Number(b.getAttribute('data-value'));
-            satisfaction[category] = value;
-            updateSatisfactionButtons();
-            if (currentUser) {
-              try {
-                await apiRequest('/health', 'POST', { ping: 'ok' });
-              } catch {}
-            }
-          });
-        });
-      });
-    }
-
-    function handleVote(proposalId, newValue) {
-      if (!currentUser) {
-        showToast('Cal iniciar sessió per votar');
-        return;
-      }
-
-      const currentValue = votes[proposalId] || 0;
-
-      let usedPoints = 0;
-      Object.entries(votes).forEach(([id, value]) => {
-        if (Number(id) === proposalId) {
-          return;
-        }
-        usedPoints += Math.abs(value);
-      });
-
-      const newUsedPoints = usedPoints + Math.abs(newValue);
-
-      if (newUsedPoints > maxPoints) {
-        showToast('No pots superar el límit de punts disponibles.');
-        return;
-      }
-
-      if (currentValue === newValue) {
-        votes[proposalId] = 0;
-      } else {
-        votes[proposalId] = newValue;
-      }
-
-      renderProposals();
-      updatePointsOverview();
-    }
-
-    function showPasswordChangeModal() {
-      if (!currentUser) return;
-      modalEmailInput.value = currentUser.email || '';
-      modalCurrentPasswordInput.value = '';
-      modalNewPasswordInput.value = '';
-      modalConfirmNewPasswordInput.value = '';
-      modalAlert.innerHTML = '';
-      passwordChangeModal.classList.remove('hidden');
-    }
-
-    function hidePasswordChangeModal() {
-      passwordChangeModal.classList.add('hidden');
-      modalCurrentPasswordInput.value = '';
-      modalNewPasswordInput.value = '';
-      modalConfirmNewPasswordInput.value = '';
-      modalAlert.innerHTML = '';
+    function logout() {
+      currentUser = null;
+      document.getElementById('loginSection').style.display = 'block';
+      document.getElementById('proposalsCard').style.display = 'none';
+      document.getElementById('analysisCard').style.display = 'none';
+      document.getElementById('loginEmail').value = '';
+      document.getElementById('loginPassword').value = '';
+      updateHeader();
     }
 
     async function handleLogin(event) {
       event.preventDefault();
-      if (isSaving) return;
-
-      const email = loginEmailInput.value.trim();
-      const password = loginPasswordInput.value.trim();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const loginAlert = document.getElementById('loginAlert');
+      const loginButton = document.getElementById('loginButton');
 
       loginAlert.innerHTML = '';
 
@@ -1540,7 +567,6 @@
         return;
       }
 
-      isSaving = true;
       loginButton.disabled = true;
       loginButton.innerHTML = '<div class="spinner"></div>Iniciant sessió...';
 
@@ -1548,295 +574,214 @@
         const result = await apiRequest('/auth', 'POST', {
           action: 'login',
           email,
-          password,
+          password
         });
 
         currentUser = result.user;
-        votes = result.user.votes || {};
-        satisfaction = result.user.satisfaction || {};
 
-        loginSection.style.display = 'none';
-        proposalsCard.style.display = 'block';
-        analysisCard.style.display = 'block';
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('proposalsCard').style.display = 'block';
+        document.getElementById('analysisCard').style.display = 'block';
         updateHeader();
 
-        renderProposals();
-        updatePointsOverview();
-        attachSatisfactionHandlers();
-        updateSatisfactionButtons();
-
-        sessionStatusPill.textContent = 'Sessió activa';
-
         if (currentUser.isAdmin) {
-          adminPanel.style.display = 'block';
+          document.getElementById('adminPanel').style.display = 'block';
           loadAdminUsers();
-        } else {
-          adminPanel.style.display = 'none';
         }
 
         if (currentUser.requiresPasswordChange) {
           showPasswordChangeModal();
         }
-
-        loginAlert.innerHTML = '';
       } catch (error) {
         console.error(error);
         loginAlert.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
       } finally {
-        isSaving = false;
         loginButton.disabled = false;
         loginButton.textContent = 'Inicia sessió';
       }
     }
 
-    async function handleChangePassword() {
-      if (!currentUser) {
-        modalAlert.innerHTML = '<div class="alert alert-danger">Error: no hi ha cap usuari actiu.</div>';
-        return;
-      }
+    function showPasswordChangeModal() {
+      document.getElementById('modalEmail').value = currentUser.email || '';
+      document.getElementById('modalCurrentPassword').value = '';
+      document.getElementById('modalNewPassword').value = '';
+      document.getElementById('modalConfirmPassword').value = '';
+      document.getElementById('modalAlert').innerHTML = '';
+      document.getElementById('passwordChangeModal').classList.remove('hidden');
+    }
 
-      const currentPassword = modalCurrentPasswordInput.value.trim();
-      const newPassword = modalNewPasswordInput.value.trim();
-      const confirmPassword = modalConfirmNewPasswordInput.value.trim();
+    function hidePasswordChangeModal() {
+      document.getElementById('passwordChangeModal').classList.add('hidden');
+    }
+
+    async function handleChangePassword() {
+      const current = document.getElementById('modalCurrentPassword').value.trim();
+      const newPass = document.getElementById('modalNewPassword').value.trim();
+      const confirm = document.getElementById('modalConfirmPassword').value.trim();
+      const modalAlert = document.getElementById('modalAlert');
+      const saveButton = document.getElementById('modalSaveButton');
+      const spinner = document.getElementById('modalSpinner');
 
       modalAlert.innerHTML = '';
 
-      if (!currentPassword || !newPassword || !confirmPassword) {
-        modalAlert.innerHTML = '<div class="alert alert-warning">Cal omplir tots els camps de contrasenya.</div>';
+      if (!current || !newPass || !confirm) {
+        modalAlert.innerHTML = '<div class="alert alert-warning">Cal omplir tots els camps.</div>';
         return;
       }
 
-      if (newPassword !== confirmPassword) {
-        modalAlert.innerHTML = '<div class="alert alert-warning">Les noves contrasenyes no coincideixen.</div>';
+      if (newPass !== confirm) {
+        modalAlert.innerHTML = '<div class="alert alert-warning">Les contrasenyes no coincideixen.</div>';
         return;
       }
 
-      if (newPassword.length < 8) {
-        modalAlert.innerHTML = '<div class="alert alert-warning">La nova contrasenya ha de tenir almenys 8 caràcters.</div>';
+      if (newPass.length < 8) {
+        modalAlert.innerHTML = '<div class="alert alert-warning">Mínim 8 caràcters.</div>';
         return;
       }
 
-      modalSavePasswordButton.disabled = true;
-      modalSavePasswordSpinner.style.display = 'inline-block';
+      saveButton.disabled = true;
+      spinner.style.display = 'inline-block';
 
       try {
-        const result = await apiRequest('/auth', 'POST', {
+        await apiRequest('/auth', 'POST', {
           action: 'changePassword',
           userId: currentUser.id,
-          password: currentPassword,
-          newPassword: newPassword,
+          password: current,
+          newPassword: newPass
         });
 
         modalAlert.innerHTML = '<div class="alert alert-success">Contrasenya canviada correctament.</div>';
         currentUser.requiresPasswordChange = false;
-        setTimeout(() => {
-          hidePasswordChangeModal();
-          showToast('La teva contrasenya s\'ha actualitzat correctament.');
-        }, 1200);
+        setTimeout(() => hidePasswordChangeModal(), 1200);
       } catch (error) {
-        console.error(error);
         modalAlert.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
       } finally {
-        modalSavePasswordButton.disabled = false;
-        modalSavePasswordSpinner.style.display = 'none';
+        saveButton.disabled = false;
+        spinner.style.display = 'none';
       }
     }
 
     function handleModalLogout() {
-      currentUser = null;
-      votes = {};
-      satisfaction = {};
       hidePasswordChangeModal();
-      loginSection.style.display = 'block';
-      proposalsCard.style.display = 'none';
-      analysisCard.style.display = 'none';
-      loginEmailInput.value = '';
-      loginPasswordInput.value = '';
-      updateHeader();
+      logout();
     }
 
-    async function loadProposals() {
-      try {
-        const data = await apiRequest('/proposals', 'POST', {
-          action: 'list',
-        });
-        proposals = data.proposals || [];
-        renderProposals();
-        updatePointsOverview();
-      } catch (error) {
-        console.error(error);
-        proposalsList.innerHTML = '<div class="alert alert-danger">No s\'han pogut carregar les propostes.</div>';
+    async function changePassword() {
+      const current = document.getElementById('currentPassword').value.trim();
+      const newPass = document.getElementById('newPassword').value.trim();
+      const confirm = document.getElementById('confirmPassword').value.trim();
+      const accountAlert = document.getElementById('accountAlert');
+
+      accountAlert.innerHTML = '';
+
+      if (!current || !newPass || !confirm) {
+        accountAlert.innerHTML = '<div class="alert alert-warning">Cal omplir tots els camps.</div>';
+        return;
       }
-    }
 
-    async function loadAdminUsers() {
-      if (!currentUser || !currentUser.isAdmin) return;
+      if (newPass !== confirm) {
+        accountAlert.innerHTML = '<div class="alert alert-warning">Les contrasenyes no coincideixen.</div>';
+        return;
+      }
 
-      adminUsersList.innerHTML = '<div class="small-text mute">Carregant usuaris...</div>';
+      if (newPass.length < 8) {
+        accountAlert.innerHTML = '<div class="alert alert-warning">Mínim 8 caràcters.</div>';
+        return;
+      }
 
       try {
-        const data = await apiRequest('/auth', 'POST', {
-          action: 'adminListUsers',
+        await apiRequest('/auth', 'POST', {
+          action: 'changePassword',
           userId: currentUser.id,
+          password: current,
+          newPassword: newPass
         });
 
-        const users = data.users || [];
-        if (users.length === 0) {
-          adminUsersList.innerHTML = '<div class="small-text mute">Encara no hi ha usuaris registrats.</div>';
-          return;
-        }
-
-        adminUsersList.innerHTML = '';
-        users.forEach((u) => {
-          const row = document.createElement('div');
-          row.className = 'admin-user-row';
-
-          const colUser = document.createElement('div');
-          colUser.textContent = u.email;
-
-          const colAdmin = document.createElement('div');
-          colAdmin.innerHTML = u.is_admin
-            ? '<span class="user-badge-admin">Admin</span>'
-            : '';
-
-          const colStatus = document.createElement('div');
-          if (!u.is_active) {
-            colStatus.innerHTML = '<span class="user-badge-locked">Inactiu</span>';
-          } else if (u.requires_password_change) {
-            colStatus.innerHTML = '<span class="user-badge-locked">Canvi de contrasenya pendent</span>';
-          } else {
-            colStatus.innerHTML = '<span class="user-badge-active">Actiu</span>';
-          }
-
-          const colActions = document.createElement('div');
-          colActions.style.display = 'flex';
-          colActions.style.gap = '0.25rem';
-
-          const btnToggle = document.createElement('button');
-          btnToggle.type = 'button';
-          btnToggle.className = 'btn btn-secondary btn-small';
-          btnToggle.textContent = u.is_active ? 'Desactivar' : 'Activar';
-          btnToggle.addEventListener('click', async () => {
-            try {
-              await apiRequest('/auth', 'POST', {
-                action: 'adminToggleUser',
-                userId: currentUser.id,
-                targetUserId: u.id,
-              });
-              showToast('S\'ha actualitzat l\'estat de l\'usuari.');
-              loadAdminUsers();
-            } catch (error) {
-              console.error(error);
-              adminAlert.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
-            }
-          });
-
-          colActions.appendChild(btnToggle);
-
-          row.appendChild(colUser);
-          row.appendChild(colAdmin);
-          row.appendChild(colStatus);
-          row.appendChild(colActions);
-
-          adminUsersList.appendChild(row);
-        });
+        accountAlert.innerHTML = '<div class="alert alert-success">Contrasenya canviada correctament.</div>';
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
       } catch (error) {
-        console.error(error);
-        adminUsersList.innerHTML = '<div class="alert alert-danger">Error en carregar la llista d\'usuaris.</div>';
+        accountAlert.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
       }
     }
 
     async function handleAdminCreateUser() {
-      if (!currentUser || !currentUser.isAdmin) {
-        adminAlert.innerHTML = '<div class="alert alert-danger">No tens permisos d\'administrador.</div>';
+      const email = document.getElementById('adminNewUserEmail').value.trim();
+      const adminPass = document.getElementById('adminPasswordConfirm').value.trim();
+      const adminAlert = document.getElementById('adminAlert');
+
+      if (!email || !adminPass) {
+        adminAlert.innerHTML = '<div class="alert alert-warning">Cal email i contrasenya admin.</div>';
         return;
       }
-
-      const email = adminNewUserEmailInput.value.trim();
-      const adminPassword = adminPasswordConfirmInput.value.trim();
-
-      if (!email || !adminPassword) {
-        adminAlert.innerHTML = '<div class="alert alert-warning">Cal correu i contrasenya d\'admin.</div>';
-        return;
-      }
-
-      adminAlert.innerHTML = '';
 
       try {
         const result = await apiRequest('/auth', 'POST', {
           action: 'adminCreateUser',
           userId: currentUser.id,
           email,
-          adminPassword,
+          adminPassword: adminPass
         });
 
         adminAlert.innerHTML = `<div class="alert alert-success">
-          Usuari creat correctament. Contrasenya temporal: <strong>${result.temporaryPassword}</strong>
+          Usuari creat! Contrasenya temporal: <strong>${result.temporaryPassword}</strong>
         </div>`;
 
-        adminNewUserEmailInput.value = '';
-        adminPasswordConfirmInput.value = '';
+        document.getElementById('adminNewUserEmail').value = '';
+        document.getElementById('adminPasswordConfirm').value = '';
         loadAdminUsers();
       } catch (error) {
-        console.error(error);
         adminAlert.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
       }
     }
 
-    async function handleAdminResetPassword() {
-      if (!currentUser || !currentUser.isAdmin) {
-        adminAlert.innerHTML = '<div class="alert alert-danger">No tens permisos d\'administrador.</div>';
-        return;
-      }
-
-      const email = adminResetUserEmailInput.value.trim();
-      if (!email) {
-        adminAlert.innerHTML = '<div class="alert alert-warning">Cal indicar el correu de l\'usuari.</div>';
-        return;
-      }
-
-      adminAlert.innerHTML = '';
+    async function loadAdminUsers() {
+      const list = document.getElementById('adminUsersList');
+      list.innerHTML = '<div class="mute">Carregant...</div>';
 
       try {
-        const result = await apiRequest('/auth', 'POST', {
-          action: 'adminResetPassword',
-          userId: currentUser.id,
-          email,
+        const data = await apiRequest('/auth', 'POST', {
+          action: 'adminListUsers',
+          userId: currentUser.id
         });
 
-        adminAlert.innerHTML = `<div class="alert alert-success">
-          Contrasenya restablerta. Nova contrasenya temporal: <strong>${result.temporaryPassword}</strong>
-        </div>`;
+        const users = data.users || [];
+        if (users.length === 0) {
+          list.innerHTML = '<div class="mute">Encara no hi ha usuaris.</div>';
+          return;
+        }
 
-        adminResetUserEmailInput.value = '';
-        loadAdminUsers();
+        list.innerHTML = users.map(u => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px dashed #f1f3f5;font-size:0.85rem;">
+            <div>
+              <div>${u.email}</div>
+              <small style="color:#6c757d;">${u.is_admin ? 'Admin' : 'Usuari'} · ${u.is_active ? 'Actiu' : 'Inactiu'}</small>
+            </div>
+            <button class="btn btn-secondary btn-small" onclick="toggleUser(${u.id})">
+              ${u.is_active ? 'Desactivar' : 'Activar'}
+            </button>
+          </div>
+        `).join('');
       } catch (error) {
-        console.error(error);
-        adminAlert.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+        list.innerHTML = '<div class="alert alert-danger">Error en carregar usuaris.</div>';
       }
     }
 
-    function init() {
-      loginForm.addEventListener('submit', handleLogin);
-
-      modalSavePasswordButton.addEventListener('click', handleChangePassword);
-      modalLogoutButton.addEventListener('click', handleModalLogout);
-
-      adminCreateUserBtn.addEventListener('click', handleAdminCreateUser);
-      adminResetPasswordBtn.addEventListener('click', handleAdminResetPassword);
-      adminRefreshUsersBtn.addEventListener('click', loadAdminUsers);
-
-      loadProposals();
-      attachSatisfactionHandlers();
+    async function toggleUser(userId) {
+      try {
+        await apiRequest('/auth', 'POST', {
+          action: 'adminToggleUser',
+          userId: currentUser.id,
+          targetUserId: userId
+        });
+        loadAdminUsers();
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    document.addEventListener('DOMContentLoaded', init);
-
-    window.addEventListener('beforeunload', () => {
-      toastElem.classList.remove('show');
-      toastMessageElem.textContent = '';
-      setTimeout(() => toastElem.innerHTML = '', 5000);
-    });
+    document.getElementById('loginForm').addEventListener('submit', handleLogin);
   </script>
 </body>
 </html>
