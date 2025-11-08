@@ -1,4 +1,8 @@
-// ESM (package.json: { "type": "module" } ist ok, aber nicht nötig)
-export const handler = async () => {
-  return { statusCode: 200, body: "OK: function läuft" };
+// netlify/functions/health.js
+exports.handler = async () => {
+  return {
+    statusCode: 200,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status: "ok" })
+  };
 };
