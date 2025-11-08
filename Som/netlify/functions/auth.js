@@ -1,53 +1,13 @@
-// netlify/functions/auth.js
-
 const { neon } = require('@neondatabase/serverless');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-
-// DB-Verbindung – nimmt NETLIFY_DATABASE_URL, fällt sonst auf DATABASE_URL zurück
-const connectionString =
-  process.env.NETLIFY_DATABASE_URL || process.env.DATABASE_URL;
-
-if (!connectionString) {
-  console.error('No database URL configured (NETLIFY_DATABASE_URL / DATABASE_URL)');
-}
-
-const sql = neon(connectionString);
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Content-Type': 'application/json'
+  'Content-Type': 'application/json',
 };
-
-function sanitizeUser(row) {
-  if (!row) return null;
-  return {
-    id: row.id,
-    username: row.username,
-    email: row.email,
-    is_admin: row.is_admin,
-    is_active: row.is_active,
-    requiresPasswordChange: row.requires_password_change,
-    created_at: row.created_at
-  };
-}
-
-async function requireAdmin(userId) {
-  const result = await sql`
-    SELECT * FROM users
-    WHERE id = ${userId} AND is_active = TRUE
-    LIMIT 1
-  `;
-  const admin = result[0];
-  if (!admin || !admin.is_admin) {
-    const err = new Error('No tens permisos d’administrador');
-    err.statusCode = 403;
-    throw err;
-  }
-  return admin;
-}
 
 exports.handler = async (event) => {
   // CORS Preflight
@@ -59,147 +19,159 @@ exports.handler = async (event) => {
     return {
       statusCode: 405,
       headers,
-      body: JSON.stringify({ error: 'Method not allowed' })
+      body: JSON.stringify({ error: 'Method not allowed' }),
     };
   }
 
-  let body;
-  try {
-    body = event.body ? JSON.parse(event.body) : {};
-  } catch (e) {
+  const connectionString =
+    process.env.NETLIFY_DATABASE_URL || process.env.DATABASE_URL;
+
+  if (!connectionString) {
+    console.error('No database URL configured');
     return {
-      statusCode: 400,
+      statusCode: 500,
       headers,
-      body: JSON.stringify({ error: 'Cos de la petició no és JSON vàlid' })
+      body: JSON.stringify({
+        error: 'Database connection not configured',
+      }),
     };
   }
 
-  const { action } = body || {};
-  if (!action) {
-    return {
-      statusCode: 400,
-      headers,
-      body: JSON.stringify({ error: 'Acció requerida' })
-    };
-  }
+  const sql = neon(connectionString);
+
+  const {
+    action,
+    email,
+    password,
+    newPassword,
+    token,              // (momentan unbenutzt, aber lassen wir drin)
+    userId,
+    adminPassword,
+    targetUserId,       // für adminToggleUser
+  } = JSON.parse(event.body || '{}');
 
   try {
-    // ------------------------------------------------------------------
+    // -------------------------------------------------------------------
     // LOGIN
-    // ------------------------------------------------------------------
+    // -------------------------------------------------------------------
     if (action === 'login') {
-      const { email, password } = body;
-
-      if (!email || !password) {
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({ error: 'Cal correu i contrasenya' })
-        };
-      }
-
-      const result = await sql`
-        SELECT * FROM users
-        WHERE email = ${email.toLowerCase()}
-        LIMIT 1
+      const users = await sql`
+        SELECT id, username, email, password, is_admin, is_active, requires_password_change
+        FROM users 
+        WHERE email = ${email.toLowerCase()} AND is_active = TRUE
       `;
 
-      const userRow = result[0];
-
-      if (!userRow) {
+      if (users.length === 0) {
         return {
           statusCode: 401,
           headers,
-          body: JSON.stringify({ error: 'Credencials incorrectes' })
+          body: JSON.stringify({
+            error: 'Correu o contrasenya incorrectes',
+          }),
         };
       }
 
-      if (!userRow.is_active) {
-        return {
-          statusCode: 403,
-          headers,
-          body: JSON.stringify({ error: 'Usuari desactivat' })
-        };
-      }
+      const user = users[0];
+      const validPassword = await bcrypt.compare(password, user.password);
 
-      const ok = await bcrypt.compare(password, userRow.password);
-      if (!ok) {
+      if (!validPassword) {
         return {
           statusCode: 401,
           headers,
-          body: JSON.stringify({ error: 'Credencials incorrectes' })
+          body: JSON.stringify({
+            error: 'Correu o contrasenya incorrectes',
+          }),
         };
       }
 
-      await sql`
-        UPDATE users
-        SET last_login = NOW()
-        WHERE id = ${userRow.id}
+      // last_login aktualisieren
+      await sql`UPDATE users SET last_login = NOW() WHERE id = ${user.id}`;
+
+      // Stimmen laden
+      const votes = await sql`
+        SELECT proposal_id, points
+        FROM votes
+        WHERE user_id = ${user.id}
       `;
+      const votesObj = {};
+      votes.forEach((v) => {
+        votesObj[v.proposal_id] = v.points;
+      });
+
+      // Zufriedenheit nach Kategorien laden
+      const satisfaction = await sql`
+        SELECT category, value
+        FROM satisfaction
+        WHERE user_id = ${user.id}
+      `;
+      const satisfactionObj = {};
+      satisfaction.forEach((s) => {
+        satisfactionObj[s.category] = s.value;
+      });
 
       return {
         statusCode: 200,
         headers,
         body: JSON.stringify({
           success: true,
-          user: sanitizeUser(userRow)
-        })
+          user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            isAdmin: user.is_admin,
+            requiresPasswordChange: user.requires_password_change,
+            votes: votesObj,
+            satisfaction: satisfactionObj,
+          },
+        }),
       };
     }
 
-    // ------------------------------------------------------------------
-    // CANVI DE CONTRASENYA (des del modal obligatori)
-    // ------------------------------------------------------------------
+    // -------------------------------------------------------------------
+    // CANVIAR CONTRASENYA (vom Zwangs-Modal oder Profil-Tab)
+    // -------------------------------------------------------------------
     if (action === 'changePassword') {
-      const { userId, password, newPassword } = body;
-
-      if (!userId || !password || !newPassword) {
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({ error: 'Falten camps obligatoris' })
-        };
-      }
-
-      if (newPassword.length < 8) {
+      if (!newPassword || newPassword.length < 8) {
         return {
           statusCode: 400,
           headers,
           body: JSON.stringify({
-            error: 'La contrasenya ha de tenir mínim 8 caràcters'
-          })
+            error: 'La contrasenya ha de tenir mínim 8 caràcters',
+          }),
         };
       }
 
-      const result = await sql`
-        SELECT * FROM users
-        WHERE id = ${userId} AND is_active = TRUE
-        LIMIT 1
+      // Aktuelles Passwort prüfen
+      const users = await sql`
+        SELECT password
+        FROM users
+        WHERE id = ${userId}
       `;
-      const userRow = result[0];
 
-      if (!userRow) {
+      if (users.length === 0) {
         return {
           statusCode: 404,
           headers,
-          body: JSON.stringify({ error: 'Usuari no trobat' })
+          body: JSON.stringify({ error: 'Usuari no trobat' }),
         };
       }
 
-      const ok = await bcrypt.compare(password, userRow.password);
-      if (!ok) {
+      const validPassword = await bcrypt.compare(password, users[0].password);
+      if (!validPassword) {
         return {
           statusCode: 401,
           headers,
-          body: JSON.stringify({ error: 'Contrasenya actual incorrecta' })
+          body: JSON.stringify({
+            error: 'Contrasenya actual incorrecta',
+          }),
         };
       }
 
-      const hashed = await bcrypt.hash(newPassword, 10);
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
 
       await sql`
-        UPDATE users
-        SET password = ${hashed},
+        UPDATE users 
+        SET password = ${hashedPassword},
             requires_password_change = FALSE
         WHERE id = ${userId}
       `;
@@ -209,57 +181,66 @@ exports.handler = async (event) => {
         headers,
         body: JSON.stringify({
           success: true,
-          message: 'Contrasenya canviada correctament'
-        })
+          message: 'Contrasenya canviada correctament',
+        }),
       };
     }
 
-    // ------------------------------------------------------------------
-    // ADMIN: NOU USUARI
-    // ------------------------------------------------------------------
+    // -------------------------------------------------------------------
+    // ADMIN: NEUEN USER ANLEGEN
+    // -------------------------------------------------------------------
     if (action === 'adminCreateUser') {
-      const { userId, email, adminPassword } = body;
-
-      if (!userId || !email || !adminPassword) {
+      // prüfen, ob der Anfragende Admin ist
+      const admins = await sql`
+        SELECT password
+        FROM users
+        WHERE id = ${userId} AND is_admin = TRUE
+      `;
+      if (admins.length === 0) {
         return {
-          statusCode: 400,
+          statusCode: 403,
           headers,
-          body: JSON.stringify({ error: 'Falten camps obligatoris' })
+          body: JSON.stringify({ error: 'No autoritzat' }),
         };
       }
 
-      const admin = await requireAdmin(userId);
-
-      const adminPwOk = await bcrypt.compare(adminPassword, admin.password);
-      if (!adminPwOk) {
+      const validAdminPassword = await bcrypt.compare(
+        adminPassword,
+        admins[0].password
+      );
+      if (!validAdminPassword) {
         return {
           statusCode: 401,
           headers,
-          body: JSON.stringify({ error: 'Contrasenya d’administrador incorrecta' })
+          body: JSON.stringify({
+            error: "Contrasenya d'admin incorrecta",
+          }),
         };
       }
 
       const emailLower = email.toLowerCase();
 
+      // gibt es die E-Mail schon?
       const existing = await sql`
-        SELECT id FROM users WHERE email = ${emailLower} LIMIT 1
+        SELECT id FROM users WHERE email = ${emailLower}
       `;
       if (existing.length > 0) {
         return {
           statusCode: 400,
           headers,
-          body: JSON.stringify({ error: 'Ja existeix un usuari amb aquest correu' })
+          body: JSON.stringify({
+            error: 'Aquest correu ja està registrat',
+          }),
         };
       }
 
-      const username = emailLower.split('@')[0] || 'usuari';
-      const temporaryPassword = crypto.randomBytes(4).toString('hex'); // 8 Zeichen
-      const hashed = await bcrypt.hash(temporaryPassword, 10);
+      // temporäres Passwort erzeugen
+      const tempPassword = crypto.randomBytes(6).toString('hex');
+      const hashedPassword = await bcrypt.hash(tempPassword, 10);
 
-      const inserted = await sql`
-        INSERT INTO users (username, email, password, is_admin, is_active,
-                           requires_password_change, created_by)
-        VALUES (${username}, ${emailLower}, ${hashed}, FALSE, TRUE, TRUE, ${admin.id})
+      const result = await sql`
+        INSERT INTO users (username, email, password, created_by, requires_password_change)
+        VALUES (${emailLower.split('@')[0]}, ${emailLower}, ${hashedPassword}, ${userId}, TRUE)
         RETURNING id, username, email, is_admin, is_active, requires_password_change, created_at
       `;
 
@@ -268,32 +249,54 @@ exports.handler = async (event) => {
         headers,
         body: JSON.stringify({
           success: true,
-          user: sanitizeUser(inserted[0]),
-          temporaryPassword
-        })
+          user: result[0],
+          temporaryPassword: tempPassword,
+          message:
+            'Usuari creat. Comparteix aquesta contrasenya temporal de forma segura.',
+        }),
       };
     }
 
-    // ------------------------------------------------------------------
-    // ADMIN: LLISTAR USUARIS
-    // ------------------------------------------------------------------
-    if (action === 'adminListUsers') {
-      const { userId } = body;
-      if (!userId) {
+    // -------------------------------------------------------------------
+    // ADMIN: PASSWORT ZURÜCKSETZEN
+    // -------------------------------------------------------------------
+    if (action === 'adminResetPassword') {
+      const admins = await sql`
+        SELECT id
+        FROM users
+        WHERE id = ${userId} AND is_admin = TRUE
+      `;
+      if (admins.length === 0) {
         return {
-          statusCode: 400,
+          statusCode: 403,
           headers,
-          body: JSON.stringify({ error: 'Falta userId' })
+          body: JSON.stringify({ error: 'No autoritzat' }),
         };
       }
 
-      await requireAdmin(userId);
+      const emailLower = email.toLowerCase();
 
-      const rows = await sql`
-        SELECT id, username, email, is_admin, is_active,
-               requires_password_change, created_at
+      const targetUsers = await sql`
+        SELECT id
         FROM users
-        ORDER BY created_at ASC, id ASC
+        WHERE email = ${emailLower}
+      `;
+      if (targetUsers.length === 0) {
+        return {
+          statusCode: 404,
+          headers,
+          body: JSON.stringify({ error: 'Usuari no trobat' }),
+        };
+      }
+
+      const tempPassword = crypto.randomBytes(6).toString('hex');
+      const hashedPassword = await bcrypt.hash(tempPassword, 10);
+
+      await sql`
+        UPDATE users 
+        SET password = ${hashedPassword},
+            requires_password_change = TRUE
+        WHERE email = ${emailLower}
       `;
 
       return {
@@ -301,121 +304,96 @@ exports.handler = async (event) => {
         headers,
         body: JSON.stringify({
           success: true,
-          users: rows.map(sanitizeUser)
-        })
+          temporaryPassword: tempPassword,
+          message: 'Contrasenya restablerta',
+        }),
       };
     }
 
-    // ------------------------------------------------------------------
-    // ADMIN: RESET PASSWORD PER USUARI
-    // ------------------------------------------------------------------
-    if (action === 'adminResetPassword') {
-      const { userId, email } = body;
-
-      if (!userId || !email) {
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({ error: 'Falten camps obligatoris' })
-        };
-      }
-
-      await requireAdmin(userId);
-
-      const emailLower = email.toLowerCase();
-      const rows = await sql`
-        SELECT id FROM users WHERE email = ${emailLower} LIMIT 1
+    // -------------------------------------------------------------------
+    // ADMIN: USER-LISTE LADEN
+    // -------------------------------------------------------------------
+    if (action === 'adminListUsers') {
+      const admins = await sql`
+        SELECT id
+        FROM users
+        WHERE id = ${userId} AND is_admin = TRUE
       `;
-      const userRow = rows[0];
-
-      if (!userRow) {
+      if (admins.length === 0) {
         return {
-          statusCode: 404,
+          statusCode: 403,
           headers,
-          body: JSON.stringify({ error: 'Usuari no trobat' })
+          body: JSON.stringify({ error: 'No autoritzat' }),
         };
       }
 
-      const temporaryPassword = crypto.randomBytes(4).toString('hex');
-      const hashed = await bcrypt.hash(temporaryPassword, 10);
+      const users = await sql`
+        SELECT id,
+               username,
+               email,
+               is_admin,
+               is_active,
+               requires_password_change,
+               last_login,
+               created_at
+        FROM users
+        ORDER BY created_at DESC
+      `;
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          users,
+        }),
+      };
+    }
+
+    // -------------------------------------------------------------------
+    // ADMIN: USER AKTIV / INAKTIV SCHALTEN
+    // -------------------------------------------------------------------
+    if (action === 'adminToggleUser') {
+      const admins = await sql`
+        SELECT id
+        FROM users
+        WHERE id = ${userId} AND is_admin = TRUE
+      `;
+      if (admins.length === 0) {
+        return {
+          statusCode: 403,
+          headers,
+          body: JSON.stringify({ error: 'No autoritzat' }),
+        };
+      }
+
+      const idToToggle = targetUserId;
 
       await sql`
         UPDATE users
-        SET password = ${hashed},
-            requires_password_change = TRUE
-        WHERE id = ${userRow.id}
-      `;
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-          success: true,
-          temporaryPassword
-        })
-      };
-    }
-
-    // ------------------------------------------------------------------
-    // ADMIN: ACTIVAR / DESACTIVAR USUARI
-    // ------------------------------------------------------------------
-    if (action === 'adminToggleUser') {
-      const { userId, targetUserId } = body;
-
-      if (!userId || !targetUserId) {
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({ error: 'Falten camps obligatoris' })
-        };
-      }
-
-      await requireAdmin(userId);
-
-      const updated = await sql`
-        UPDATE users
         SET is_active = NOT is_active
-        WHERE id = ${targetUserId}
-        RETURNING id, username, email, is_admin, is_active,
-                  requires_password_change, created_at
+        WHERE id = ${idToToggle}
       `;
-
-      if (updated.length === 0) {
-        return {
-          statusCode: 404,
-          headers,
-          body: JSON.stringify({ error: 'Usuari no trobat' })
-        };
-      }
 
       return {
         statusCode: 200,
         headers,
-        body: JSON.stringify({
-          success: true,
-          user: sanitizeUser(updated[0])
-        })
+        body: JSON.stringify({ success: true }),
       };
     }
 
-    // ------------------------------------------------------------------
-    // Default: Unbekannte Action
-    // ------------------------------------------------------------------
+    // Unbekannte Action
     return {
       statusCode: 400,
       headers,
-      body: JSON.stringify({ error: 'Acció no vàlida' })
+      body: JSON.stringify({ error: 'Acció no vàlida' }),
     };
-
   } catch (error) {
     console.error('Auth error:', error);
-    const status = error.statusCode || 500;
     return {
-      statusCode: status,
+      statusCode: 500,
       headers,
-      body: JSON.stringify({
-        error: error.message || 'Error intern del servidor'
-      })
+      body: JSON.stringify({ error: error.message }),
     };
   }
 };
