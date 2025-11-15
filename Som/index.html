@@ -234,7 +234,7 @@
     }
     .avg-fill {
       height: 100%;
-      background: linear-gradient(90deg,#28a745,#ffc107,#dc3545);
+      background: linear-gradient(90deg,#dc3545,#ffc107,#28a745);
       width: 0%;
       transition: width 0.3s ease;
     }
@@ -536,7 +536,7 @@
   <script>
     // ----------- Basis: API / State -----------
 
-    const API_BASE = '/api';
+  const API_BASE = '/.netlify/functions';
 
     async function apiRequest(fn, payload) {
       try {
