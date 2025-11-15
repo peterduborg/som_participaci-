@@ -1,86 +1,91 @@
-const { neon } = require('@neondatabase/serverless');
+// netlify/functions/satisfaction.js
 
-const sql = neon(process.env.NETLIFY_DATABASE_URL);
+const { Pool } = require('pg');
 
-exports.handler = async (event) => {
-  const headers = {
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
+exports.handler = async (event, context) => {
+  const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Content-Type': 'application/json'
+    'Access-Control-Allow-Methods': 'POST,OPTIONS'
   };
 
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers, body: '' };
-  }
-
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers,
-      body: JSON.stringify({ error: 'Method not allowed' })
-    };
-  }
-
-  let body;
   try {
-    body = JSON.parse(event.body || '{}');
-  } catch (err) {
-    return {
-      statusCode: 400,
-      headers,
-      body: JSON.stringify({ error: 'Invalid JSON' })
-    };
-  }
+    if (event.httpMethod === 'OPTIONS') {
+      return { statusCode: 200, headers: corsHeaders, body: '' };
+    }
 
-  const { action } = body || {};
-
-  try {
-    // 1) Ein einzelnes Rating speichern / updaten
-    if (action === 'saveRating') {
-      const { email, category, value } = body;
-
-      if (!email || !category || typeof value !== 'number') {
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({ error: 'Missing email, category or value' })
-        };
-      }
-
-      await sql`
-        INSERT INTO satisfaction (user_email, category, value)
-        VALUES (${email}, ${category}, ${value})
-        ON CONFLICT (user_email, category)
-        DO UPDATE SET
-          value = EXCLUDED.value,
-          updated_at = now()
-      `;
-
+    if (event.httpMethod !== 'POST') {
       return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({ ok: true })
+        statusCode: 405,
+        headers: corsHeaders,
+        body: JSON.stringify({ error: 'Method not allowed' })
       };
     }
 
-    // 2) Alle Ratings eines Users holen
-    if (action === 'getUserRatings') {
-      const { email } = body;
+    if (!event.body) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({ error: 'Missing request body' })
+      };
+    }
 
+    let data;
+    try {
+      data = JSON.parse(event.body);
+    } catch {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({ error: 'Invalid JSON body' })
+      };
+    }
+
+    const action = data.action;
+
+    // -------- getAverages --------
+    if (action === 'getAverages') {
+      const sql = `
+        SELECT category, AVG(value)::float AS avg_value
+        FROM satisfaction
+        GROUP BY category
+      `;
+      const { rows } = await pool.query(sql);
+
+      const averages = {};
+      rows.forEach(r => {
+        averages[r.category] = r.avg_value; // z.B. 72.5
+      });
+
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ averages })
+      };
+    }
+
+    // -------- getUserRatings --------
+    if (action === 'getUserRatings') {
+      const email = (data.email || '').trim().toLowerCase();
       if (!email) {
         return {
           statusCode: 400,
-          headers,
-          body: JSON.stringify({ error: 'Missing email' })
+          headers: corsHeaders,
+          body: JSON.stringify({ error: 'email is required for getUserRatings' })
         };
       }
 
-      const rows = await sql`
+      const sql = `
         SELECT category, value
         FROM satisfaction
-        WHERE user_email = ${email}
+        WHERE email = $1
       `;
+      const { rows } = await pool.query(sql, [email]);
 
       const ratings = {};
       rows.forEach(r => {
@@ -89,46 +94,63 @@ exports.handler = async (event) => {
 
       return {
         statusCode: 200,
-        headers,
-        body: JSON.stringify({ ok: true, ratings })
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ratings })
       };
     }
 
-    // 3) Durchschnittswerte über alle User
-    if (action === 'getAverages') {
-      const rows = await sql`
-        SELECT
-          category,
-          AVG(value)::float AS avg_value,
-          COUNT(*)::int AS count
-        FROM satisfaction
-        GROUP BY category
-      `;
+    // -------- saveRating --------
+    if (action === 'saveRating') {
+      const email = (data.email || '').trim().toLowerCase();
+      const category = (data.category || '').trim();
+      let value = Number(data.value);
 
-      const averages = {};
-      rows.forEach(r => {
-        averages[r.category] = r.avg_value;
-      });
+      if (!email || !category || !Number.isFinite(value)) {
+        return {
+          statusCode: 400,
+          headers: corsHeaders,
+          body: JSON.stringify({
+            error: 'email, category i value són obligatoris'
+          })
+        };
+      }
+
+      // clamp Wert 0–100
+      if (value < 0) value = 0;
+      if (value > 100) value = 100;
+
+      const sql = `
+        INSERT INTO satisfaction (email, category, value)
+        VALUES ($1, $2, $3)
+        ON CONFLICT (email, category)
+        DO UPDATE SET value = EXCLUDED.value, updated_at = now()
+        RETURNING id, email, category, value, updated_at;
+      `;
+      const values = [email, category, value];
+
+      const { rows } = await pool.query(sql, values);
+      const row = rows[0];
 
       return {
         statusCode: 200,
-        headers,
-        body: JSON.stringify({ ok: true, averages })
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rating: row })
       };
     }
 
+    // -------- unbekannte Action --------
     return {
       statusCode: 400,
-      headers,
+      headers: corsHeaders,
       body: JSON.stringify({ error: 'Unknown action' })
     };
 
   } catch (err) {
-    console.error('satisfaction function error:', err);
+    console.error('Error in satisfaction function:', err);
     return {
       statusCode: 500,
-      headers,
-      body: JSON.stringify({ error: 'Server error', details: String(err) })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: err.message || 'Internal Server Error' })
     };
   }
 };
