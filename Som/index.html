@@ -73,6 +73,8 @@
     .btn-secondary { background: #6c757d; }
     .btn-wide { width: 100%; }
 
+    .hidden { display: none; }
+
     .user-info {
       background: #f0f0f0;
       display:flex; align-items:center; justify-content:space-between;
@@ -112,8 +114,17 @@
     .thumb-label { font-size: 13px; color: #333; white-space:nowrap; min-width:40px; text-align:right; }
 
     input[type="range"] { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 5px; background: #e0e0e0; outline: none; }
-    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #667eea; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 3px rgba(0,0,0,0.3); }
-    input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #667eea; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 3px rgba(0,0,0,0.3); }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #667eea; cursor: pointer;
+      border: 2px solid #fff; box-shadow: 0 0 3px rgba(0,0,0,0.3);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #667eea; cursor: pointer;
+      border: 2px solid #fff; box-shadow: 0 0 3px rgba(0,0,0,0.3);
+    }
 
     .avg-bar { margin-top: 6px; width: 100%; height: 8px; background: #e9ecef; border-radius: 999px; overflow: hidden; }
     .avg-fill { height: 100%; background: linear-gradient(90deg,#dc3545,#ffc107,#28a745); width: 0%; transition: width 0.3s ease; }
@@ -142,8 +153,6 @@
     .result-label span:first-child { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .bar-container { width:100%; height:16px; border-radius:999px; background:#e9ecef; overflow:hidden; font-size:11px; line-height:16px; }
     .bar-fill { height:100%; background: linear-gradient(90deg,#007bff,#00c6ff); color:white; text-align:right; padding-right:6px; white-space:nowrap; }
-
-    .hidden { display: none; }
 
     @media (max-width: 900px) {
       .two-cols { grid-template-columns: 1fr; }
@@ -175,11 +184,11 @@
 
     <div class="content">
       <!-- LOGIN VIEW -->
-      <div id="loginView" class="tab">
+      <div id="loginView">
         <div class="auth-form">
           <h2 style="text-align:center;margin-bottom:20px">Iniciar Sessió</h2>
           <p style="font-size:13px;color:#555;margin-bottom:15px">
-            Entra amb el teu correu (prova: no es verifica a aquesta versió). L'accés com a convidat està desactivat.
+            Entra amb el teu correu (prova: no es verifica en aquesta versió). L'accés com a convidat està desactivat.
           </p>
           <div class="form-group">
             <label>Correu electrònic</label>
@@ -196,7 +205,7 @@
       </div>
 
       <!-- MAIN APP VIEW -->
-      <div id="mainView" class="tab hidden">
+      <div id="mainView" class="hidden">
         <div class="user-info">
           <div class="user-main">
             <div class="user-badge" id="userBadge">U</div>
@@ -218,11 +227,11 @@
         </div>
 
         <!-- TAB: PARTICIPACIÓ -->
-        <div id="participacio" class="tab">
+        <div id="participacio" class="tab-content">
           <div class="two-cols">
             <div class="panel">
               <h2>Necessitat d'acció per categories</h2>
-              <small> Avalua com veus la situació actual en cadascun d'aquests àmbits. Valors alts = més necessitat d'actuar. </small>
+              <small>Avalua com veus la situació actual en cadascun d'aquests àmbits. Valors alts = més necessitat d'actuar.</small>
 
               <div class="categories" id="categoriesList">Carregant categories...</div>
 
@@ -244,7 +253,7 @@
         </div>
 
         <!-- TAB: PROPOSTES -->
-        <div id="propostes" class="tab hidden">
+        <div id="propostes" class="tab-content hidden">
           <div class="two-panels">
             <div class="panel">
               <h2>Crear una nova proposta</h2>
@@ -273,7 +282,7 @@
         </div>
 
         <!-- TAB: VOTS -->
-        <div id="vots" class="tab hidden">
+        <div id="vots" class="tab-content hidden">
           <div class="panel">
             <h2>Els meus vots</h2>
             <p class="info">Aquí veus totes les propostes a les quals has assignat punts. Pots ajustar els teus vots en qualsevol moment.</p>
@@ -282,7 +291,7 @@
         </div>
 
         <!-- TAB: RESULTATS -->
-        <div id="resultats" class="tab hidden">
+        <div id="resultats" class="tab-content hidden">
           <div class="two-cols">
             <div class="panel">
               <h2>Resultats agregats</h2>
@@ -320,6 +329,7 @@
       { key: 'organitzacio_govern', title: "Organització municipal i govern obert - necessitat d'acció", desc: "Transparència, comunicació amb l’Ajuntament, participació ciutadana, resposta a incidències, queixes i propostes, coordinació amb altres administracions." }
     ];
 
+    // Generischer Helper für satisfaction + votes
     async function apiRequest(fn, payload) {
       try {
         const res = await fetch(`${API_BASE}/${fn}`, {
@@ -331,19 +341,15 @@
         if (!res.ok) {
           let info = null;
           try { info = await res.json(); } catch (e) {}
-
           console.warn('API error', fn, res.status, info);
-
           alert(
             `Error API ${fn} (HTTP ${res.status}): ` +
             (info && (info.details || info.error)
               ? (info.details || info.error)
               : 'cap detall addicional')
           );
-
           return null;
         }
-
         return await res.json();
       } catch (e) {
         console.warn('API request failed', fn, e);
@@ -353,66 +359,94 @@
     }
 
     // ----------- State -----------
-    let proposals = [];           // nur vom Backend
-    let globalScores = {};        // vom Backend
-    let serverAverages = {};      // vom Backend
-    let currentUserData = { username:'', email:'', verified:false, isGuest:false, votes:{}, satisfaction:{} };
+    let proposals = [];
+    let globalScores = {};
+    let serverAverages = {};
+    let currentUser = {
+      username: '',
+      email: '',
+      verified: false,
+      isGuest: false,
+      votes: {},
+      satisfaction: {}
+    };
 
     // ----------- Tabs / Login -----------
-    function showTab(tab) {
-      document.querySelectorAll('.tab').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      if (tab === 'login') {
-        document.getElementById('loginView').classList.remove('hidden');
-        document.getElementById('mainView').classList.add('hidden');
-      } else {
-        document.getElementById('loginView').classList.add('hidden');
-        document.getElementById('mainView').classList.remove('hidden');
-        const target = document.getElementById(tab); if (target) target.classList.remove('hidden');
-        const btn = document.querySelector(`.tab-btn[data-tab="${tab}"]`); if (btn) btn.classList.add('active');
-        if (tab === 'vots') renderMyVotes();
+    function showTab(tabName) {
+      const loginView = document.getElementById('loginView');
+      const mainView = document.getElementById('mainView');
+
+      if (tabName === 'login') {
+        loginView.classList.remove('hidden');
+        mainView.classList.add('hidden');
+        return;
       }
+
+      loginView.classList.add('hidden');
+      mainView.classList.remove('hidden');
+
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+      const target = document.getElementById(tabName);
+      if (target) target.classList.remove('hidden');
+      const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+      if (btn) btn.classList.add('active');
+
+      if (tabName === 'vots') renderMyVotes();
+      if (tabName === 'resultats') updateResults();
     }
 
     function login() {
       const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
-      if (!email) { alert('Introdueix el correu.'); return; }
-      currentUserData.username = email.split('@')[0];
-      currentUserData.email = email;
-      currentUserData.verified = true;
-      currentUserData.isGuest = false;
-      showMain();
+      if (!email) {
+        alert('Introdueix el correu.');
+        return;
+      }
+      currentUser.email = email;
+      currentUser.username = email.split('@')[0];
+      currentUser.verified = true;
+      currentUser.isGuest = false;
+
+      document.getElementById('userBadge').textContent =
+        (currentUser.username || '?').charAt(0).toUpperCase();
+      document.getElementById('userName').textContent = currentUser.username || 'Usuari';
+      document.getElementById('userEmail').textContent = currentUser.email || '';
+
+      initAfterLogin();
     }
 
     function logout() {
-      currentUserData = { username:'', email:'', verified:false, isGuest:false, votes:{}, satisfaction:{} };
+      currentUser = {
+        username: '',
+        email: '',
+        verified: false,
+        isGuest: false,
+        votes: {},
+        satisfaction: {}
+      };
+      proposals = [];
+      globalScores = {};
+      serverAverages = {};
       showTab('login');
     }
 
-    function showMain() {
-      document.getElementById('userBadge').textContent = (currentUserData.username || '?').charAt(0).toUpperCase();
-      document.getElementById('userName').textContent = currentUserData.username || 'Usuari';
-      document.getElementById('userEmail').textContent = currentUserData.email || '';
-
+    async function initAfterLogin() {
       populateCategories();
       populateCategorySelect();
-      renderProposals();
-      renderMyVotes();
-      updateResults();
       updatePointsInfo();
 
-      // Backend laden
-      Promise.all([
+      await Promise.all([
         loadAveragesFromServer(),
         loadProposalsFromServer(),
         loadGlobalScoresFromServer(),
         loadUserVotesFromServer()
-      ]).then(() => {
-        populateCategories();
-        renderProposals();
-        renderMyVotes();
-        updateResults();
-      });
+      ]);
+
+      populateCategories();  // nach Laden der Averages/Userratings
+      renderProposals();
+      renderMyVotes();
+      updateResults();
 
       showTab('participacio');
     }
@@ -435,7 +469,7 @@
         </div>
         <div class="slider-row">
           <input type="range" class="slider" id="slider_${cat.key}" min="0" max="100" step="5"
-                 value="${(currentUserData.satisfaction || {})[cat.key] || 0}"
+                 value="${(currentUser.satisfaction || {})[cat.key] || 0}"
                  oninput="updateSlider('${cat.key}', this)" />
           <div class="thumb-label" id="thumb_${cat.key}">0</div>
         </div>
@@ -449,6 +483,7 @@
 
     function populateCategories() {
       const list = document.getElementById('categoriesList');
+      if (!list) return;
       list.innerHTML = '';
       CATEGORIES.forEach(cat => {
         const el = createCategoryElement(cat);
@@ -466,7 +501,9 @@
     }
 
     function applyAverage(key) {
-      const avg = (serverAverages && typeof serverAverages[key] === 'number') ? serverAverages[key] : null;
+      const avg = (serverAverages && typeof serverAverages[key] === 'number')
+        ? serverAverages[key]
+        : null;
       const bar = document.getElementById('avg_' + key);
       const t = document.getElementById('avg_txt_' + key);
       if (avg != null && isFinite(avg)) {
@@ -480,24 +517,30 @@
 
     async function loadAveragesFromServer() {
       const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
-      if (avgRes && avgRes.averages) serverAverages = avgRes.averages; else serverAverages = {};
-      // User-spezifische Ratings nur, wenn eingeloggt
-      if (currentUserData.email) {
-        const userRes = await apiRequest('satisfaction', { action: 'getUserRatings', email: currentUserData.email });
-        if (userRes && userRes.ratings) currentUserData.satisfaction = userRes.ratings;
+      serverAverages = (avgRes && avgRes.averages) ? avgRes.averages : {};
+      if (currentUser.email) {
+        const userRes = await apiRequest('satisfaction', {
+          action: 'getUserRatings',
+          email: currentUser.email
+        });
+        if (userRes && userRes.ratings) currentUser.satisfaction = userRes.ratings;
       }
     }
 
     async function updateSlider(key, inputEl) {
       const val = parseInt(inputEl.value || '0', 10);
-      if (!currentUserData.satisfaction) currentUserData.satisfaction = {};
-      currentUserData.satisfaction[key] = val;
+      if (!currentUser.satisfaction) currentUser.satisfaction = {};
+      currentUser.satisfaction[key] = val;
       const label = document.getElementById('thumb_' + key);
       positionThumbLabel(inputEl, label);
 
-      if (currentUserData.email) {
-        await apiRequest('satisfaction', { action: 'saveRating', email: currentUserData.email, category: key, value: val });
-        // Averages neu laden und sofort anwenden
+      if (currentUser.email) {
+        await apiRequest('satisfaction', {
+          action: 'saveRating',
+          email: currentUser.email,
+          category: key,
+          value: val
+        });
         const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
         if (avgRes && avgRes.averages) serverAverages = avgRes.averages;
         applyAverage(key);
@@ -506,9 +549,10 @@
       }
     }
 
-    // ----------- Propostes / Votes -----------
+    // ----------- Propostes -----------
     function populateCategorySelect() {
       const sel = document.getElementById('proposalCategory');
+      if (!sel) return;
       sel.innerHTML = '<option value="">-- Tria una categoria --</option>';
       CATEGORIES.forEach(cat => {
         const opt = document.createElement('option');
@@ -519,46 +563,33 @@
     }
 
     async function loadProposalsFromServer() {
-      const res = await apiRequest('proposals', { action: 'list' });
-      if (!res) { proposals = []; return; }
-      const arr = Array.isArray(res) ? res : (Array.isArray(res.proposals) ? res.proposals : []);
-      proposals = arr.map(p => ({
-        id: p.id || p.proposal_id || p.uuid,
-        title: p.title,
-        category: p.category,
-        desc: p.description || p.desc || '',
-        author: p.author || p.username || '',
-        email: p.email || p.user_email || '',
-        createdAt: p.created_at || p.createdAt || new Date().toISOString()
-      })).filter(p => p.id);
-    }
-
-    async function loadUserVotesFromServer() {
-      if (!currentUserData.email) return;
-      const res = await apiRequest('votes', { action: 'getUserVotes', email: currentUserData.email });
-      if (!res) return;
-      let votesObj = {};
-      const pushVote = v => {
-        const pid = v.proposal_id || v.proposalId || v.id;
-        const value = v.points ?? v.value ?? v.vote ?? 0;
-        if (pid) votesObj[pid] = value;
-      };
-      if (Array.isArray(res)) res.forEach(pushVote);
-      else if (Array.isArray(res.votes)) res.votes.forEach(pushVote);
-      else if (res.votes && typeof res.votes === 'object') votesObj = res.votes;
-      currentUserData.votes = votesObj;
-    }
-
-    async function loadGlobalScoresFromServer() {
-      const res = await apiRequest('votes', { action: 'getScores' });
-      if (!res) { globalScores = {}; return; }
-      const arr = Array.isArray(res) ? res : (res.scores || res.results || []);
-      globalScores = {};
-      arr.forEach(r => {
-        const pid = r.proposal_id || r.id || r.proposalId;
-        const total = r.total_points ?? r.points ?? r.sum ?? r.total ?? 0;
-        if (pid) globalScores[pid] = total;
-      });
+      try {
+        const res = await fetch(`${API_BASE}/proposals`, { method: 'GET' });
+        if (!res.ok) {
+          const txt = await res.text();
+          console.warn('API error proposals (GET)', res.status, txt);
+          alert(`Error API proposals (HTTP ${res.status}): ${txt || 'cap detall addicional'}`);
+          proposals = [];
+          return;
+        }
+        const data = await res.json();
+        const arr = Array.isArray(data)
+          ? data
+          : (Array.isArray(data.proposals) ? data.proposals : []);
+        proposals = arr.map(p => ({
+          id: p.id || p.proposal_id || p.uuid,
+          title: p.title,
+          category: p.category,
+          desc: p.description || p.desc || '',
+          author: p.author || p.username || '',
+          email: p.email || p.user_email || '',
+          createdAt: p.created_at || p.createdAt || new Date().toISOString()
+        })).filter(p => p.id && p.title);
+      } catch (e) {
+        console.warn('API request failed (GET proposals)', e);
+        alert(`No s'ha pogut carregar les propostes: ${e}`);
+        proposals = [];
+      }
     }
 
     function createProposalElement(p) {
@@ -566,7 +597,7 @@
       div.className = 'proposal';
       const cat = CATEGORIES.find(c => c.key === p.category);
       const catTitle = cat ? cat.title : p.category;
-      const myVote = (currentUserData.votes || {})[p.id] || 0;
+      const myVote = (currentUser.votes || {})[p.id] || 0;
       const dateTxt = new Date(p.createdAt).toLocaleDateString('ca-ES');
       div.innerHTML = `
         <div class="proposal-header">
@@ -594,7 +625,7 @@
     function renderProposals() {
       const list = document.getElementById('myProposalsList');
       if (!list) return;
-      const mine = proposals.filter(p => (p.email || '') === (currentUserData.email || ''));
+      const mine = proposals.filter(p => (p.email || '') === (currentUser.email || ''));
       if (mine.length === 0) {
         list.innerHTML = 'Encara no has creat cap proposta. Comença afegint-ne una.';
         return;
@@ -603,108 +634,8 @@
       mine.forEach(p => list.appendChild(createProposalElement(p)));
     }
 
-    function renderMyVotes() {
-      const list = document.getElementById('myVotesList'); if (!list) return;
-      const v = currentUserData.votes || {};
-      const votedIds = Object.keys(v).filter(id => v[id] && v[id] !== 0);
-      if (votedIds.length === 0) {
-        list.innerHTML = 'Encara no has votat cap proposta.';
-        return;
-      }
-      const items = proposals
-        .filter(p => votedIds.includes(p.id))
-        .sort((a, b) => (v[b.id] || 0) - (v[a.id] || 0));
-      list.innerHTML = '';
-      items.forEach(p => list.appendChild(createProposalElement(p)));
-    }
-
-    function getCurrentTotalPoints() {
-      const v = currentUserData.votes || {};
-      return Object.values(v).reduce((a, b) => a + Math.max(0, Math.abs(b)), 0);
-    }
-
-    function updatePointsInfo() {
-      const total = getCurrentTotalPoints();
-      document.getElementById('assignedPoints').textContent = total;
-      const sBox = document.getElementById('summaryBox');
-      sBox.innerHTML = total === 0
-        ? 'Encara no has assignat punts. Quan comencis a votar propostes, aquí veuràs un resum.'
-        : `Has assignat <strong>${total}</strong> punts (màxim ${MAX_POINTS}). Intenta repartir-los segons la teva prioritat real. Pots ajustar-los en qualsevol moment.`;
-    }
-
-    async function setVote(proposalId, delta, btn) {
-      if (!currentUserData.email) { alert('Cal iniciar sessió per votar.'); return; }
-      const v = currentUserData.votes || {};
-      const prev = v[proposalId] || 0;
-      const baseTotal = getCurrentTotalPoints() - Math.max(0, Math.abs(prev));
-      const newVal = (prev === delta) ? 0 : delta;
-      const newTotal = baseTotal + Math.max(0, Math.abs(newVal));
-      if (newTotal > MAX_POINTS) {
-        alert('Has superat el màxim de ' + MAX_POINTS + ' punts. Revisa els teus vots.');
-        return;
-      }
-      v[proposalId] = newVal;
-      currentUserData.votes = v;
-      updatePointsInfo();
-
-      const proposalEl = btn.closest('.proposal');
-      if (proposalEl) {
-        const sumSpan = proposalEl.querySelector('.vote-info span');
-        if (sumSpan) sumSpan.textContent = newVal;
-        proposalEl.querySelectorAll('.vote-btn').forEach(b => {
-          b.classList.remove('active-pos','active-neg');
-          const val = parseInt(b.textContent, 10);
-          if (val === newVal) {
-            if (val > 0) b.classList.add('active-pos');
-            else if (val < 0) b.classList.add('active-neg');
-          }
-        });
-      }
-      renderMyVotes();
-
-      await apiRequest('votes', { action: 'setVote', email: currentUserData.email, proposalId, value: newVal });
-      await loadGlobalScoresFromServer();
-      updateResults();
-    }
-
-    function computeGlobalScores() {
-      if (globalScores && Object.keys(globalScores).length > 0) return globalScores;
-      // Optionaler Fallback (nur aktuelle User-Stimmen)
-      const all = {};
-      proposals.forEach(p => { all[p.id] = 0; });
-      Object.entries(currentUserData.votes || {}).forEach(([pid, val]) => {
-        if (all[pid] != null) all[pid] += (val || 0);
-      });
-      return all;
-    }
-
-    function toggleProposals(catKey, btn) {
-      CATEGORIES.forEach(c => {
-        const box = document.getElementById('props_' + c.key);
-        if (box && c.key !== catKey) box.classList.add('hidden');
-      });
-      const box = document.getElementById('props_' + catKey);
-      if (!box) return;
-      const isHidden = box.classList.contains('hidden');
-      if (isHidden) {
-        box.classList.remove('hidden');
-        btn.textContent = "Amagar propostes d'aquesta categoria";
-        const scores = computeGlobalScores();
-        const items = proposals
-          .filter(p => p.category === catKey)
-          .sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
-        box.innerHTML = items.length
-          ? ''
-          : "<div class='info'>Encara no hi ha propostes en aquesta categoria.</div>";
-        items.forEach(p => box.appendChild(createProposalElement(p)));
-      } else {
-        box.classList.add('hidden');
-        btn.textContent = "Veure / amagar propostes d'aquesta categoria";
-      }
-    }
-
     async function addProposal() {
-      if (!currentUserData.email) {
+      if (!currentUser.email) {
         alert('Cal iniciar sessió per afegir propostes.');
         return;
       }
@@ -717,20 +648,36 @@
       }
 
       const payload = {
-        action: 'add',
         title,
-        category,
         description: desc,
-        author: currentUserData.username || 'Usuari',
-        email: currentUserData.email
+        category,
+        author: currentUser.username || 'Usuari',
+        email: currentUser.email
       };
-      const res = await apiRequest('proposals', payload);
-      if (!res || !(res.proposal || res.id || res.title)) {
-        alert('No s’ha pogut guardar la proposta al servidor.');
+
+      let res;
+      try {
+        res = await fetch(`${API_BASE}/proposals`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {
+        console.error('Error al contactar el servidor de propostes:', e);
+        alert(`No s’ha pogut contactar amb el servidor de propostes: ${e}`);
         return;
       }
 
-      const created = res.proposal ? res.proposal : res;
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Error API proposals (POST)', res.status, errorText);
+        alert(`Error API proposals (HTTP ${res.status}): ${errorText || 'cap detall addicional'}`);
+        return;
+      }
+
+      const resJson = await res.json();
+      const created = resJson.proposal ? resJson.proposal : resJson;
+
       const newProposal = {
         id: created.id || created.proposal_id || created.uuid,
         title: created.title,
@@ -749,6 +696,150 @@
       renderMyVotes();
       updateResults();
       alert('Proposta afegida correctament.');
+    }
+
+    function toggleProposals(catKey, btn) {
+      CATEGORIES.forEach(c => {
+        const box = document.getElementById('props_' + c.key);
+        if (box && c.key !== catKey) box.classList.add('hidden');
+      });
+      const box = document.getElementById('props_' + catKey);
+      if (!box) return;
+
+      const isHidden = box.classList.contains('hidden');
+      if (isHidden) {
+        box.classList.remove('hidden');
+        btn.textContent = "Amagar propostes d'aquesta categoria";
+        const scores = computeGlobalScores();
+        const items = proposals
+          .filter(p => p.category === catKey)
+          .sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
+        box.innerHTML = items.length
+          ? ''
+          : "<div class='info'>Encara no hi ha propostes en aquesta categoria.</div>";
+        items.forEach(p => box.appendChild(createProposalElement(p)));
+      } else {
+        box.classList.add('hidden');
+        btn.textContent = "Veure / amagar propostes d'aquesta categoria";
+      }
+    }
+
+    // ----------- Votes / Resultats -----------
+    async function loadUserVotesFromServer() {
+      if (!currentUser.email) return;
+      const res = await apiRequest('votes', {
+        action: 'getUserVotes',
+        email: currentUser.email
+      });
+      if (!res) return;
+      let votesObj = {};
+      const pushVote = v => {
+        const pid = v.proposal_id || v.proposalId || v.id;
+        const value = v.points ?? v.value ?? v.vote ?? 0;
+        if (pid) votesObj[pid] = value;
+      };
+      if (Array.isArray(res)) res.forEach(pushVote);
+      else if (Array.isArray(res.votes)) res.votes.forEach(pushVote);
+      else if (res.votes && typeof res.votes === 'object') votesObj = res.votes;
+      currentUser.votes = votesObj;
+    }
+
+    async function loadGlobalScoresFromServer() {
+      const res = await apiRequest('votes', { action: 'getScores' });
+      if (!res) { globalScores = {}; return; }
+      const arr = Array.isArray(res) ? res : (res.scores || res.results || []);
+      globalScores = {};
+      arr.forEach(r => {
+        const pid = r.proposal_id || r.id || r.proposalId;
+        const total = r.total_points ?? r.points ?? r.sum ?? r.total ?? 0;
+        if (pid) globalScores[pid] = total;
+      });
+    }
+
+    function renderMyVotes() {
+      const list = document.getElementById('myVotesList');
+      if (!list) return;
+      const v = currentUser.votes || {};
+      const votedIds = Object.keys(v).filter(id => v[id] && v[id] !== 0);
+      if (votedIds.length === 0) {
+        list.innerHTML = 'Encara no has votat cap proposta.';
+        return;
+      }
+      const items = proposals
+        .filter(p => votedIds.includes(p.id))
+        .sort((a, b) => (v[b.id] || 0) - (v[a.id] || 0));
+      list.innerHTML = '';
+      items.forEach(p => list.appendChild(createProposalElement(p)));
+    }
+
+    function getCurrentTotalPoints() {
+      const v = currentUser.votes || {};
+      return Object.values(v).reduce((a, b) => a + Math.max(0, Math.abs(b)), 0);
+    }
+
+    function updatePointsInfo() {
+      const total = getCurrentTotalPoints();
+      const assignedSpan = document.getElementById('assignedPoints');
+      const sBox = document.getElementById('summaryBox');
+      if (assignedSpan) assignedSpan.textContent = total;
+      if (sBox) {
+        sBox.innerHTML = total === 0
+          ? 'Encara no has assignat punts. Quan comencis a votar propostes, aquí veuràs un resum.'
+          : `Has assignat <strong>${total}</strong> punts (màxim ${MAX_POINTS}). Intenta repartir-los segons la teva prioritat real. Pots ajustar-los en qualsevol moment.`;
+      }
+    }
+
+    async function setVote(proposalId, delta, btn) {
+      if (!currentUser.email) {
+        alert('Cal iniciar sessió per votar.');
+        return;
+      }
+      const v = currentUser.votes || {};
+      const prev = v[proposalId] || 0;
+      const baseTotal = getCurrentTotalPoints() - Math.max(0, Math.abs(prev));
+      const newVal = (prev === delta) ? 0 : delta;
+      const newTotal = baseTotal + Math.max(0, Math.abs(newVal));
+      if (newTotal > MAX_POINTS) {
+        alert('Has superat el màxim de ' + MAX_POINTS + ' punts. Revisa els teus vots.');
+        return;
+      }
+      v[proposalId] = newVal;
+      currentUser.votes = v;
+      updatePointsInfo();
+
+      const proposalEl = btn.closest('.proposal');
+      if (proposalEl) {
+        const sumSpan = proposalEl.querySelector('.vote-info span');
+        if (sumSpan) sumSpan.textContent = newVal;
+        proposalEl.querySelectorAll('.vote-btn').forEach(b => {
+          b.classList.remove('active-pos','active-neg');
+          const val = parseInt(b.textContent, 10);
+          if (val === newVal) {
+            if (val > 0) b.classList.add('active-pos');
+            else if (val < 0) b.classList.add('active-neg');
+          }
+        });
+      }
+      renderMyVotes();
+
+      await apiRequest('votes', {
+        action: 'setVote',
+        email: currentUser.email,
+        proposalId,
+        value: newVal
+      });
+      await loadGlobalScoresFromServer();
+      updateResults();
+    }
+
+    function computeGlobalScores() {
+      if (globalScores && Object.keys(globalScores).length > 0) return globalScores;
+      const all = {};
+      proposals.forEach(p => { all[p.id] = 0; });
+      Object.entries(currentUser.votes || {}).forEach(([pid, val]) => {
+        if (all[pid] != null) all[pid] += (val || 0);
+      });
+      return all;
     }
 
     function updateResults() {
@@ -782,7 +873,9 @@
     }
 
     // ----------- Init -----------
-    (function init(){ showTab('login'); })();
+    (function init() {
+      showTab('login');
+    })();
   </script>
 </body>
 </html>
