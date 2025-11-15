@@ -535,8 +535,7 @@
 
   <script>
     // ----------- Basis: API / State -----------
-
-  const API_BASE = '/.netlify/functions';
+    const API_BASE = '/.netlify/functions';
 
     async function apiRequest(fn, payload) {
       try {
@@ -559,54 +558,44 @@
     const MAX_POINTS = 30;
 
     const CATEGORIES = [
-      {
-        key: 'estat_poble',
+      { key: 'estat_poble',
         title: "Estat del poble - necessitat d'acció",
         desc: "Estètica urbana, neteja, manteniment de voreres i mobiliari, il·luminació, soroll, control de plagues, senyalització."
       },
-      {
-        key: 'entorn_natural',
+      { key: 'entorn_natural',
         title: "Entorn natural de Matadepera - necessitat d'acció",
         desc: "Zones verdes, bosc, camins, prevenció d’incendis, gestió d'aigua i sequera, paisatge i patrimoni natural."
       },
-      {
-        key: 'qualitat_vida',
+      { key: 'qualitat_vida',
         title: "Qualitat de vida - necessitat d'acció",
         desc: "Cultura, esport, convivència, cohesió social, associacions, festes i tradicions, joventut i gent gran, inclusió."
       },
-      {
-        key: 'salut_seguretat',
+      { key: 'salut_seguretat',
         title: "Salut i seguretat de tránsit - necessitat d'acció",
         desc: "Atenció primària i salut comunitària, salut mental, emergències i protecció civil, policia local, seguretat viària, prevenció de riscos."
       },
-      {
-        key: 'seguretat_ciutadana',
+      { key: 'seguretat_ciutadana',
         title: "Seguretat ciutadana - necessitat d'acció",
         desc: "Seguretat al veïnat, prevenció de delictes, presència policial, il·luminació de punts crítics, coordinació amb Mossos i Policia Local."
       },
-      {
-        key: 'vida_quotidiana',
+      { key: 'vida_quotidiana',
         title: "Vida quotidiana (mobilitat i serveis) - necessitat d'acció",
         desc: "Transport públic, circulació, aparcament, carrils bici, comerç local, serveis bàsics, energia, digitalització, sostenibilitat i economia circular."
       },
-      {
-        key: 'organitzacio_govern',
+      { key: 'organitzacio_govern',
         title: "Organització municipal i govern obert - necessitat d'acció",
         desc: "Transparència, comunicació amb l’Ajuntament, participació ciutadana, resposta a incidències, queixes i propostes, coordinació amb altres administracions."
       }
     ];
 
-    // Vorschläge aus Cache (nur als Fallback)
+    // Vorschläge aus Cache (Fallback)
     let proposals = [];
-    try {
-      proposals = JSON.parse(localStorage.getItem('proposals_data_cache') || '[]');
-    } catch (e) {
-      proposals = [];
-    }
+    try { proposals = JSON.parse(localStorage.getItem('proposals_data_cache') || '[]'); }
+    catch(e){ proposals = []; }
 
-    // globale Punktesummen pro Proposal (aus Neon)
+    // globale Punktesummen (Neon)
     let globalScores = {};
-    // Durchschnittswerte Satisfaction pro Kategorie (aus Neon)
+    // Durchschnittswerte pro Kategorie (Neon)
     let serverAverages = {};
 
     let currentUserData = {
@@ -619,7 +608,6 @@
     };
 
     // ----------- Tabs / Login -----------
-
     function showTab(tab) {
       document.querySelectorAll('.tab').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -634,28 +622,22 @@
         if (target) target.classList.remove('hidden');
         const btn = document.querySelector('.tab-btn[data-tab="' + tab + '"]');
         if (btn) btn.classList.add('active');
-        if (tab === 'vots') {
-          renderMyVotes();
-        }
+        if (tab === 'vots') renderMyVotes();
       }
     }
 
     function login() {
       const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
-      if (!email) {
-        alert('Introdueix el correu o usa el mode convidat.');
-        return;
-      }
+      if (!email) { alert('Introdueix el correu o usa el mode convidat.'); return; }
       currentUserData.username = email.split('@')[0];
       currentUserData.email = email;
       currentUserData.verified = true;
       currentUserData.isGuest = false;
 
-      // lokale Satisfaction-Werte laden (Cache)
       try {
         const s = JSON.parse(localStorage.getItem('satisfaction_' + email) || 'null');
         if (s) currentUserData.satisfaction = s;
-      } catch (e) {}
+      } catch(e){}
 
       showMain();
     }
@@ -690,27 +672,17 @@
       loadSatisfactionFromServer();
       loadProposalsFromServer();
       loadGlobalScoresFromServer();
-      if (!currentUserData.isGuest) {
-        loadUserVotesFromServer();
-      }
+      if (!currentUserData.isGuest) loadUserVotesFromServer();
 
       showTab('participacio');
     }
 
     function logout() {
-      currentUserData = {
-        username: '',
-        email: '',
-        verified: false,
-        isGuest: false,
-        votes: {},
-        satisfaction: {}
-      };
+      currentUserData = { username:'', email:'', verified:false, isGuest:false, votes:{}, satisfaction:{} };
       showTab('login');
     }
 
     // ----------- Satisfaction / Kategorien (Neon) -----------
-
     function createCategoryElement(cat) {
       const wrap = document.createElement('div');
       wrap.className = 'category-block';
@@ -771,32 +743,33 @@
     }
 
     function getAverageForCategory(key) {
-      if (serverAverages && typeof serverAverages[key] === 'number') {
-        return serverAverages[key];
-      }
+      if (serverAverages && typeof serverAverages[key] === 'number') return serverAverages[key];
       return null;
     }
 
+    // Averages IMMER laden; User-Ratings nur bei Login
     async function loadSatisfactionFromServer() {
-      if (!currentUserData.email || currentUserData.isGuest) return;
-
-      // User-Ratings
-      const userRes = await apiRequest('satisfaction', {
-        action: 'getUserRatings',
-        email: currentUserData.email
-      });
-      if (userRes && userRes.ratings) {
-        currentUserData.satisfaction = userRes.ratings;
-        localStorage.setItem(
-          'satisfaction_' + currentUserData.email,
-          JSON.stringify(currentUserData.satisfaction)
-        );
-      }
-
       // Averages
-      const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
-      if (avgRes && avgRes.averages) {
-        serverAverages = avgRes.averages;
+      try {
+        const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
+        if (avgRes && avgRes.averages) serverAverages = avgRes.averages;
+      } catch (e) { console.warn('Averages failed', e); }
+
+      // User-Ratings (nur eingeloggt, nicht Gast)
+      if (currentUserData.email && !currentUserData.isGuest) {
+        try {
+          const userRes = await apiRequest('satisfaction', {
+            action: 'getUserRatings',
+            email: currentUserData.email
+          });
+          if (userRes && userRes.ratings) {
+            currentUserData.satisfaction = userRes.ratings;
+            localStorage.setItem(
+              'satisfaction_' + currentUserData.email,
+              JSON.stringify(currentUserData.satisfaction)
+            );
+          }
+        } catch (e) { console.warn('User ratings failed', e); }
       }
 
       populateCategories();
@@ -844,7 +817,6 @@
     }
 
     // ----------- Propostes / Votes (Neon) -----------
-
     function populateCategorySelect() {
       const sel = document.getElementById('proposalCategory');
       sel.innerHTML = '<option value="">-- Tria una categoria --</option>';
@@ -861,11 +833,8 @@
       if (!res) return;
 
       let arr = [];
-      if (Array.isArray(res)) {
-        arr = res;
-      } else if (Array.isArray(res.proposals)) {
-        arr = res.proposals;
-      }
+      if (Array.isArray(res)) arr = res;
+      else if (Array.isArray(res.proposals)) arr = res.proposals;
 
       proposals = arr.map(p => ({
         id: p.id || p.proposal_id || p.uuid,
@@ -877,9 +846,7 @@
         createdAt: p.created_at || p.createdAt || new Date().toISOString()
       })).filter(p => p.id);
 
-      try {
-        localStorage.setItem('proposals_data_cache', JSON.stringify(proposals));
-      } catch (e) {}
+      try { localStorage.setItem('proposals_data_cache', JSON.stringify(proposals)); } catch(e){}
 
       renderProposals();
       updateResults();
@@ -887,15 +854,10 @@
 
     async function loadUserVotesFromServer() {
       if (!currentUserData.email) return;
-
-      const res = await apiRequest('votes', {
-        action: 'getUserVotes',
-        email: currentUserData.email
-      });
+      const res = await apiRequest('votes', { action: 'getUserVotes', email: currentUserData.email });
       if (!res) return;
 
       let votesObj = {};
-
       if (res.votes && typeof res.votes === 'object') {
         if (Array.isArray(res.votes)) {
           res.votes.forEach(v => {
@@ -925,13 +887,9 @@
       if (!res) return;
 
       let arr = [];
-      if (Array.isArray(res)) {
-        arr = res;
-      } else if (Array.isArray(res.scores)) {
-        arr = res.scores;
-      } else if (Array.isArray(res.results)) {
-        arr = res.results;
-      }
+      if (Array.isArray(res)) arr = res;
+      else if (Array.isArray(res.scores)) arr = res.scores;
+      else if (Array.isArray(res.results)) arr = res.results;
 
       globalScores = {};
       arr.forEach(r => {
@@ -944,9 +902,7 @@
     }
 
     function computeGlobalScores() {
-      if (globalScores && Object.keys(globalScores).length > 0) {
-        return globalScores;
-      }
+      if (globalScores && Object.keys(globalScores).length > 0) return globalScores;
       // Fallback: nur aktuelle User-Stimmen
       const all = {};
       proposals.forEach(p => { all[p.id] = 0; });
@@ -957,10 +913,12 @@
     }
 
     function toggleProposals(catKey, btn) {
+      // andere Kategorien schließen
       CATEGORIES.forEach(c => {
         const box = document.getElementById('props_' + c.key);
         if (box && c.key !== catKey) box.classList.add('hidden');
       });
+
       const box = document.getElementById('props_' + catKey);
       if (!box) return;
 
@@ -968,10 +926,12 @@
       if (isHidden) {
         box.classList.remove('hidden');
         btn.textContent = "Amagar propostes d'aquesta categoria";
+
         const scores = computeGlobalScores();
         const items = proposals
           .filter(p => p.category === catKey)
           .sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
+
         box.innerHTML = "";
         if (items.length === 0) {
           box.innerHTML = "<div class='info'>Encara no hi ha propostes en aquesta categoria.</div>";
@@ -1025,13 +985,9 @@
           createdAt: created.created_at || created.createdAt || new Date().toISOString()
         };
       } else {
-        // Fallback, falls Backend nicht reagiert
         const id = 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
         newProposal = {
-          id,
-          title,
-          category,
-          desc,
+          id, title, category, desc,
           author: payload.author,
           email: payload.email,
           createdAt: new Date().toISOString()
@@ -1039,9 +995,7 @@
       }
 
       proposals.push(newProposal);
-      try {
-        localStorage.setItem('proposals_data_cache', JSON.stringify(proposals));
-      } catch (e) {}
+      try { localStorage.setItem('proposals_data_cache', JSON.stringify(proposals)); } catch(e){}
 
       document.getElementById('proposalTitle').value = '';
       document.getElementById('proposalCategory').value = '';
@@ -1097,10 +1051,7 @@
         return;
       }
       list.innerHTML = '';
-      mine.forEach(p => {
-        const el = createProposalElement(p);
-        list.appendChild(el);
-      });
+      mine.forEach(p => list.appendChild(createProposalElement(p)));
     }
 
     function renderMyVotes() {
@@ -1120,10 +1071,7 @@
         .sort((a, b) => (v[b.id] || 0) - (v[a.id] || 0));
 
       list.innerHTML = '';
-      items.forEach(p => {
-        const el = createProposalElement(p);
-        list.appendChild(el);
-      });
+      items.forEach(p => list.appendChild(createProposalElement(p)));
     }
 
     function getCurrentTotalPoints() {
@@ -1231,7 +1179,6 @@
     }
 
     // ----------- Init -----------
-
     (function init() {
       showTab('login');
     })();
