@@ -30,20 +30,9 @@
       gap: 20px;
       flex-wrap: wrap;
     }
-    .header-logo {
-      background: white;
-      padding: 10px;
-      border-radius: 8px;
-    }
-    .header-logo img {
-      height: 60px;
-      width: auto;
-      display: block;
-    }
-    .header-text h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
+    .header-logo { background: white; padding: 10px; border-radius: 8px; }
+    .header-logo img { height: 60px; width: auto; display: block; }
+    .header-text h1 { font-size: 28px; margin-bottom: 10px; }
 
     .disclaimer {
       background: #fff3cd;
@@ -67,10 +56,7 @@
       font-size: 16px;
       font-family: inherit;
     }
-    input:focus, textarea:focus, select:focus {
-      outline: none;
-      border-color: #667eea;
-    }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: #667eea; }
     .btn {
       width: auto;
       padding: 12px 16px;
@@ -89,78 +75,26 @@
 
     .user-info {
       background: #f0f0f0;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:nowrap;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 20px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; flex-wrap:nowrap; padding: 15px; border-radius: 10px; margin-bottom: 20px;
     }
     .user-main { display:flex; align-items:center; gap:10px; min-width:0; }
     .user-badge {
-      background:#667eea;
-      color:white;
-      border-radius:50%;
-      width:40px;
-      height:40px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:700;
-      flex-shrink:0;
+      background:#667eea; color:white; border-radius:50%; width:40px; height:40px;
+      display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0;
     }
     .user-text { min-width:0; }
-    .user-text div:first-child {
-      font-weight:600;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .user-text small {
-      color:#555;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      display:block;
-    }
+    .user-text div:first-child { font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .user-text small { color:#555; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; }
     .user-actions { display:flex; gap:8px; flex-shrink:0; }
 
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-    .tab-btn {
-      padding: 8px 14px;
-      border-radius: 20px;
-      border: 1px solid #ccc;
-      background: #f8f9fa;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    .tab-btn.active {
-      background: #667eea;
-      color: white;
-      border-color: #667eea;
-    }
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tab-btn { padding: 8px 14px; border-radius: 20px; border: 1px solid #ccc; background: #f8f9fa; cursor: pointer; font-size: 14px; }
+    .tab-btn.active { background: #667eea; color: white; border-color: #667eea; }
 
-    .two-cols {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 25px;
-      align-items: flex-start;
-    }
+    .two-cols { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 25px; align-items: flex-start; }
     .two-panels { display:flex; flex-direction:column; gap:20px; }
-    .panel {
-      background: #f8f9fa;
-      border-radius: 10px;
-      padding: 18px 18px 20px;
-      border: 1px solid #e0e0e0;
-      position: relative;
-    }
+    .panel { background: #f8f9fa; border-radius: 10px; padding: 18px 18px 20px; border: 1px solid #e0e0e0; position: relative; }
     .panel h2 { font-size: 20px; margin-bottom: 10px; }
     .panel h3 { font-size: 16px; margin-bottom: 8px; }
     .panel small { color: #666; display: block; margin-bottom: 10px; }
@@ -169,193 +103,56 @@
     .legenda { font-size:13px; color:#555; margin-top:10px; }
 
     .categories { margin-top: 10px; }
-    .category-block {
-      background: #ffffff;
-      padding: 10px 12px 12px;
-      border-radius: 8px;
-      border: 1px solid #e0e0e0;
-      margin-bottom: 10px;
-    }
-    .category-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      gap:10px;
-    }
+    .category-block { background: #ffffff; padding: 10px 12px 12px; border-radius: 8px; border: 1px solid #e0e0e0; margin-bottom: 10px; }
+    .category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap:10px; }
     .category-header h3 { margin: 0; font-size: 15px; }
     .category-header small { margin:0; }
     .slider-row { display: flex; align-items: center; gap: 10px; }
     .slider { flex: 1; }
-    .thumb-label {
-      font-size: 13px;
-      color: #333;
-      white-space:nowrap;
-      min-width:40px;
-      text-align:right;
-    }
+    .thumb-label { font-size: 13px; color: #333; white-space:nowrap; min-width:40px; text-align:right; }
 
-    input[type="range"] {
-      -webkit-appearance: none;
-      appearance: none;
-      height: 6px;
-      border-radius: 5px;
-      background: #e0e0e0;
-      outline: none;
-    }
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #667eea;
-      cursor: pointer;
-      border: 2px solid #fff;
-      box-shadow: 0 0 3px rgba(0,0,0,0.3);
-    }
-    input[type="range"]::-moz-range-thumb {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #667eea;
-      cursor: pointer;
-      border: 2px solid #fff;
-      box-shadow: 0 0 3px rgba(0,0,0,0.3);
-    }
+    input[type="range"] { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 5px; background: #e0e0e0; outline: none; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #667eea; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 3px rgba(0,0,0,0.3); }
+    input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #667eea; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 3px rgba(0,0,0,0.3); }
 
-    .avg-bar {
-      margin-top: 6px;
-      width: 100%;
-      height: 8px;
-      background: #e9ecef;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .avg-fill {
-      height: 100%;
-      background: linear-gradient(90deg,#dc3545,#ffc107,#28a745);
-      width: 0%;
-      transition: width 0.3s ease;
-    }
-    .avg-label {
-      font-size: 12px;
-      color: #555;
-      margin-top: 2px;
-      text-align: right;
-    }
+    .avg-bar { margin-top: 6px; width: 100%; height: 8px; background: #e9ecef; border-radius: 999px; overflow: hidden; }
+    .avg-fill { height: 100%; background: linear-gradient(90deg,#dc3545,#ffc107,#28a745); width: 0%; transition: width 0.3s ease; }
+    .avg-label { font-size: 12px; color: #555; margin-top: 2px; text-align: right; }
 
     .small-note { font-size: 12px; color: #777; margin-top: 8px; }
 
     .proposal-form textarea { resize: vertical; min-height: 70px; }
 
-    .proposal {
-      background: #ffffff;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #e0e0e0;
-      margin-bottom: 10px;
-    }
-    .proposal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4px;
-      gap:10px;
-    }
+    .proposal { background: #ffffff; padding: 10px 12px; border-radius: 8px; border: 1px solid #e0e0e0; margin-bottom: 10px; }
+    .proposal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap:10px; }
     .proposal-title { font-weight: 600; font-size: 14px; }
     .proposal-meta { font-size: 11px; color: #777; }
-    .proposal-desc {
-      font-size: 13px;
-      margin-bottom: 6px;
-      white-space: pre-line;
-    }
-    .proposal-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .proposal-desc { font-size: 13px; margin-bottom: 6px; white-space: pre-line; }
+    .proposal-actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
 
     .vote-buttons { display: inline-flex; gap: 4px; flex-wrap: wrap; }
-    .vote-btn {
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid #ddd;
-      background: #fff;
-      font-size: 12px;
-      cursor: pointer;
-      min-width: 36px;
-      text-align:center;
-    }
-    .vote-btn.active-pos {
-      background: #28a745;
-      color: white;
-      border-color: #28a745;
-    }
-    .vote-btn.active-neg {
-      background: #dc3545;
-      color: white;
-      border-color: #dc3545;
-    }
+    .vote-btn { padding: 4px 8px; border-radius: 999px; border: 1px solid #ddd; background: #fff; font-size: 12px; cursor: pointer; min-width: 36px; text-align:center; }
+    .vote-btn.active-pos { background: #28a745; color: white; border-color: #28a745; }
+    .vote-btn.active-neg { background: #dc3545; color: white; border-color: #dc3545; }
     .vote-info { font-size: 11px; color: #555; }
 
     .results { margin-top: 15px; }
     .result-bar { margin-bottom: 8px; }
-    .result-label {
-      display:flex;
-      justify-content:space-between;
-      font-size:13px;
-      margin-bottom:3px;
-      gap:8px;
-    }
-    .result-label span:first-child {
-      flex:1;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .bar-container {
-      width:100%;
-      height:16px;
-      border-radius:999px;
-      background:#e9ecef;
-      overflow:hidden;
-      font-size:11px;
-      line-height:16px;
-    }
-    .bar-fill {
-      height:100%;
-      background: linear-gradient(90deg,#007bff,#00c6ff);
-      color:white;
-      text-align:right;
-      padding-right:6px;
-      white-space:nowrap;
-    }
+    .result-label { display:flex; justify-content:space-between; font-size:13px; margin-bottom:3px; gap:8px; }
+    .result-label span:first-child { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .bar-container { width:100%; height:16px; border-radius:999px; background:#e9ecef; overflow:hidden; font-size:11px; line-height:16px; }
+    .bar-fill { height:100%; background: linear-gradient(90deg,#007bff,#00c6ff); color:white; text-align:right; padding-right:6px; white-space:nowrap; }
 
     .hidden { display: none; }
 
-    @media (max-width: 900px) {
-      .two-cols { grid-template-columns: 1fr; }
-      .user-info { flex-direction: column; align-items:flex-start; }
-      .user-actions { width:100%; justify-content:flex-end; }
-      .user-actions .btn { width:auto; }
-    }
-
-    @media (max-width: 600px) {
-      .header-text h1 { font-size: 22px; }
-      .content { padding: 20px; }
-      .user-info { padding: 12px; }
-    }
+    @media (max-width: 900px) { .two-cols { grid-template-columns: 1fr; } .user-info { flex-direction: column; align-items:flex-start; } .user-actions { width:100%; justify-content:flex-end; } .user-actions .btn { width:auto; } }
+    @media (max-width: 600px) { .header-text h1 { font-size: 22px; } .content { padding: 20px; } .user-info { padding: 12px; } }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <div class="header-logo">
-        <img src="som.jpg" alt="SOM Matadepera" />
-      </div>
+      <div class="header-logo"><img src="som.jpg" alt="SOM Matadepera" /></div>
       <div class="header-text">
         <h1>Participació Ciutadana Matadepera</h1>
         <p>La teva veu compta - Avalua i proposa millores</p>
@@ -373,20 +170,18 @@
         <div class="auth-form">
           <h2 style="text-align:center;margin-bottom:20px">Iniciar Sessió</h2>
           <p style="font-size:13px;color:#555;margin-bottom:15px">
-            En aquesta versió de prova, pots entrar amb el teu correu (no es verificarà) o provar el mode convidat.
-            Més endavant podrem activar validació real.
+            Entra amb el teu correu (prova: no es verifica a aquesta versió). L'accés com a convidat està desactivat.
           </p>
           <div class="form-group">
-            <label>Correu electrònic (no es comprovarà)</label>
+            <label>Correu electrònic</label>
             <input type="email" id="loginEmail" placeholder="el.teu@correu.cat" />
           </div>
           <div class="form-group">
-            <label>Contrasenya (opcional en aquesta versió)</label>
+            <label>Contrasenya (opcional)</label>
             <input type="password" id="loginPassword" placeholder="•••••••• (opcional)" />
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="btn btn-wide" onclick="login()">Accedir</button>
-            <button class="btn btn-secondary btn-wide" onclick="guest()">Accedir com a convidat</button>
           </div>
         </div>
       </div>
@@ -418,40 +213,22 @@
           <div class="two-cols">
             <div class="panel">
               <h2>Necessitat d'acció per categories</h2>
-              <small>
-                Avalua com veus la situació actual en cadascun d'aquests àmbits. Valors alts volen dir més necessitat d'actuar.
-              </small>
+              <small> Avalua com veus la situació actual en cadascun d'aquests àmbits. Valors alts = més necessitat d'actuar. </small>
 
-              <div class="categories" id="categoriesList">
-                Carregant categories...
-              </div>
+              <div class="categories" id="categoriesList">Carregant categories...</div>
 
-              <div class="legenda">
-                <strong>Llegenda:</strong>
-                0 = No cal cap acció · 50 = Caldria millorar · 100 = Urgència màxima
-              </div>
-
-              <div class="small-note">
-                Pots modificar les teves valoracions sempre que vulguis; es poden sumar amb la resta de ciutadania.
-              </div>
+              <div class="legenda"><strong>Llegenda:</strong> 0 = No cal cap acció · 50 = Caldria millorar · 100 = Urgència màxima</div>
+              <div class="small-note">Pots modificar les teves valoracions sempre que vulguis; es poden sumar amb la resta de ciutadania.</div>
             </div>
 
             <div class="panel">
               <h2>Punts assignats</h2>
-              <p class="info">
-                Per tenir una visió equilibrada, pots repartir un màxim de <strong>30 punts</strong> entre les diferents propostes.
-              </p>
-              <div class="info">
-                <strong>Punts assignats:</strong> <span id="assignedPoints">0</span>/30
-              </div>
-              <p class="small-note">
-                Els punts serveixen per indicar la teva prioritat relativa entre les propostes.
-              </p>
+              <p class="info">Per tenir una visió equilibrada, pots repartir un màxim de <strong>30 punts</strong> entre les diferents propostes.</p>
+              <div class="info"><strong>Punts assignats:</strong> <span id="assignedPoints">0</span>/30</div>
+              <p class="small-note">Els punts serveixen per indicar la teva prioritat relativa entre les propostes.</p>
               <div class="panel" style="margin-top:15px;">
                 <h3>Resum de la teva valoració</h3>
-                <div id="summaryBox" class="info">
-                  Encara no has assignat punts. Quan comencis a votar propostes, aquí veuràs un resum.
-                </div>
+                <div id="summaryBox" class="info">Encara no has assignat punts. Quan comencis a votar propostes, aquí veuràs un resum.</div>
               </div>
             </div>
           </div>
@@ -481,9 +258,7 @@
 
             <div class="panel">
               <h2>Les meves propostes</h2>
-              <div id="myProposalsList" class="info">
-                Encara no has creat cap proposta. Comença afegint-ne una a la columna de l’esquerra.
-              </div>
+              <div id="myProposalsList" class="info">Encara no has creat cap proposta. Comença afegint-ne una a la columna de l’esquerra.</div>
             </div>
           </div>
         </div>
@@ -492,12 +267,8 @@
         <div id="vots" class="tab hidden">
           <div class="panel">
             <h2>Els meus vots</h2>
-            <p class="info">
-              Aquí veus totes les propostes a les quals has assignat punts. Pots ajustar els teus vots en qualsevol moment.
-            </p>
-            <div id="myVotesList" class="info">
-              Encara no has votat cap proposta.
-            </div>
+            <p class="info">Aquí veus totes les propostes a les quals has assignat punts. Pots ajustar els teus vots en qualsevol moment.</p>
+            <div id="myVotesList" class="info">Encara no has votat cap proposta.</div>
           </div>
         </div>
 
@@ -506,25 +277,17 @@
           <div class="two-cols">
             <div class="panel">
               <h2>Resultats agregats</h2>
-              <p class="info">
-                Aquí es mostren els resultats a partir dels punts assignats per totes les persones participants (via Neon).
-              </p>
-              <div class="results" id="resultsChart">
-                Encara no hi ha resultats.
-              </div>
+              <p class="info">Aquí es mostren els resultats a partir dels punts assignats per totes les persones participants (via Neon).</p>
+              <div class="results" id="resultsChart">Encara no hi ha resultats.</div>
             </div>
             <div class="panel">
               <h3>Explicació del funcionament</h3>
-              <p class="info">
-                Aquesta eina està pensada per combinar:
-              </p>
+              <p class="info">Aquesta eina està pensada per combinar:</p>
               <ul class="info" style="margin-left:18px; margin-top:4px;">
                 <li>Una valoració de <strong>necessitat d'acció</strong> per àmbits.</li>
                 <li>Un sistema de <strong>propostes concretes</strong> amb punts de prioritat.</li>
               </ul>
-              <p class="info" style="margin-top:8px;">
-                Amb la connexió a Neon, les dades es poden agregar i exportar per treballar-les a l’Ajuntament o al Ple.
-              </p>
+              <p class="info" style="margin-top:8px;">Amb la connexió a Neon, les dades es poden agregar i exportar per treballar-les a l’Ajuntament o al Ple.</p>
             </div>
           </div>
         </div>
@@ -534,130 +297,67 @@
   </div>
 
   <script>
-    // ----------- Basis: API / State -----------
+    // ----------- Basis / Config -----------
     const API_BASE = '/.netlify/functions';
+    const MAX_POINTS = 30;
+
+    const CATEGORIES = [
+      { key: 'estat_poble', title: "Estat del poble - necessitat d'acció", desc: "Estètica urbana, neteja, manteniment de voreres i mobiliari, il·luminació, soroll, control de plagues, senyalització." },
+      { key: 'entorn_natural', title: "Entorn natural de Matadepera - necessitat d'acció", desc: "Zones verdes, bosc, camins, prevenció d’incendis, gestió d'aigua i sequera, paisatge i patrimoni natural." },
+      { key: 'qualitat_vida', title: "Qualitat de vida - necessitat d'acció", desc: "Cultura, esport, convivència, cohesió social, associacions, festes i tradicions, joventut i gent gran, inclusió." },
+      { key: 'salut_seguretat', title: "Salut i seguretat de trànsit - necessitat d'acció", desc: "Atenció primària i salut comunitària, salut mental, emergències i protecció civil, policia local, seguretat viària, prevenció de riscos." },
+      { key: 'seguretat_ciutadana', title: "Seguretat ciutadana - necessitat d'acció", desc: "Seguretat al veïnat, prevenció de delictes, presència policial, il·luminació de punts crítics, coordinació amb Mossos i Policia Local." },
+      { key: 'vida_quotidiana', title: "Vida quotidiana (mobilitat i serveis) - necessitat d'acció", desc: "Transport públic, circulació, aparcament, carrils bici, comerç local, serveis bàsics, energia, digitalització, sostenibilitat i economia circular." },
+      { key: 'organitzacio_govern', title: "Organització municipal i govern obert - necessitat d'acció", desc: "Transparència, comunicació amb l’Ajuntament, participació ciutadana, resposta a incidències, queixes i propostes, coordinació amb altres administracions." }
+    ];
 
     async function apiRequest(fn, payload) {
       try {
         const res = await fetch(`${API_BASE}/${fn}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload || {})
         });
-        if (!res.ok) {
-          console.warn('API error', fn, res.status);
-          return null;
-        }
+        if (!res.ok) { console.warn('API error', fn, res.status); return null; }
         return await res.json();
-      } catch (e) {
-        console.warn('API request failed', fn, e);
-        return null;
-      }
+      } catch (e) { console.warn('API request failed', fn, e); return null; }
     }
 
-    const MAX_POINTS = 30;
-
-    const CATEGORIES = [
-      { key: 'estat_poble',
-        title: "Estat del poble - necessitat d'acció",
-        desc: "Estètica urbana, neteja, manteniment de voreres i mobiliari, il·luminació, soroll, control de plagues, senyalització."
-      },
-      { key: 'entorn_natural',
-        title: "Entorn natural de Matadepera - necessitat d'acció",
-        desc: "Zones verdes, bosc, camins, prevenció d’incendis, gestió d'aigua i sequera, paisatge i patrimoni natural."
-      },
-      { key: 'qualitat_vida',
-        title: "Qualitat de vida - necessitat d'acció",
-        desc: "Cultura, esport, convivència, cohesió social, associacions, festes i tradicions, joventut i gent gran, inclusió."
-      },
-      { key: 'salut_seguretat',
-        title: "Salut i seguretat de tránsit - necessitat d'acció",
-        desc: "Atenció primària i salut comunitària, salut mental, emergències i protecció civil, policia local, seguretat viària, prevenció de riscos."
-      },
-      { key: 'seguretat_ciutadana',
-        title: "Seguretat ciutadana - necessitat d'acció",
-        desc: "Seguretat al veïnat, prevenció de delictes, presència policial, il·luminació de punts crítics, coordinació amb Mossos i Policia Local."
-      },
-      { key: 'vida_quotidiana',
-        title: "Vida quotidiana (mobilitat i serveis) - necessitat d'acció",
-        desc: "Transport públic, circulació, aparcament, carrils bici, comerç local, serveis bàsics, energia, digitalització, sostenibilitat i economia circular."
-      },
-      { key: 'organitzacio_govern',
-        title: "Organització municipal i govern obert - necessitat d'acció",
-        desc: "Transparència, comunicació amb l’Ajuntament, participació ciutadana, resposta a incidències, queixes i propostes, coordinació amb altres administracions."
-      }
-    ];
-
-    // Vorschläge aus Cache (Fallback)
-    let proposals = [];
-    try { proposals = JSON.parse(localStorage.getItem('proposals_data_cache') || '[]'); }
-    catch(e){ proposals = []; }
-
-    // globale Punktesummen (Neon)
-    let globalScores = {};
-    // Durchschnittswerte pro Kategorie (Neon)
-    let serverAverages = {};
-
-    let currentUserData = {
-      username: '',
-      email: '',
-      verified: false,
-      isGuest: false,
-      votes: {},       // { proposalId: value }
-      satisfaction: {} // { categoryKey: value }
-    };
+    // ----------- State -----------
+    let proposals = [];           // nur vom Backend
+    let globalScores = {};        // vom Backend
+    let serverAverages = {};      // vom Backend
+    let currentUserData = { username:'', email:'', verified:false, isGuest:false, votes:{}, satisfaction:{} };
 
     // ----------- Tabs / Login -----------
     function showTab(tab) {
       document.querySelectorAll('.tab').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-
       if (tab === 'login') {
         document.getElementById('loginView').classList.remove('hidden');
         document.getElementById('mainView').classList.add('hidden');
       } else {
         document.getElementById('loginView').classList.add('hidden');
         document.getElementById('mainView').classList.remove('hidden');
-        const target = document.getElementById(tab);
-        if (target) target.classList.remove('hidden');
-        const btn = document.querySelector('.tab-btn[data-tab="' + tab + '"]');
-        if (btn) btn.classList.add('active');
+        const target = document.getElementById(tab); if (target) target.classList.remove('hidden');
+        const btn = document.querySelector(`.tab-btn[data-tab="${tab}"]`); if (btn) btn.classList.add('active');
         if (tab === 'vots') renderMyVotes();
       }
     }
 
     function login() {
       const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
-      if (!email) { alert('Introdueix el correu o usa el mode convidat.'); return; }
+      if (!email) { alert('Introdueix el correu.'); return; }
       currentUserData.username = email.split('@')[0];
       currentUserData.email = email;
       currentUserData.verified = true;
       currentUserData.isGuest = false;
-
-      try {
-        const s = JSON.parse(localStorage.getItem('satisfaction_' + email) || 'null');
-        if (s) currentUserData.satisfaction = s;
-      } catch(e){}
-
       showMain();
     }
 
-    function guest() {
-      const id = 'guest_' + Math.random().toString(36).slice(2, 8);
-      currentUserData = {
-        username: 'Convidat',
-        email: id + '@local',
-        verified: true,
-        isGuest: true,
-        votes: {},
-        satisfaction: {}
-      };
-      showMain();
-    }
+    function logout() { currentUserData = { username:'', email:'', verified:false, isGuest:false, votes:{}, satisfaction:{} }; showTab('login'); }
 
     function showMain() {
-      document.getElementById('userBadge').textContent =
-        (currentUserData.username || '?').charAt(0).toUpperCase();
+      document.getElementById('userBadge').textContent = (currentUserData.username || '?').charAt(0).toUpperCase();
       document.getElementById('userName').textContent = currentUserData.username || 'Usuari';
       document.getElementById('userEmail').textContent = currentUserData.email || '';
 
@@ -668,21 +368,23 @@
       updateResults();
       updatePointsInfo();
 
-      // Daten aus Neon holen (asynchron)
-      loadSatisfactionFromServer();
-      loadProposalsFromServer();
-      loadGlobalScoresFromServer();
-      if (!currentUserData.isGuest) loadUserVotesFromServer();
+      // Backend laden
+      Promise.all([
+        loadAveragesFromServer(),
+        loadProposalsFromServer(),
+        loadGlobalScoresFromServer(),
+        loadUserVotesFromServer()
+      ]).then(() => {
+        populateCategories();
+        renderProposals();
+        renderMyVotes();
+        updateResults();
+      });
 
       showTab('participacio');
     }
 
-    function logout() {
-      currentUserData = { username:'', email:'', verified:false, isGuest:false, votes:{}, satisfaction:{} };
-      showTab('login');
-    }
-
-    // ----------- Satisfaction / Kategorien (Neon) -----------
+    // ----------- Kategorien / Mitjana -----------
     function createCategoryElement(cat) {
       const wrap = document.createElement('div');
       wrap.className = 'category-block';
@@ -695,7 +397,7 @@
           <div style="text-align:right;min-width:60px;">
             <div style="font-size:12px;color:#555;">Mitjana</div>
             <div class="avg-bar"><div class="avg-fill" id="avg_${cat.key}"></div></div>
-            <div class="avg-label"><span id="avg_txt_${cat.key}"></span></div>
+            <div class="avg-label"><span id="avg_txt_${cat.key}">—</span></div>
           </div>
         </div>
         <div class="slider-row">
@@ -708,8 +410,7 @@
           onclick="toggleProposals('${cat.key}', this)">
           Veure / amagar propostes d'aquesta categoria
         </button>
-        <div id="props_${cat.key}" class="hidden"></div>
-      `;
+        <div id="props_${cat.key}" class="hidden"></div>`;
       return wrap;
     }
 
@@ -719,123 +420,62 @@
       CATEGORIES.forEach(cat => {
         const el = createCategoryElement(cat);
         list.appendChild(el);
-
         const slider = el.querySelector('.slider');
         const label = document.getElementById('thumb_' + cat.key);
         positionThumbLabel(slider, label);
-
-        const avg = getAverageForCategory(cat.key);
-        const bar = document.getElementById('avg_' + cat.key);
-        const t = document.getElementById('avg_txt_' + cat.key);
-        if (avg != null) {
-          if (bar) bar.style.width = Math.round(avg) + '%';
-          if (t) t.textContent = Math.round(avg) + '%';
-        } else {
-          if (bar) bar.style.width = '0%';
-          if (t) t.textContent = '';
-        }
+        applyAverage(cat.key);
       });
     }
 
-    function positionThumbLabel(slider, label) {
-      const val = parseInt(slider.value || '0', 10);
-      label.textContent = val;
+    function positionThumbLabel(slider, label) { const val = parseInt(slider.value || '0', 10); label.textContent = val; }
+
+    function applyAverage(key) {
+      const avg = (serverAverages && typeof serverAverages[key] === 'number') ? serverAverages[key] : null;
+      const bar = document.getElementById('avg_' + key);
+      const t = document.getElementById('avg_txt_' + key);
+      if (avg != null && isFinite(avg)) { if (bar) bar.style.width = Math.round(avg) + '%'; if (t) t.textContent = Math.round(avg) + '%'; }
+      else { if (bar) bar.style.width = '0%'; if (t) t.textContent = '—'; }
     }
 
-    function getAverageForCategory(key) {
-      if (serverAverages && typeof serverAverages[key] === 'number') return serverAverages[key];
-      return null;
-    }
-
-    // Averages IMMER laden; User-Ratings nur bei Login
-    async function loadSatisfactionFromServer() {
-      // Averages
-      try {
-        const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
-        if (avgRes && avgRes.averages) serverAverages = avgRes.averages;
-      } catch (e) { console.warn('Averages failed', e); }
-
-      // User-Ratings (nur eingeloggt, nicht Gast)
-      if (currentUserData.email && !currentUserData.isGuest) {
-        try {
-          const userRes = await apiRequest('satisfaction', {
-            action: 'getUserRatings',
-            email: currentUserData.email
-          });
-          if (userRes && userRes.ratings) {
-            currentUserData.satisfaction = userRes.ratings;
-            localStorage.setItem(
-              'satisfaction_' + currentUserData.email,
-              JSON.stringify(currentUserData.satisfaction)
-            );
-          }
-        } catch (e) { console.warn('User ratings failed', e); }
+    async function loadAveragesFromServer() {
+      const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
+      if (avgRes && avgRes.averages) serverAverages = avgRes.averages; else serverAverages = {};
+      // User-spezifische Ratings nur, wenn eingeloggt
+      if (currentUserData.email) {
+        const userRes = await apiRequest('satisfaction', { action: 'getUserRatings', email: currentUserData.email });
+        if (userRes && userRes.ratings) currentUserData.satisfaction = userRes.ratings;
       }
-
-      populateCategories();
     }
 
     async function updateSlider(key, inputEl) {
       const val = parseInt(inputEl.value || '0', 10);
       if (!currentUserData.satisfaction) currentUserData.satisfaction = {};
       currentUserData.satisfaction[key] = val;
-
-      if (currentUserData.email) {
-        localStorage.setItem(
-          'satisfaction_' + currentUserData.email,
-          JSON.stringify(currentUserData.satisfaction)
-        );
-      }
-
       const label = document.getElementById('thumb_' + key);
       positionThumbLabel(inputEl, label);
 
-      if (!currentUserData.isGuest && currentUserData.email) {
-        try {
-          await apiRequest('satisfaction', {
-            action: 'saveRating',
-            email: currentUserData.email,
-            category: key,
-            value: val
-          });
-
-          const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
-          if (avgRes && avgRes.averages) {
-            serverAverages = avgRes.averages;
-            const avg = getAverageForCategory(key);
-            const bar = document.getElementById('avg_' + key);
-            const t = document.getElementById('avg_txt_' + key);
-            if (avg != null) {
-              if (bar) bar.style.width = Math.round(avg) + '%';
-              if (t) t.textContent = Math.round(avg) + '%';
-            }
-          }
-        } catch (e) {
-          console.warn('Error guardant la valoració a Neon', e);
-        }
+      if (currentUserData.email) {
+        await apiRequest('satisfaction', { action: 'saveRating', email: currentUserData.email, category: key, value: val });
+        // Averages neu laden und sofort anwenden
+        const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
+        if (avgRes && avgRes.averages) serverAverages = avgRes.averages;
+        applyAverage(key);
+      } else {
+        alert('Cal iniciar sessió per guardar la valoració.');
       }
     }
 
-    // ----------- Propostes / Votes (Neon) -----------
+    // ----------- Propostes / Votes -----------
     function populateCategorySelect() {
       const sel = document.getElementById('proposalCategory');
       sel.innerHTML = '<option value="">-- Tria una categoria --</option>';
-      CATEGORIES.forEach(cat => {
-        const opt = document.createElement('option');
-        opt.value = cat.key;
-        opt.textContent = cat.title;
-        sel.appendChild(opt);
-      });
+      CATEGORIES.forEach(cat => { const opt = document.createElement('option'); opt.value = cat.key; opt.textContent = cat.title; sel.appendChild(opt); });
     }
 
     async function loadProposalsFromServer() {
       const res = await apiRequest('proposals', { action: 'list' });
-      if (!res) return;
-
-      let arr = [];
-      if (Array.isArray(res)) arr = res;
-      else if (Array.isArray(res.proposals)) arr = res.proposals;
-
+      if (!res) { proposals = []; return; }
+      const arr = Array.isArray(res) ? res : (Array.isArray(res.proposals) ? res.proposals : []);
       proposals = arr.map(p => ({
         id: p.id || p.proposal_id || p.uuid,
         title: p.title,
@@ -845,166 +485,26 @@
         email: p.email || p.user_email || '',
         createdAt: p.created_at || p.createdAt || new Date().toISOString()
       })).filter(p => p.id);
-
-      try { localStorage.setItem('proposals_data_cache', JSON.stringify(proposals)); } catch(e){}
-
-      renderProposals();
-      updateResults();
     }
 
     async function loadUserVotesFromServer() {
       if (!currentUserData.email) return;
       const res = await apiRequest('votes', { action: 'getUserVotes', email: currentUserData.email });
       if (!res) return;
-
       let votesObj = {};
-      if (res.votes && typeof res.votes === 'object') {
-        if (Array.isArray(res.votes)) {
-          res.votes.forEach(v => {
-            const pid = v.proposal_id || v.proposalId || v.id;
-            const value = v.points ?? v.value ?? v.vote ?? 0;
-            if (pid) votesObj[pid] = value;
-          });
-        } else {
-          votesObj = res.votes;
-        }
-      } else if (Array.isArray(res)) {
-        res.forEach(v => {
-          const pid = v.proposal_id || v.proposalId || v.id;
-          const value = v.points ?? v.value ?? v.vote ?? 0;
-          if (pid) votesObj[pid] = value;
-        });
-      }
-
+      const pushVote = v => { const pid = v.proposal_id || v.proposalId || v.id; const value = v.points ?? v.value ?? v.vote ?? 0; if (pid) votesObj[pid] = value; };
+      if (Array.isArray(res)) res.forEach(pushVote);
+      else if (Array.isArray(res.votes)) res.votes.forEach(pushVote);
+      else if (res.votes && typeof res.votes === 'object') votesObj = res.votes;
       currentUserData.votes = votesObj;
-      renderMyVotes();
-      updatePointsInfo();
-      updateResults();
     }
 
     async function loadGlobalScoresFromServer() {
       const res = await apiRequest('votes', { action: 'getScores' });
-      if (!res) return;
-
-      let arr = [];
-      if (Array.isArray(res)) arr = res;
-      else if (Array.isArray(res.scores)) arr = res.scores;
-      else if (Array.isArray(res.results)) arr = res.results;
-
+      if (!res) { globalScores = {}; return; }
+      const arr = Array.isArray(res) ? res : (res.scores || res.results || []);
       globalScores = {};
-      arr.forEach(r => {
-        const pid = r.proposal_id || r.id || r.proposalId;
-        const total = r.total_points ?? r.points ?? r.sum ?? r.total ?? 0;
-        if (pid) globalScores[pid] = total;
-      });
-
-      updateResults();
-    }
-
-    function computeGlobalScores() {
-      if (globalScores && Object.keys(globalScores).length > 0) return globalScores;
-      // Fallback: nur aktuelle User-Stimmen
-      const all = {};
-      proposals.forEach(p => { all[p.id] = 0; });
-      Object.entries(currentUserData.votes || {}).forEach(([pid, val]) => {
-        if (all[pid] != null) all[pid] += (val || 0);
-      });
-      return all;
-    }
-
-    function toggleProposals(catKey, btn) {
-      // andere Kategorien schließen
-      CATEGORIES.forEach(c => {
-        const box = document.getElementById('props_' + c.key);
-        if (box && c.key !== catKey) box.classList.add('hidden');
-      });
-
-      const box = document.getElementById('props_' + catKey);
-      if (!box) return;
-
-      const isHidden = box.classList.contains('hidden');
-      if (isHidden) {
-        box.classList.remove('hidden');
-        btn.textContent = "Amagar propostes d'aquesta categoria";
-
-        const scores = computeGlobalScores();
-        const items = proposals
-          .filter(p => p.category === catKey)
-          .sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
-
-        box.innerHTML = "";
-        if (items.length === 0) {
-          box.innerHTML = "<div class='info'>Encara no hi ha propostes en aquesta categoria.</div>";
-        } else {
-          items.forEach(p => {
-            const el = createProposalElement(p);
-            box.appendChild(el);
-          });
-        }
-      } else {
-        box.classList.add('hidden');
-        btn.textContent = "Veure / amagar propostes d'aquesta categoria";
-      }
-    }
-
-    async function addProposal() {
-      const title = (document.getElementById('proposalTitle').value || '').trim();
-      const category = document.getElementById('proposalCategory').value;
-      const desc = (document.getElementById('proposalDesc').value || '').trim();
-
-      if (!title || !category || !desc) {
-        alert('Cal omplir títol, categoria i descripció.');
-        return;
-      }
-
-      const payload = {
-        action: 'add',
-        title,
-        category,
-        description: desc,
-        author: currentUserData.username || 'Usuari',
-        email: currentUserData.email || ''
-      };
-
-      let created = null;
-      const res = await apiRequest('proposals', payload);
-      if (res) {
-        if (res.proposal) created = res.proposal;
-        else if (res.id || res.title) created = res;
-      }
-
-      let newProposal;
-      if (created) {
-        newProposal = {
-          id: created.id || created.proposal_id || created.uuid,
-          title: created.title,
-          category: created.category,
-          desc: created.description || created.desc || desc,
-          author: created.author || created.username || payload.author,
-          email: created.email || created.user_email || payload.email,
-          createdAt: created.created_at || created.createdAt || new Date().toISOString()
-        };
-      } else {
-        const id = 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
-        newProposal = {
-          id, title, category, desc,
-          author: payload.author,
-          email: payload.email,
-          createdAt: new Date().toISOString()
-        };
-      }
-
-      proposals.push(newProposal);
-      try { localStorage.setItem('proposals_data_cache', JSON.stringify(proposals)); } catch(e){}
-
-      document.getElementById('proposalTitle').value = '';
-      document.getElementById('proposalCategory').value = '';
-      document.getElementById('proposalDesc').value = '';
-
-      renderProposals();
-      renderMyVotes();
-      updateResults();
-      alert('Proposta afegida correctament.');
+      arr.forEach(r => { const pid = r.proposal_id || r.id || r.proposalId; const total = r.total_points ?? r.points ?? r.sum ?? r.total ?? 0; if (pid) globalScores[pid] = total; });
     }
 
     function createProposalElement(p) {
@@ -1013,16 +513,14 @@
       const cat = CATEGORIES.find(c => c.key === p.category);
       const catTitle = cat ? cat.title : p.category;
       const myVote = (currentUserData.votes || {})[p.id] || 0;
-
+      const dateTxt = new Date(p.createdAt).toLocaleDateString('ca-ES');
       div.innerHTML = `
         <div class="proposal-header">
           <div>
             <div class="proposal-title">${p.title}</div>
             <div class="proposal-meta">${catTitle} · ${p.author || 'Anònim'}</div>
           </div>
-          <div class="proposal-meta">
-            ${new Date(p.createdAt).toLocaleDateString('ca-ES')}
-          </div>
+          <div class="proposal-meta">${dateTxt}</div>
         </div>
         <div class="proposal-desc">${(p.desc || '').replace(/\n/g,'<br>')}</div>
         <div class="proposal-actions">
@@ -1034,11 +532,8 @@
             <button class="vote-btn ${myVote===2?'active-pos':''}"  onclick="setVote('${p.id}',2,this)">+2</button>
             <button class="vote-btn ${myVote===3?'active-pos':''}"  onclick="setVote('${p.id}',3,this)">+3</button>
           </div>
-          <div class="vote-info">
-            Punts nets assignats: <span>${myVote}</span>
-          </div>
-        </div>
-      `;
+          <div class="vote-info">Punts nets assignats: <span>${myVote}</span></div>
+        </div>`;
       return div;
     }
 
@@ -1046,142 +541,119 @@
       const list = document.getElementById('myProposalsList');
       if (!list) return;
       const mine = proposals.filter(p => (p.email || '') === (currentUserData.email || ''));
-      if (mine.length === 0) {
-        list.innerHTML = "Encara no has creat cap proposta. Comença afegint-ne una.";
-        return;
-      }
+      if (mine.length === 0) { list.innerHTML = 'Encara no has creat cap proposta. Comença afegint-ne una.'; return; }
       list.innerHTML = '';
       mine.forEach(p => list.appendChild(createProposalElement(p)));
     }
 
     function renderMyVotes() {
-      const list = document.getElementById('myVotesList');
-      if (!list) return;
-
-      const v = currentUserData.votes || {};
-      const votedIds = Object.keys(v).filter(id => v[id] && v[id] !== 0);
-
-      if (votedIds.length === 0) {
-        list.innerHTML = "Encara no has votat cap proposta.";
-        return;
-      }
-
-      const items = proposals
-        .filter(p => votedIds.includes(p.id))
-        .sort((a, b) => (v[b.id] || 0) - (v[a.id] || 0));
-
-      list.innerHTML = '';
-      items.forEach(p => list.appendChild(createProposalElement(p)));
+      const list = document.getElementById('myVotesList'); if (!list) return;
+      const v = currentUserData.votes || {}; const votedIds = Object.keys(v).filter(id => v[id] && v[id] !== 0);
+      if (votedIds.length === 0) { list.innerHTML = 'Encara no has votat cap proposta.'; return; }
+      const items = proposals.filter(p => votedIds.includes(p.id)).sort((a, b) => (v[b.id] || 0) - (v[a.id] || 0));
+      list.innerHTML = ''; items.forEach(p => list.appendChild(createProposalElement(p)));
     }
 
-    function getCurrentTotalPoints() {
-      const v = currentUserData.votes || {};
-      return Object.values(v).reduce((a, b) => a + Math.max(0, Math.abs(b)), 0);
-    }
+    function getCurrentTotalPoints() { const v = currentUserData.votes || {}; return Object.values(v).reduce((a, b) => a + Math.max(0, Math.abs(b)), 0); }
 
     function updatePointsInfo() {
       const total = getCurrentTotalPoints();
       document.getElementById('assignedPoints').textContent = total;
       const sBox = document.getElementById('summaryBox');
-      if (total === 0) {
-        sBox.textContent = "Encara no has assignat punts. Quan comencis a votar propostes, aquí veuràs un resum.";
-      } else {
-        sBox.innerHTML = "Has assignat <strong>" + total +
-          "</strong> punts (màxim " + MAX_POINTS +
-          "). Intenta repartir-los segons la teva prioritat real. Pots ajustar-los en qualsevol moment.";
-      }
+      sBox.innerHTML = total === 0
+        ? 'Encara no has assignat punts. Quan comencis a votar propostes, aquí veuràs un resum.'
+        : `Has assignat <strong>${total}</strong> punts (màxim ${MAX_POINTS}). Intenta repartir-los segons la teva prioritat real. Pots ajustar-los en qualsevol moment.`;
     }
 
     async function setVote(proposalId, delta, btn) {
-      const v = currentUserData.votes || {};
-      const prev = v[proposalId] || 0;
+      if (!currentUserData.email) { alert('Cal iniciar sessió per votar.'); return; }
+      const v = currentUserData.votes || {}; const prev = v[proposalId] || 0;
       const baseTotal = getCurrentTotalPoints() - Math.max(0, Math.abs(prev));
-      const newVal = (prev === delta) ? 0 : delta;
-      const newTotal = baseTotal + Math.max(0, Math.abs(newVal));
-
-      if (newTotal > MAX_POINTS) {
-        alert('Has superat el màxim de ' + MAX_POINTS + ' punts. Revisa els teus vots.');
-        return;
-      }
-
-      v[proposalId] = newVal;
-      currentUserData.votes = v;
-
-      updatePointsInfo();
+      const newVal = (prev === delta) ? 0 : delta; const newTotal = baseTotal + Math.max(0, Math.abs(newVal));
+      if (newTotal > MAX_POINTS) { alert('Has superat el màxim de ' + MAX_POINTS + ' punts. Revisa els teus vots.'); return; }
+      v[proposalId] = newVal; currentUserData.votes = v; updatePointsInfo();
 
       const proposalEl = btn.closest('.proposal');
       if (proposalEl) {
-        const sumSpan = proposalEl.querySelector('.vote-info span');
-        if (sumSpan) sumSpan.textContent = newVal;
-        const buttons = proposalEl.querySelectorAll('.vote-btn');
-        buttons.forEach(b => {
-          b.classList.remove('active-pos', 'active-neg');
-          const val = parseInt(b.textContent, 10);
-          if (val === newVal) {
-            if (val > 0) b.classList.add('active-pos');
-            else if (val < 0) b.classList.add('active-neg');
-          }
-        });
+        const sumSpan = proposalEl.querySelector('.vote-info span'); if (sumSpan) sumSpan.textContent = newVal;
+        proposalEl.querySelectorAll('.vote-btn').forEach(b => { b.classList.remove('active-pos','active-neg'); const val = parseInt(b.textContent, 10); if (val === newVal) { if (val > 0) b.classList.add('active-pos'); else if (val < 0) b.classList.add('active-neg'); } });
       }
-
       renderMyVotes();
 
-      // Neon: Vote speichern + globale Scores neu laden
-      if (!currentUserData.isGuest && currentUserData.email) {
-        try {
-          await apiRequest('votes', {
-            action: 'setVote',
-            email: currentUserData.email,
-            proposalId,
-            value: newVal
-          });
-          await loadGlobalScoresFromServer();
-        } catch (e) {
-          console.warn('Error guardant el vot a Neon', e);
-        }
-      }
-
+      await apiRequest('votes', { action: 'setVote', email: currentUserData.email, proposalId, value: newVal });
+      await loadGlobalScoresFromServer();
       updateResults();
     }
 
+    function computeGlobalScores() {
+      if (globalScores && Object.keys(globalScores).length > 0) return globalScores;
+      // Optionaler Fallback (nur aktuelle User-Stimmen)
+      const all = {}; proposals.forEach(p => { all[p.id] = 0; });
+      Object.entries(currentUserData.votes || {}).forEach(([pid, val]) => { if (all[pid] != null) all[pid] += (val || 0); });
+      return all;
+    }
+
+    function toggleProposals(catKey, btn) {
+      CATEGORIES.forEach(c => { const box = document.getElementById('props_' + c.key); if (box && c.key !== catKey) box.classList.add('hidden'); });
+      const box = document.getElementById('props_' + catKey); if (!box) return;
+      const isHidden = box.classList.contains('hidden');
+      if (isHidden) {
+        box.classList.remove('hidden'); btn.textContent = "Amagar propostes d'aquesta categoria";
+        const scores = computeGlobalScores();
+        const items = proposals.filter(p => p.category === catKey).sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
+        box.innerHTML = items.length ? '' : "<div class='info'>Encara no hi ha propostes en aquesta categoria.</div>";
+        items.forEach(p => box.appendChild(createProposalElement(p)));
+      } else { box.classList.add('hidden'); btn.textContent = "Veure / amagar propostes d'aquesta categoria"; }
+    }
+
+    async function addProposal() {
+      if (!currentUserData.email) { alert('Cal iniciar sessió per afegir propostes.'); return; }
+      const title = (document.getElementById('proposalTitle').value || '').trim();
+      const category = document.getElementById('proposalCategory').value;
+      const desc = (document.getElementById('proposalDesc').value || '').trim();
+      if (!title || !category || !desc) { alert('Cal omplir títol, categoria i descripció.'); return; }
+
+      const payload = { action: 'add', title, category, description: desc, author: currentUserData.username || 'Usuari', email: currentUserData.email };
+      const res = await apiRequest('proposals', payload);
+      if (!res || !(res.proposal || res.id || res.title)) { alert('No s’ha pogut guardar la proposta al servidor.'); return; }
+
+      const created = res.proposal ? res.proposal : res;
+      const newProposal = {
+        id: created.id || created.proposal_id || created.uuid,
+        title: created.title,
+        category: created.category,
+        desc: created.description || created.desc || desc,
+        author: created.author || created.username || payload.author,
+        email: created.email || created.user_email || payload.email,
+        createdAt: created.created_at || created.createdAt || new Date().toISOString()
+      };
+
+      proposals.push(newProposal);
+      document.getElementById('proposalTitle').value = '';
+      document.getElementById('proposalCategory').value = '';
+      document.getElementById('proposalDesc').value = '';
+      renderProposals();
+      renderMyVotes();
+      updateResults();
+      alert('Proposta afegida correctament.');
+    }
+
     function updateResults() {
-      const box = document.getElementById('resultsChart');
-      if (!box) return;
-      const all = computeGlobalScores();
-      const values = Object.values(all);
-      if (!values.length) {
-        box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>';
-        return;
-      }
+      const box = document.getElementById('resultsChart'); if (!box) return;
+      const all = computeGlobalScores(); const values = Object.values(all);
+      if (!values.length) { box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>'; return; }
       const total = values.reduce((a, b) => a + b, 0) || 1;
-
-      const rows = proposals.map(p => {
-        const sum = all[p.id] || 0;
-        const pct = Math.round((sum / total) * 1000) / 10;
-        return { id: p.id, title: p.title, sum, pct };
-      }).sort((a, b) => b.sum - a.sum);
-
-      if (rows.length === 0) {
-        box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>';
-        return;
-      }
-
+      const rows = proposals.map(p => { const sum = all[p.id] || 0; const pct = Math.round((sum / total) * 1000) / 10; return { id: p.id, title: p.title, sum, pct }; }).sort((a, b) => b.sum - a.sum);
+      if (rows.length === 0) { box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>'; return; }
       box.innerHTML = rows.map(r => `
         <div class="result-bar">
-          <div class="result-label">
-            <span>${r.title}</span><span>${r.pct}%</span>
-          </div>
-          <div class="bar-container">
-            <div class="bar-fill" style="width:${Math.max(0, r.pct)}%">${r.sum} punts</div>
-          </div>
-        </div>
-      `).join('');
+          <div class="result-label"><span>${r.title}</span><span>${r.pct}%</span></div>
+          <div class="bar-container"><div class="bar-fill" style="width:${Math.max(0, r.pct)}%">${r.sum} punts</div></div>
+        </div>`).join('');
     }
 
     // ----------- Init -----------
-    (function init() {
-      showTab('login');
-    })();
+    (function init(){ showTab('login'); })();
   </script>
 </body>
 </html>
