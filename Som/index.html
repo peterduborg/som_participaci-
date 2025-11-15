@@ -312,15 +312,36 @@
     ];
 
     async function apiRequest(fn, payload) {
-      try {
-        const res = await fetch(`${API_BASE}/${fn}`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload || {})
-        });
-        if (!res.ok) { console.warn('API error', fn, res.status); return null; }
-        return await res.json();
-      } catch (e) { console.warn('API request failed', fn, e); return null; }
+  try {
+    const res = await fetch(`${API_BASE}/${fn}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload || {})
+    });
+
+    if (!res.ok) {
+      let info = null;
+      try { info = await res.json(); } catch (e) {}
+
+      console.warn('API error', fn, res.status, info);
+
+      alert(
+        `Error API ${fn} (HTTP ${res.status}): ` +
+        (info && (info.details || info.error)
+          ? (info.details || info.error)
+          : 'cap detall addicional')
+      );
+
+      return null;
     }
+
+    return await res.json();
+  } catch (e) {
+    console.warn('API request failed', fn, e);
+    alert(`No s'ha pogut contactar amb el servidor (${fn}): ${e}`);
+    return null;
+  }
+}
 
     // ----------- State -----------
     let proposals = [];           // nur vom Backend
