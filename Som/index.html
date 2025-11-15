@@ -752,28 +752,6 @@
   <button type="submit">Envia proposta</button>
 </form>
 
-<script>
-  document.getElementById("proposalForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
-
-    const title = document.getElementById("title").value;
-    const description = document.getElementById("description").value;
-    const category = document.getElementById("category").value;
-
-    const res = await fetch("/.netlify/functions/proposals", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, description, category })
-    });
-
-    if (res.ok) {
-      alert("Proposta enviada amb èxit!");
-    } else {
-      const data = await res.json();
-      alert("Error: " + (data.error || "No s'ha pogut enviar la proposta"));
-    }
-  });
-</script>
 
 </body>
 </html>
