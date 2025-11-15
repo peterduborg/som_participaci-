@@ -48,7 +48,7 @@ exports.handler = async (event, context) => {
 
     const action = data.action;
 
-    // -------- getAverages --------
+    // ---- getAverages ----
     if (action === 'getAverages') {
       const sql = `
         SELECT category, AVG(value)::float AS avg_value
@@ -59,7 +59,7 @@ exports.handler = async (event, context) => {
 
       const averages = {};
       rows.forEach(r => {
-        averages[r.category] = r.avg_value; // z.B. 72.5
+        averages[r.category] = r.avg_value;
       });
 
       return {
@@ -69,7 +69,7 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // -------- getUserRatings --------
+    // ---- getUserRatings ----
     if (action === 'getUserRatings') {
       const email = (data.email || '').trim().toLowerCase();
       if (!email) {
@@ -99,7 +99,7 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // -------- saveRating --------
+    // ---- saveRating ----
     if (action === 'saveRating') {
       const email = (data.email || '').trim().toLowerCase();
       const category = (data.category || '').trim();
@@ -115,7 +115,6 @@ exports.handler = async (event, context) => {
         };
       }
 
-      // clamp Wert 0–100
       if (value < 0) value = 0;
       if (value > 100) value = 100;
 
@@ -138,7 +137,7 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // -------- unbekannte Action --------
+    // ---- unbekannte Action ----
     return {
       statusCode: 400,
       headers: corsHeaders,
