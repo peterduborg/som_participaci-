@@ -16,25 +16,21 @@ exports.handler = async (event) => {
 
   try {
     if (event.httpMethod === 'GET') {
-      // Alle Proposals mit Kommentaren laden
       const proposals = await sql`
-        SELECT p.*, u.username as author_name
-        FROM proposals p
-        LEFT JOIN users u ON p.author_id = u.id
-        ORDER BY p.id ASC
+        SELECT * FROM proposals ORDER BY created_at DESC
       `;
 
-      // Für jedes Proposal die Kommentare laden
       for (let prop of proposals) {
+        // Kommentare mit Usernamen laden
         const comments = await sql`
-          SELECT c.*, u.username as author
+          SELECT c.*, u.username AS author
           FROM comments c
-          JOIN users u ON c.user_id = u.id
+          JOIN users u ON c.user_id = u.email
           WHERE c.proposal_id = ${prop.id}
           ORDER BY c.likes DESC, c.created_at DESC
         `;
 
-        // Für jeden Kommentar die Likes laden
+        // Likes pro Kommentar
         for (let comment of comments) {
           const likes = await sql`
             SELECT user_email FROM comment_likes WHERE comment_id = ${comment.id}
@@ -42,28 +38,26 @@ exports.handler = async (event) => {
           comment.likedBy = likes.map(l => l.user_email);
         }
 
+        // Bewertungswert (Mittelwert aus proposal_votes)
+        const avgResult = await sql`
+          SELECT COALESCE(ROUND(AVG(value), 1), 0) AS average FROM proposal_votes WHERE proposal_id = ${prop.id}
+        `;
+        prop.average = avgResult[0].average;
+
         prop.comments = comments;
-        prop.author = prop.author_name || 'Sistema';
-        prop.date = prop.created_at;
       }
 
       return { statusCode: 200, headers, body: JSON.stringify(proposals) };
     }
 
     if (event.httpMethod === 'POST') {
-      const { title, description, userId } = JSON.parse(event.body);
+      const { title, description, author, email, category } = JSON.parse(event.body);
 
       const result = await sql`
-        INSERT INTO proposals (title, description, author_id)
-        VALUES (${title}, ${description}, ${userId})
+        INSERT INTO proposals (id, title, description, author, email, category)
+        VALUES (gen_random_uuid(), ${title}, ${description}, ${author}, ${email}, ${category})
         RETURNING *
       `;
-
-      // Für alle User Votes mit 0 Punkten erstellen
-      const users = await sql`SELECT id FROM users`;
-      for (const user of users) {
-        await sql`INSERT INTO votes (user_id, proposal_id, points) VALUES (${user.id}, ${result[0].id}, 0)`;
-      }
 
       return { statusCode: 200, headers, body: JSON.stringify(result[0]) };
     }
