@@ -1,11 +1,9 @@
 {
-  "name": "participacio-matadepera",
+  "name": "matadepera-participacio",
   "version": "1.0.0",
-  "scripts": {
-    "dev": "netlify dev"
-  },
-  "devDependencies": {
-    "netlify-cli": "17.34.2"
+  "description": "Plataforma de Participació Ciutadana de Matadepera",
+  "dependencies": {
+    "@neondatabase/serverless": "^0.9.0",
+    "bcryptjs": "^2.4.3"
   }
 }
-
