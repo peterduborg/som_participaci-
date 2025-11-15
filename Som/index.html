@@ -237,6 +237,46 @@
         <!-- TAB: PROPOSTES -->
         <div id="propostes" class="tab hidden">
           <div class="two-panels">
+            <div class="form-card">
+  <h3>Neuen Vorschlag einreichen</h3>
+  <form id="proposalForm">
+    <label for="title">Titel:</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="description">Beschreibung:</label>
+    <textarea id="description" name="description" required></textarea>
+
+    <label for="category">Kategorie:</label>
+    <input type="text" id="category" name="category" required>
+
+    <button type="submit">Absenden</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById("proposalForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const title = document.getElementById("title").value;
+    const description = document.getElementById("description").value;
+    const category = document.getElementById("category").value;
+
+    const response = await fetch("/.netlify/functions/proposals", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, description, category })
+    });
+
+    if (response.ok) {
+      alert("Vorschlag eingereicht!");
+      this.reset();
+    } else {
+      const error = await response.text();
+      alert("Fehler: " + error);
+    }
+  });
+</script>
+
             <div class="panel">
               <h2>Crear una nova proposta</h2>
               <div class="proposal-form">
@@ -676,5 +716,41 @@
     // ----------- Init -----------
     (function init(){ showTab('login'); })();
   </script>
+  <script>
+  document.getElementById("proposalForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const data = {
+      title: formData.get("title"),
+      description: formData.get("description"),
+      category: formData.get("category"),
+      email: formData.get("email"),
+      author: formData.get("author")
+    };
+
+    try {
+      const res = await fetch("/.netlify/functions/proposals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      if (!res.ok) {
+        const error = await res.text();
+        console.error("Fehler vom Server:", error);
+        alert("Fehler beim Absenden: " + error);
+        return;
+      }
+
+      alert("Vorschlag erfolgreich eingereicht!");
+      e.target.reset();
+    } catch (err) {
+      console.error("Fehler beim Senden:", err);
+      alert("Ein Fehler ist aufgetreten.");
+    }
+  });
+</script>
+
 </body>
 </html>
