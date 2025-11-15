@@ -751,6 +751,41 @@
     }
   });
 </script>
+<form id="proposalForm">
+  <label for="title">Títol de la proposta:</label><br>
+  <input type="text" id="title" name="title" required><br><br>
+
+  <label for="description">Descripció:</label><br>
+  <textarea id="description" name="description"></textarea><br><br>
+
+  <label for="category">Categoria:</label><br>
+  <input type="text" id="category" name="category"><br><br>
+
+  <button type="submit">Envia proposta</button>
+</form>
+
+<script>
+  document.getElementById("proposalForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const title = document.getElementById("title").value;
+    const description = document.getElementById("description").value;
+    const category = document.getElementById("category").value;
+
+    const res = await fetch("/.netlify/functions/proposals", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, description, category })
+    });
+
+    if (res.ok) {
+      alert("Proposta enviada amb èxit!");
+    } else {
+      const data = await res.json();
+      alert("Error: " + (data.error || "No s'ha pogut enviar la proposta"));
+    }
+  });
+</script>
 
 </body>
 </html>
