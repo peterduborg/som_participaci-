@@ -398,69 +398,60 @@
       if (tabName === 'resultats') updateResults();
     }
 
-    async function login() {
-    const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
-    const password = (document.getElementById('loginPassword').value || '').trim();
-  
-    if (!email || !password) {
-      alert('Introdueix el correu i la contrasenya.');
-      return;
-    }
-  
-    try {
-      const res = await fetch(`${API_BASE}/auth`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'login',
-          email,
-          password
-        })
-      });
-  
-      const data = await res.json().catch(() => ({}));
-  
-      if (!res.ok || !data.success) {
-        const msg = data && data.error ? data.error : 'Error d\'inici de sessió';
-        alert(msg);
-        return;
-      }
-  
-      currentUser.email = data.email;
-      currentUser.username = data.username || data.email.split('@')[0];
-      currentUser.isAdmin = !!data.isAdmin;
-      currentUser.verified = true;
-      currentUser.isGuest = false;
-  
-      document.getElementById('userBadge').textContent =
-        (currentUser.username || '?').charAt(0).toUpperCase();
-      document.getElementById('userName').textContent = currentUser.username || 'Usuari';
-      document.getElementById('userEmail').textContent = currentUser.email || '';
-  
-      // (Optional) Admin-spezifische UI später hier einblenden
-      // z.B.:
-      // const adminTab = document.getElementById('adminTab');
-      // if (adminTab) adminTab.style.display = currentUser.isAdmin ? 'inline-block' : 'none';
-  
-      await initAfterLogin();
-    } catch (e) {
-      console.error('Login failed:', e);
-      alert('No s\'ha pogut contactar amb el servidor d\'autenticació: ' + e);
-    }
+async function login() {
+  const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
+  const password = (document.getElementById('loginPassword').value || '').trim();
+
+  if (!email || !password) {
+    alert('Introdueix correu i contrasenya.');
+    return;
   }
 
-      currentUser.email = email;
-      currentUser.username = username;
-      currentUser.verified = true;
-      currentUser.isGuest = false;
+  try {
+    const res = await fetch(`${API_BASE}/auth`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'login',
+        email,
+        password
+      })
+    });
 
-      document.getElementById('userBadge').textContent =
-        (currentUser.username || '?').charAt(0).toUpperCase();
-      document.getElementById('userName').textContent = currentUser.username || 'Usuari';
-      document.getElementById('userEmail').textContent = currentUser.email || '';
-
-      await initAfterLogin();
+    if (!res.ok) {
+      let info = null;
+      try { info = await res.json(); } catch (e) {}
+      const msg = info && info.error ? info.error : `Error HTTP ${res.status}`;
+      alert('Error en iniciar sessió: ' + msg);
+      return;
     }
+
+    const data = await res.json();
+
+    // Erwartet: { ok: true, user: { email, username, is_admin? } }
+    if (!data.ok) {
+      alert(data.error || 'Credencials incorrectes.');
+      return;
+    }
+
+    const user = data.user || {};
+    currentUser.email = user.email || email;
+    currentUser.username = user.username || (email.split('@')[0]);
+    currentUser.verified = true;
+    currentUser.isGuest = false;
+
+    document.getElementById('userBadge').textContent =
+      (currentUser.username || '?').charAt(0).toUpperCase();
+    document.getElementById('userName').textContent = currentUser.username || 'Usuari';
+    document.getElementById('userEmail').textContent = currentUser.email || '';
+
+    await initAfterLogin();    // lädt Kategorien, Proposals, Votes usw.
+  } catch (err) {
+    console.error('Login error', err);
+    alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
+  }
+}
+
 
     function logout() {
     currentUser = {
