@@ -1,6 +1,10 @@
 // netlify/functions/auth.js
 const { Pool } = require('pg');
 
+console.log('AUTH FUNCTION START, DATABASE_URL prefix:',
+  (process.env.DATABASE_URL || 'UNDEFINED').slice(0, 40)
+);
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
