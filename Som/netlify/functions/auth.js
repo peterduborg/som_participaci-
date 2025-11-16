@@ -1,6 +1,5 @@
 // netlify/functions/auth.js
 const { Pool } = require('pg');
-const bcrypt = require('bcryptjs'); // in package.json als dependency eintragen
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -48,19 +47,19 @@ exports.handler = async (event, context) => {
   const action = data.action;
 
   try {
-    // 1) Tabelle sicherstellen
+    // Tabelle für User (Passwort aktuell im Klartext – für Demo, später besser hashen)
     await pool.query(`
       CREATE TABLE IF NOT EXISTS app_users (
-        id          SERIAL PRIMARY KEY,
-        email       TEXT UNIQUE NOT NULL,
-        username    TEXT NOT NULL,
-        password    TEXT NOT NULL,
-        is_admin    BOOLEAN NOT NULL DEFAULT false,
-        created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+        id         SERIAL PRIMARY KEY,
+        email      TEXT UNIQUE NOT NULL,
+        username   TEXT NOT NULL,
+        password   TEXT NOT NULL,
+        is_admin   BOOLEAN NOT NULL DEFAULT false,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
       );
     `);
 
-    // 2) Default-User tim@gmail.com anlegen (falls nicht vorhanden)
+    // Default-Admin tim@gmail.com / 12341234 anlegen (falls nicht existiert)
     const defaultEmail = 'tim@gmail.com';
     const defaultPass  = '12341234';
     const defaultUser  = 'Tim';
@@ -70,15 +69,14 @@ exports.handler = async (event, context) => {
       [defaultEmail]
     );
     if (existing.rowCount === 0) {
-      const hash = await bcrypt.hash(defaultPass, 10);
       await pool.query(
         `INSERT INTO app_users (email, username, password, is_admin)
          VALUES ($1,$2,$3,true)`,
-        [defaultEmail, defaultUser, hash]
+        [defaultEmail, defaultUser, defaultPass]
       );
     }
 
-    // --------- LOGIN ----------
+    // ---------- LOGIN ----------
     if (action === 'login') {
       const email = (data.email || '').trim().toLowerCase();
       const password = (data.password || '').trim();
@@ -92,7 +90,7 @@ exports.handler = async (event, context) => {
       }
 
       const res = await pool.query(
-        'SELECT id, email, username, password, is_admin FROM app_users WHERE email = $1',
+        'SELECT email, username, password, is_admin FROM app_users WHERE email = $1',
         [email]
       );
       if (res.rowCount === 0) {
@@ -104,8 +102,7 @@ exports.handler = async (event, context) => {
       }
 
       const row = res.rows[0];
-      const match = await bcrypt.compare(password, row.password);
-      if (!match) {
+      if (row.password !== password) {
         return {
           statusCode: 200,
           headers: corsHeaders,
@@ -127,7 +124,7 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // --------- USER ANLEGEN (nur für Tim/Admin) ----------
+    // ---------- NEUEN USER ANLEGEN (nur für Admin, z.B. Tim) ----------
     if (action === 'createUser') {
       const adminEmail = (data.adminEmail || '').trim().toLowerCase();
       const email = (data.email || '').trim().toLowerCase();
@@ -142,7 +139,7 @@ exports.handler = async (event, context) => {
         };
       }
 
-      // prüfen, ob adminEmail admin ist
+      // Prüfen, ob Admin
       const adminRes = await pool.query(
         'SELECT is_admin FROM app_users WHERE email = $1',
         [adminEmail]
@@ -155,15 +152,14 @@ exports.handler = async (event, context) => {
         };
       }
 
-      const hash = await bcrypt.hash(password, 10);
       try {
         await pool.query(
           `INSERT INTO app_users (email, username, password, is_admin)
            VALUES ($1,$2,$3,false)`,
-          [email, username, hash]
+          [email, username, password]
         );
       } catch (e) {
-        if (e.code === '23505') { // unique_violation
+        if (e.code === '23505') {
           return {
             statusCode: 200,
             headers: corsHeaders,
@@ -180,6 +176,7 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Unbekannte Action
     return {
       statusCode: 400,
       headers: corsHeaders,
@@ -190,7 +187,7 @@ exports.handler = async (event, context) => {
     console.error('Error in auth function:', err);
     return {
       statusCode: 500,
-      headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       body: JSON.stringify({ error: err.message || 'Internal Server Error' })
     };
   }
