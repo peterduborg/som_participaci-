@@ -1,15 +1,32 @@
 // netlify/functions/proposals.js
 
 // Variante mit "pg" (klassischer Postgres-Client).
-// 1) npm install pg
-// 2) In Netlify als Umgebungsvariable setzen: DATABASE_URL
+// Nutzt die von Netlify/Neon gesetzten Connection-Strings:
+//  - DATABASE_URL (falls manuell gesetzt)
+//  - Database_URL (so taucht sie im Netlify-Log auf)
+//  - NETLIFY_DATABASE_URL
+//  - NETLIFY_DATABASE_URL_UNPOOLED
 
 const { Pool } = require('pg');
 
+// Connection-String aus den verfügbaren Umgebungsvariablen ermitteln
+const connectionString =
+  process.env.DATABASE_URL ||
+  process.env.Database_URL ||
+  process.env.NETLIFY_DATABASE_URL ||
+  process.env.NETLIFY_DATABASE_URL_UNPOOLED;
+
+if (!connectionString) {
+  console.error(
+    'Keine Datenbank-URL gefunden! Bitte eine der Variablen setzen: ' +
+    'DATABASE_URL, Database_URL, NETLIFY_DATABASE_URL oder NETLIFY_DATABASE_URL_UNPOOLED.'
+  );
+}
+
 // Connection-Pool nur einmal erzeugen
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  // optional:
+  connectionString,
+  // für Neon/Netlify meist erforderlich
   ssl: { rejectUnauthorized: false }
 });
 
@@ -35,7 +52,8 @@ exports.handler = async (event, context) => {
       const category = event.queryStringParameters?.category || null;
       const email = event.queryStringParameters?.email || null;
 
-      let sql = 'SELECT id, title, description, category, email, author, created_at FROM proposals';
+      let sql =
+        'SELECT id, title, description, category, email, author, created_at FROM proposals';
       const values = [];
       const where = [];
 
@@ -124,7 +142,6 @@ exports.handler = async (event, context) => {
       headers: corsHeaders,
       body: JSON.stringify({ error: 'Method not allowed' })
     };
-
   } catch (err) {
     console.error('Error in proposals function:', err);
     return {
