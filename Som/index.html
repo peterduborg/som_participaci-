@@ -362,14 +362,15 @@
     let proposals = [];
     let globalScores = {};
     let serverAverages = {};
-    let currentUser = {
-      username: '',
-      email: '',
-      verified: false,
-      isGuest: false,
-      votes: {},
-      satisfaction: {}
-    };
+  let currentUser = {
+    username: '',
+    email: '',
+    verified: false,
+    isGuest: false,
+    isAdmin: false,
+    votes: {},
+    satisfaction: {}
+  };
 
     // ----------- Tabs / Login -----------
     function showTab(tabName) {
@@ -398,40 +399,55 @@
     }
 
     async function login() {
-      let email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
-      const password = (document.getElementById('loginPassword').value || '').trim();
-
-      if (!email) {
-        alert('Introdueix el correu.');
+    const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
+    const password = (document.getElementById('loginPassword').value || '').trim();
+  
+    if (!email || !password) {
+      alert('Introdueix el correu i la contrasenya.');
+      return;
+    }
+  
+    try {
+      const res = await fetch(`${API_BASE}/auth`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'login',
+          email,
+          password
+        })
+      });
+  
+      const data = await res.json().catch(() => ({}));
+  
+      if (!res.ok || !data.success) {
+        const msg = data && data.error ? data.error : 'Error d\'inici de sessió';
+        alert(msg);
         return;
       }
-
-      let username = email.split('@')[0];
-
-      if (password) {
-        try {
-          const res = await fetch(AUTH_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-          });
-
-          const data = await res.json().catch(() => ({}));
-
-          if (!res.ok || !data.success) {
-            alert(data.error || 'Contrasenya incorrecta o error en l\'autenticació.');
-            return;
-          }
-
-          if (data.email) email = data.email;
-          if (data.username || data.name) username = data.username || data.name;
-
-        } catch (e) {
-          console.error('Auth error', e);
-          alert('Error de connexió amb el servidor d\'autenticació.');
-          return;
-        }
-      }
+  
+      currentUser.email = data.email;
+      currentUser.username = data.username || data.email.split('@')[0];
+      currentUser.isAdmin = !!data.isAdmin;
+      currentUser.verified = true;
+      currentUser.isGuest = false;
+  
+      document.getElementById('userBadge').textContent =
+        (currentUser.username || '?').charAt(0).toUpperCase();
+      document.getElementById('userName').textContent = currentUser.username || 'Usuari';
+      document.getElementById('userEmail').textContent = currentUser.email || '';
+  
+      // (Optional) Admin-spezifische UI später hier einblenden
+      // z.B.:
+      // const adminTab = document.getElementById('adminTab');
+      // if (adminTab) adminTab.style.display = currentUser.isAdmin ? 'inline-block' : 'none';
+  
+      await initAfterLogin();
+    } catch (e) {
+      console.error('Login failed:', e);
+      alert('No s\'ha pogut contactar amb el servidor d\'autenticació: ' + e);
+    }
+  }
 
       currentUser.email = email;
       currentUser.username = username;
@@ -447,19 +463,21 @@
     }
 
     function logout() {
-      currentUser = {
-        username: '',
-        email: '',
-        verified: false,
-        isGuest: false,
-        votes: {},
-        satisfaction: {}
-      };
-      proposals = [];
-      globalScores = {};
-      serverAverages = {};
-      showTab('login');
-    }
+    currentUser = {
+      username: '',
+      email: '',
+      verified: false,
+      isGuest: false,
+      isAdmin: false,
+      votes: {},
+      satisfaction: {}
+    };
+    proposals = [];
+    globalScores = {};
+    serverAverages = {};
+    showTab('login');
+  }
+
 
     async function initAfterLogin() {
       populateCategories();
