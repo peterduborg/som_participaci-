@@ -1,15 +1,26 @@
-// netlify/functions/auth.js
 const { Pool } = require('pg');
 
+const connectionString =
+  process.env.DATABASE_URL ||
+  process.env.Database_URL ||              // von der Neon-Extension
+  process.env.NETLIFY_DATABASE_URL ||
+  process.env.NETLIFY_DATABASE_URL_UNPOOLED;
+
 console.log(
-  'AUTH FUNCTION START, DATABASE_URL prefix:',
-  (process.env.DATABASE_URL || 'UNDEFINED').slice(0, 40)
+  'AUTH FUNCTION START, connectionString prefix:',
+  (connectionString || 'UNDEFINED').slice(0, 40)
 );
 
+if (!connectionString) {
+  // lieber sauberer Fehler als 127.0.0.1:5432
+  throw new Error('DATABASE_URL / Database_URL / NETLIFY_DATABASE_URL not set');
+}
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString,
   ssl: { rejectUnauthorized: false }
 });
+
 
 exports.handler = async (event, context) => {
   const corsHeaders = {
