@@ -1,25 +1,39 @@
 // netlify/functions/auth.js
 const { Pool } = require('pg');
 
-// --------- DB-Verbindung sauber initialisieren ----------
-const connectionString =
-  process.env.DATABASE_URL || process.env.NEON_DATABASE_URL || '';
+// ---- Connection-String aus den möglichen Umgebungsvariablen holen ----
+const connEnv =
+  process.env.DATABASE_URL ||
+  process.env.NEON_DATABASE_URL ||
+  process.env.NETLIFY_DATABASE_URL ||
+  'UNDEFINED';
 
 console.log(
   'AUTH FUNCTION START, connectionString prefix:',
-  connectionString ? connectionString.slice(0, 40) : 'EMPTY'
+  connEnv.slice(0, 40)
 );
 
-let pool = null;
-if (connectionString) {
-  pool = new Pool({
-    connectionString,
-    ssl: { rejectUnauthorized: false },
-  });
+if (
+  !process.env.DATABASE_URL &&
+  !process.env.NEON_DATABASE_URL &&
+  !process.env.NETLIFY_DATABASE_URL
+) {
+  console.error(
+    'DATABASE_URL / NEON_DATABASE_URL / NETLIFY_DATABASE_URL not set on server'
+  );
 }
 
-// --------------------------------------------------------
-// HTTPS-Handler
+// Effektiv verwendeter Connection-String
+const connectionString =
+  process.env.DATABASE_URL ||
+  process.env.NEON_DATABASE_URL ||
+  process.env.NETLIFY_DATABASE_URL;
+
+const pool = new Pool({
+  connectionString,
+  ssl: { rejectUnauthorized: false },
+});
+
 exports.handler = async (event, context) => {
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -27,6 +41,7 @@ exports.handler = async (event, context) => {
     'Access-Control-Allow-Methods': 'POST,OPTIONS',
   };
 
+  // CORS Preflight
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers: corsHeaders, body: '' };
   }
@@ -50,7 +65,7 @@ exports.handler = async (event, context) => {
   let data;
   try {
     data = JSON.parse(event.body);
-  } catch (e) {
+  } catch {
     return {
       statusCode: 400,
       headers: corsHeaders,
@@ -58,47 +73,48 @@ exports.handler = async (event, context) => {
     };
   }
 
-  // Falls ENV nicht gesetzt → NICHT versuchen auf 127.0.0.1 zu gehen
-  if (!connectionString || !pool) {
-    console.error('AUTH: No DATABASE_URL / NEON_DATABASE_URL set!');
-    return {
-      statusCode: 500,
-      headers: corsHeaders,
-      body: JSON.stringify({
-        ok: false,
-        error: 'DATABASE_URL / NEON_DATABASE_URL not set on server',
-      }),
-    };
-  }
-
   const action = data.action;
 
   try {
-    // Tabelle anlegen (Schema mit password_hash)
+    // -------------------------------------------------------------
+    // 1. Tabelle anlegen, falls sie noch nicht existiert
+    //    (Einfache Variante: Passwort im Klartext – später gerne mit Hash)
+    // -------------------------------------------------------------
     await pool.query(`
       CREATE TABLE IF NOT EXISTS app_users (
-        id           SERIAL PRIMARY KEY,
-        email        TEXT UNIQUE NOT NULL,
-        username     TEXT NOT NULL,
-        password_hash TEXT NOT NULL,
-        is_admin     BOOLEAN NOT NULL DEFAULT false,
-        created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+        id         SERIAL PRIMARY KEY,
+        email      TEXT UNIQUE NOT NULL,
+        username   TEXT NOT NULL,
+        password   TEXT NOT NULL,
+        is_admin   BOOLEAN NOT NULL DEFAULT false,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
       );
     `);
 
-    // Default-Admin Tim
+    // -------------------------------------------------------------
+    // 2. Default-Admin anlegen: tim@gmail.com / 12341234
+    // -------------------------------------------------------------
     const defaultEmail = 'tim@gmail.com';
     const defaultPass  = '12341234';
     const defaultUser  = 'Tim';
 
-    await pool.query(
-      `INSERT INTO app_users (email, username, password_hash, is_admin)
-       VALUES ($1,$2,$3,true)
-       ON CONFLICT (email) DO NOTHING`,
-      [defaultEmail, defaultUser, defaultPass]
+    const existing = await pool.query(
+      'SELECT id FROM app_users WHERE email = $1',
+      [defaultEmail]
     );
 
-    // -------------- LOGIN ----------------
+    if (existing.rowCount === 0) {
+      await pool.query(
+        `INSERT INTO app_users (email, username, password, is_admin)
+         VALUES ($1, $2, $3, true)`,
+        [defaultEmail, defaultUser, defaultPass]
+      );
+      console.log('Default admin user created:', defaultEmail);
+    }
+
+    // -------------------------------------------------------------
+    // 3. LOGIN
+    // -------------------------------------------------------------
     if (action === 'login') {
       const email = (data.email || '').trim().toLowerCase();
       const password = (data.password || '').trim();
@@ -115,9 +131,7 @@ exports.handler = async (event, context) => {
       }
 
       const res = await pool.query(
-        `SELECT email, username, password_hash, is_admin
-           FROM app_users
-          WHERE email = $1`,
+        'SELECT email, username, password, is_admin FROM app_users WHERE email = $1',
         [email]
       );
 
@@ -131,8 +145,7 @@ exports.handler = async (event, context) => {
 
       const row = res.rows[0];
 
-      // Momentan Klartext-Vergleich – später Hashing verbessern
-      if (row.password_hash !== password) {
+      if (row.password !== password) {
         return {
           statusCode: 200,
           headers: corsHeaders,
@@ -140,6 +153,7 @@ exports.handler = async (event, context) => {
         };
       }
 
+      // Erfolg
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -154,7 +168,9 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // -------------- USER ANLEGEN (nur Admin) ---------
+    // -------------------------------------------------------------
+    // 4. NEUEN USER ANLEGEN (nur Admin, z.B. Tim)
+    // -------------------------------------------------------------
     if (action === 'createUser') {
       const adminEmail = (data.adminEmail || '').trim().toLowerCase();
       const email = (data.email || '').trim().toLowerCase();
@@ -169,10 +185,12 @@ exports.handler = async (event, context) => {
         };
       }
 
+      // Prüfen, ob adminEmail tatsächlich Admin ist
       const adminRes = await pool.query(
         'SELECT is_admin FROM app_users WHERE email = $1',
         [adminEmail]
       );
+
       if (adminRes.rowCount === 0 || !adminRes.rows[0].is_admin) {
         return {
           statusCode: 403,
@@ -183,16 +201,20 @@ exports.handler = async (event, context) => {
 
       try {
         await pool.query(
-          `INSERT INTO app_users (email, username, password_hash, is_admin)
-           VALUES ($1,$2,$3,false)`,
+          `INSERT INTO app_users (email, username, password, is_admin)
+           VALUES ($1, $2, $3, false)`,
           [email, username, password]
         );
       } catch (e) {
         if (e.code === '23505') {
+          // unique_violation
           return {
             statusCode: 200,
             headers: corsHeaders,
-            body: JSON.stringify({ ok: false, error: 'Usuari ja existent' }),
+            body: JSON.stringify({
+              ok: false,
+              error: 'Usuari ja existent',
+            }),
           };
         }
         throw e;
@@ -205,7 +227,9 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Unbekannte Action
+    // -------------------------------------------------------------
+    // 5. Unbekannte Action
+    // -------------------------------------------------------------
     return {
       statusCode: 400,
       headers: corsHeaders,
@@ -216,7 +240,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ok: false, error: err.message || 'Internal Server Error' }),
+      body: JSON.stringify({ error: err.message || 'Internal Server Error' }),
     };
   }
 };
