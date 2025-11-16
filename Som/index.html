@@ -88,7 +88,7 @@
     .user-text { min-width:0; }
     .user-text div:first-child { font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .user-text small { color:#555; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; }
-    .user-actions { display:flex; gap:8px; flex-shrink:0; }
+    .user-actions { display:flex; gap:8px; flex-shrink:0; flex-wrap:wrap; }
 
     .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
     .tab-btn { padding: 8px 14px; border-radius: 20px; border: 1px solid #ccc; background: #f8f9fa; cursor: pointer; font-size: 14px; }
@@ -152,7 +152,7 @@
     .result-label { display:flex; justify-content:space-between; font-size:13px; margin-bottom:3px; gap:8px; }
     .result-label span:first-child { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .bar-container { width:100%; height:16px; border-radius:999px; background:#e9ecef; overflow:hidden; font-size:11px; line-height:16px; }
-    .bar-fill { height:100%; background: linear-gradient(90deg,#007bff,#00c6ff); color:white; text-align:right; padding-right:6px; white-space:nowrap; }
+    .bar-fill { height:100%; color:white; text-align:right; padding-right:6px; white-space:nowrap; }
 
     @media (max-width: 900px) {
       .two-cols { grid-template-columns: 1fr; }
@@ -188,15 +188,15 @@
         <div class="auth-form">
           <h2 style="text-align:center;margin-bottom:20px">Iniciar Sessió</h2>
           <p style="font-size:13px;color:#555;margin-bottom:15px">
-            Entra amb el teu correu. Si introdueixes una contrasenya, es comprovarà contra el servidor; si la deixes buida, l'accés és només de prova.
+            Entra amb el teu correu i la teva contrasenya.
           </p>
           <div class="form-group">
             <label>Correu electrònic</label>
             <input type="email" id="loginEmail" placeholder="el.teu@correu.cat" />
           </div>
           <div class="form-group">
-            <label>Contrasenya (opcional)</label>
-            <input type="password" id="loginPassword" placeholder="•••••••• (opcional)" />
+            <label>Contrasenya</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" />
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="btn btn-wide" onclick="login()">Accedir</button>
@@ -215,8 +215,45 @@
             </div>
           </div>
           <div class="user-actions">
+            <button class="btn btn-secondary" onclick="togglePasswordPanel()">Canviar contrasenya</button>
+            <button class="btn btn-secondary hidden" id="btnAdminPanel" onclick="toggleAdminPanel()">Gestió d'usuaris</button>
             <button class="btn btn-secondary" onclick="logout()">Sortir</button>
           </div>
+        </div>
+
+        <!-- Password change panel -->
+        <div id="passwordPanel" class="panel hidden" style="margin-bottom:20px;">
+          <h2>Canviar contrasenya</h2>
+          <div class="form-group">
+            <label>Contrasenya actual</label>
+            <input type="password" id="oldPassword" />
+          </div>
+          <div class="form-group">
+            <label>Nova contrasenya</label>
+            <input type="password" id="newPassword" />
+          </div>
+          <button class="btn" onclick="changePassword()">Desar nova contrasenya</button>
+        </div>
+
+        <!-- Admin panel: create users -->
+        <div id="adminPanel" class="panel hidden" style="margin-bottom:20px;">
+          <h2>Crear un nou usuari</h2>
+          <p class="info" style="margin-bottom:10px;">
+            Com a administrador pots donar d'alta nous usuaris amb accés a l'eina.
+          </p>
+          <div class="form-group">
+            <label>Correu del nou usuari</label>
+            <input type="email" id="newUserEmail" placeholder="nou.usuari@exemple.cat" />
+          </div>
+          <div class="form-group">
+            <label>Nom de l'usuari</label>
+            <input type="text" id="newUserName" placeholder="Nom i cognoms" />
+          </div>
+          <div class="form-group">
+            <label>Contrasenya inicial</label>
+            <input type="password" id="newUserPassword" />
+          </div>
+          <button class="btn" onclick="createNewUser()">Crear usuari</button>
         </div>
 
         <div class="tabs">
@@ -240,14 +277,32 @@
             </div>
 
             <div class="panel">
-              <h2>Punts assignats</h2>
-              <p class="info">Per tenir una visió equilibrada, pots repartir un màxim de <strong>30 punts</strong> entre les diferents propostes.</p>
-              <div class="info"><strong>Punts assignats:</strong> <span id="assignedPoints">0</span>/30</div>
-              <p class="small-note">Els punts serveixen per indicar la teva prioritat relativa entre les propostes.</p>
-              <div class="panel" style="margin-top:15px;">
-                <h3>Resum de la teva valoració</h3>
-                <div id="summaryBox" class="info">Encara no has assignat punts. Quan comencis a votar propostes, aquí veuràs un resum.</div>
-              </div>
+              <h2>Prioritat i punts de votació</h2>
+
+              <p class="info">Aquesta eina està pensada per combinar:</p>
+              <ul class="info" style="margin-left:18px; margin-top:4px;">
+                <li>la vostra valoració de la necessitat d'acció en diferents àmbits;</li>
+                <li>un sistema de propostes concretes;</li>
+                <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
+              </ul>
+
+              <p class="info" style="margin-top:8px;">
+                Així podem canalitzar, avaluar i prioritzar les bones idees per fer créixer
+                encara més l'atractiu del nostre poble, Matadepera.
+              </p>
+
+              <p class="info" style="margin-top:8px;">
+                Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes.
+                Els teus vots poden ser tant a favor com en contra.
+              </p>
+
+              <p class="info" style="margin-top:8px;">
+                <strong>Has fet servir <span id="usedPointsInfoTop">0</span> punts dels teus 30 disponibles.</strong>
+              </p>
+
+              <p class="small-note" style="margin-top:10px;">
+                <strong>Punts assignats totals:</strong> <span id="assignedPoints">0</span>/30
+              </p>
             </div>
           </div>
         </div>
@@ -300,12 +355,27 @@
             </div>
             <div class="panel">
               <h3>Explicació del funcionament</h3>
+
               <p class="info">Aquesta eina està pensada per combinar:</p>
               <ul class="info" style="margin-left:18px; margin-top:4px;">
-                <li>Una valoració de <strong>necessitat d'acció</strong> per àmbits.</li>
-                <li>Un sistema de <strong>propostes concretes</strong> amb punts de prioritat.</li>
+                <li>la vostra valoració de la necessitat d'acció en diferents àmbits;</li>
+                <li>un sistema de propostes concretes;</li>
+                <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
               </ul>
-              <p class="info" style="margin-top:8px;">Amb la connexió a Neon, les dades es poden agregar i exportar per treballar-les a l’Ajuntament o al Ple.</p>
+
+              <p class="info" style="margin-top:8px;">
+                Així podem canalitzar, avaluar i prioritzar les bones idees per fer créixer
+                encara més l'atractiu del nostre poble, Matadepera.
+              </p>
+
+              <p class="info" style="margin-top:8px;">
+                Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes.
+                Els teus vots poden ser tant a favor com en contra.
+              </p>
+
+              <p class="info" style="margin-top:8px;">
+                <strong>Has fet servir <span id="usedPointsInfo">0</span> punts dels teus 30 disponibles.</strong>
+              </p>
             </div>
           </div>
         </div>
@@ -362,15 +432,15 @@
     let proposals = [];
     let globalScores = {};
     let serverAverages = {};
-  let currentUser = {
-    username: '',
-    email: '',
-    verified: false,
-    isGuest: false,
-    isAdmin: false,
-    votes: {},
-    satisfaction: {}
-  };
+    let currentUser = {
+      username: '',
+      email: '',
+      verified: false,
+      isGuest: false,
+      isAdmin: false,
+      votes: {},
+      satisfaction: {}
+    };
 
     // ----------- Tabs / Login -----------
     function showTab(tabName) {
@@ -398,77 +468,83 @@
       if (tabName === 'resultats') updateResults();
     }
 
-async function login() {
-  const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
-  const password = (document.getElementById('loginPassword').value || '').trim();
+    async function login() {
+      const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
+      const password = (document.getElementById('loginPassword').value || '').trim();
 
-  if (!email || !password) {
-    alert('Introdueix correu i contrasenya.');
-    return;
-  }
+      if (!email || !password) {
+        alert('Introdueix correu i contrasenya.');
+        return;
+      }
 
-  try {
-    const res = await fetch(`${API_BASE}/auth`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'login',
-        email,
-        password
-      })
-    });
+      try {
+        const res = await fetch(`${API_BASE}/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'login',
+            email,
+            password
+          })
+        });
 
-    if (!res.ok) {
-      let info = null;
-      try { info = await res.json(); } catch (e) {}
-      const msg = info && info.error ? info.error : `Error HTTP ${res.status}`;
-      alert('Error en iniciar sessió: ' + msg);
-      return;
+        if (!res.ok) {
+          let info = null;
+          try { info = await res.json(); } catch (e) {}
+          const msg = info && info.error ? info.error : `Error HTTP ${res.status}`;
+          alert('Error en iniciar sessió: ' + msg);
+          return;
+        }
+
+        const data = await res.json();
+
+        if (!data.ok) {
+          alert(data.error || 'Credencials incorrectes.');
+          return;
+        }
+
+        const user = data.user || {};
+        currentUser.email = user.email || email;
+        currentUser.username = user.username || (email.split('@')[0]);
+        currentUser.verified = true;
+        currentUser.isGuest = false;
+        currentUser.isAdmin = !!user.is_admin;
+
+        document.getElementById('userBadge').textContent =
+          (currentUser.username || '?').charAt(0).toUpperCase();
+        document.getElementById('userName').textContent = currentUser.username || 'Usuari';
+        document.getElementById('userEmail').textContent = currentUser.email || '';
+
+        const adminBtn = document.getElementById('btnAdminPanel');
+        if (adminBtn) {
+          if (currentUser.isAdmin) adminBtn.classList.remove('hidden');
+          else adminBtn.classList.add('hidden');
+        }
+
+        await initAfterLogin();
+      } catch (err) {
+        console.error('Login error', err);
+        alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
+      }
     }
-
-    const data = await res.json();
-
-    // Erwartet: { ok: true, user: { email, username, is_admin? } }
-    if (!data.ok) {
-      alert(data.error || 'Credencials incorrectes.');
-      return;
-    }
-
-    const user = data.user || {};
-    currentUser.email = user.email || email;
-    currentUser.username = user.username || (email.split('@')[0]);
-    currentUser.verified = true;
-    currentUser.isGuest = false;
-
-    document.getElementById('userBadge').textContent =
-      (currentUser.username || '?').charAt(0).toUpperCase();
-    document.getElementById('userName').textContent = currentUser.username || 'Usuari';
-    document.getElementById('userEmail').textContent = currentUser.email || '';
-
-    await initAfterLogin();    // lädt Kategorien, Proposals, Votes usw.
-  } catch (err) {
-    console.error('Login error', err);
-    alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
-  }
-}
-
 
     function logout() {
-    currentUser = {
-      username: '',
-      email: '',
-      verified: false,
-      isGuest: false,
-      isAdmin: false,
-      votes: {},
-      satisfaction: {}
-    };
-    proposals = [];
-    globalScores = {};
-    serverAverages = {};
-    showTab('login');
-  }
-
+      currentUser = {
+        username: '',
+        email: '',
+        verified: false,
+        isGuest: false,
+        isAdmin: false,
+        votes: {},
+        satisfaction: {}
+      };
+      proposals = [];
+      globalScores = {};
+      serverAverages = {};
+      document.getElementById('passwordPanel').classList.add('hidden');
+      document.getElementById('adminPanel').classList.add('hidden');
+      showTab('login');
+    }
 
     async function initAfterLogin() {
       populateCategories();
@@ -487,7 +563,129 @@ async function login() {
       renderMyVotes();
       updateResults();
 
+      updatePointsInfo();
       showTab('participacio');
+    }
+
+    // ----------- Password + Admin UI -----------
+    function togglePasswordPanel() {
+      const panel = document.getElementById('passwordPanel');
+      if (!panel) return;
+      panel.classList.toggle('hidden');
+    }
+
+    async function changePassword() {
+      if (!currentUser.email) {
+        alert('Cal iniciar sessió per canviar la contrasenya.');
+        return;
+      }
+      const oldPw = (document.getElementById('oldPassword').value || '').trim();
+      const newPw = (document.getElementById('newPassword').value || '').trim();
+
+      if (!oldPw || !newPw) {
+        alert('Introdueix la contrasenya actual i la nova.');
+        return;
+      }
+      if (oldPw === newPw) {
+        alert('La nova contrasenya ha de ser diferent de l\'actual.');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'changePassword',
+            email: currentUser.email,
+            oldPassword: oldPw,
+            newPassword: newPw
+          })
+        });
+
+        if (!res.ok) {
+          let info = null;
+          try { info = await res.json(); } catch (e) {}
+          const msg = info && info.error ? info.error : `Error HTTP ${res.status}`;
+          alert('No s\'ha pogut canviar la contrasenya: ' + msg);
+          return;
+        }
+
+        const data = await res.json();
+        if (!data.ok) {
+          alert(data.error || 'No s\'ha pogut canviar la contrasenya.');
+          return;
+        }
+
+        alert('Contrasenya actualitzada correctament.');
+        document.getElementById('oldPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('passwordPanel').classList.add('hidden');
+      } catch (e) {
+        console.error('changePassword error', e);
+        alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
+      }
+    }
+
+    function toggleAdminPanel() {
+      if (!currentUser.isAdmin) {
+        alert('Només els administradors poden gestionar usuaris.');
+        return;
+      }
+      const panel = document.getElementById('adminPanel');
+      if (!panel) return;
+      panel.classList.toggle('hidden');
+    }
+
+    async function createNewUser() {
+      if (!currentUser.isAdmin) {
+        alert('Només els administradors poden crear usuaris.');
+        return;
+      }
+      const email = (document.getElementById('newUserEmail').value || '').trim().toLowerCase();
+      const username = (document.getElementById('newUserName').value || '').trim();
+      const password = (document.getElementById('newUserPassword').value || '').trim();
+
+      if (!email || !username || !password) {
+        alert('Cal omplir el correu, el nom i la contrasenya inicial.');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'createUser',
+            adminEmail: currentUser.email,
+            email,
+            username,
+            password
+          })
+        });
+
+        if (!res.ok) {
+          let info = null;
+          try { info = await res.json(); } catch (e) {}
+          const msg = info && info.error ? info.error : `Error HTTP ${res.status}`;
+          alert('No s\'ha pogut crear l\'usuari: ' + msg);
+          return;
+        }
+
+        const data = await res.json();
+        if (!data.ok) {
+          alert(data.error || 'No s\'ha pogut crear l\'usuari.');
+          return;
+        }
+
+        alert('Usuari creat correctament.');
+        document.getElementById('newUserEmail').value = '';
+        document.getElementById('newUserName').value = '';
+        document.getElementById('newUserPassword').value = '';
+      } catch (e) {
+        console.error('createNewUser error', e);
+        alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
+      }
     }
 
     // ----------- Kategorien / Mitjana -----------
@@ -621,7 +819,7 @@ async function login() {
           category: p.category,
           desc: p.description || p.desc || '',
           author: p.author || p.username || '',
-          email: p.email || p.user_email || '',
+          email: (p.email || p.user_email || '').toLowerCase(),
           createdAt: p.created_at || p.createdAt || new Date().toISOString()
         })).filter(p => p.id && p.title);
       } catch (e) {
@@ -638,6 +836,10 @@ async function login() {
       const catTitle = cat ? cat.title : p.category;
       const myVote = (currentUser.votes || {})[String(p.id)] || 0;
       const dateTxt = new Date(p.createdAt).toLocaleDateString('ca-ES');
+      const canDelete = (p.email || '') === (currentUser.email || '').toLowerCase();
+      const deleteBtnHtml = canDelete
+        ? `<button class="btn btn-secondary" style="font-size:11px;padding:4px 8px;" onclick="deleteProposal('${p.id}')">Esborrar</button>`
+        : '';
       div.innerHTML = `
         <div class="proposal-header">
           <div>
@@ -656,7 +858,10 @@ async function login() {
             <button class="vote-btn ${myVote===2?'active-pos':''}"  onclick="setVote('${p.id}',2,this)">+2</button>
             <button class="vote-btn ${myVote===3?'active-pos':''}"  onclick="setVote('${p.id}',3,this)">+3</button>
           </div>
-          <div class="vote-info">Punts nets assignats: <span>${myVote}</span></div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div class="vote-info">Punts nets assignats: <span>${myVote}</span></div>
+            ${deleteBtnHtml}
+          </div>
         </div>`;
       return div;
     }
@@ -664,7 +869,7 @@ async function login() {
     function renderProposals() {
       const list = document.getElementById('myProposalsList');
       if (!list) return;
-      const mine = proposals.filter(p => (p.email || '') === (currentUser.email || ''));
+      const mine = proposals.filter(p => (p.email || '') === (currentUser.email || '').toLowerCase());
       if (mine.length === 0) {
         list.innerHTML = 'Encara no has creat cap proposta. Comença afegint-ne una.';
         return;
@@ -723,7 +928,7 @@ async function login() {
         category: created.category,
         desc: created.description || created.desc || desc,
         author: created.author || created.username || payload.author,
-        email: created.email || created.user_email || payload.email,
+        email: (created.email || created.user_email || payload.email || '').toLowerCase(),
         createdAt: created.created_at || created.createdAt || new Date().toISOString()
       };
 
@@ -734,6 +939,7 @@ async function login() {
       renderProposals();
       renderMyVotes();
       updateResults();
+      updatePointsInfo();
       alert('Proposta afegida correctament.');
     }
 
@@ -761,6 +967,44 @@ async function login() {
         box.classList.add('hidden');
         btn.textContent = "Veure / amagar propostes d'aquesta categoria";
       }
+    }
+
+    // ----------- Delete proposal -----------
+    async function deleteProposal(proposalId) {
+      const p = proposals.find(pr => String(pr.id) === String(proposalId));
+      if (!p) return;
+
+      const ok = confirm("Vols esborrar aquesta proposta de manera definitiva? Aquesta acció no es pot desfer.");
+      if (!ok) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/proposals`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: proposalId, email: currentUser.email })
+        });
+        if (!res.ok) {
+          const txt = await res.text();
+          alert(`No s'ha pogut esborrar la proposta: ${txt || 'error'}`);
+          return;
+        }
+      } catch (e) {
+        console.error('deleteProposal error', e);
+        alert('No s\'ha pogut contactar amb el servidor de propostes.');
+        return;
+      }
+
+      proposals = proposals.filter(pr => String(pr.id) !== String(proposalId));
+      if (currentUser.votes && currentUser.votes[proposalId]) {
+        delete currentUser.votes[proposalId];
+      }
+      if (globalScores && globalScores[proposalId]) {
+        delete globalScores[proposalId];
+      }
+      renderProposals();
+      renderMyVotes();
+      updateResults();
+      updatePointsInfo();
     }
 
     // ----------- Votes / Resultats -----------
@@ -823,13 +1067,11 @@ async function login() {
     function updatePointsInfo() {
       const total = getCurrentTotalPoints();
       const assignedSpan = document.getElementById('assignedPoints');
-      const sBox = document.getElementById('summaryBox');
       if (assignedSpan) assignedSpan.textContent = total;
-      if (sBox) {
-        sBox.innerHTML = total === 0
-          ? 'Encara no has assignat punts. Quan comencis a votar propostes, aquí veuràs un resum.'
-          : `Has assignat <strong>${total}</strong> punts (màxim ${MAX_POINTS}). Intenta repartir-los segons la teva prioritat real. Pots ajustar-los en qualsevol moment.`;
-      }
+      const usedTop = document.getElementById('usedPointsInfoTop');
+      if (usedTop) usedTop.textContent = total;
+      const usedRight = document.getElementById('usedPointsInfo');
+      if (usedRight) usedRight.textContent = total;
     }
 
     async function setVote(proposalId, delta, btn) {
@@ -894,25 +1136,42 @@ async function login() {
         box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>';
         return;
       }
-      const total = values.reduce((a, b) => a + b, 0) || 1;
+
       const rows = proposals
         .map(p => {
           const sum = all[String(p.id)] || 0;
-          const pct = Math.round((sum / total) * 1000) / 10;
-          return { id: p.id, title: p.title, sum, pct };
+          return { id: p.id, title: p.title, sum };
         })
         .sort((a, b) => b.sum - a.sum);
+
       if (rows.length === 0) {
         box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>';
         return;
       }
-      box.innerHTML = rows.map(r => `
-        <div class="result-bar">
-          <div class="result-label"><span>${r.title}</span><span>${r.pct}%</span></div>
-          <div class="bar-container">
-            <div class="bar-fill" style="width:${Math.max(0, r.pct)}%">${r.sum} punts</div>
-          </div>
-        </div>`).join('');
+
+      const maxPos = Math.max(...rows.map(r => Math.max(0, r.sum))) || 1;
+
+      box.innerHTML = rows.map(r => {
+        let width;
+        let color;
+        if (r.sum > 0) {
+          width = Math.max(5, (r.sum / maxPos) * 100);
+          color = '#007bff';
+        } else if (r.sum < 0) {
+          width = 5;          // kleinster Balken
+          color = '#dc3545';  // rot
+        } else {
+          width = 5;          // kleinster Balken bei 0
+          color = '#6c757d';  // neutrale Farbe
+        }
+        return `
+          <div class="result-bar">
+            <div class="result-label"><span>${r.title}</span><span>${r.sum} punts</span></div>
+            <div class="bar-container">
+              <div class="bar-fill" style="width:${width}%;background:${color};">&nbsp;</div>
+            </div>
+          </div>`;
+      }).join('');
     }
 
     (function init() {
