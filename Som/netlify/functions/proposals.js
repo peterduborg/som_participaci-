@@ -1,15 +1,26 @@
 // netlify/functions/proposals.js
 const { Pool } = require('pg');
 
+const connectionString =
+  process.env.DATABASE_URL ||
+  process.env.Database_URL ||
+  process.env.NETLIFY_DATABASE_URL ||
+  process.env.NETLIFY_DATABASE_URL_UNPOOLED;
+
 console.log(
-  'PROPOSALS FUNCTION START, DATABASE_URL prefix:',
-  (process.env.DATABASE_URL || 'UNDEFINED').slice(0, 40)
+  'PROPOSALS FUNCTION START, connectionString prefix:',
+  (connectionString || 'UNDEFINED').slice(0, 40)
 );
 
+if (!connectionString) {
+  throw new Error('DATABASE_URL / Database_URL / NETLIFY_DATABASE_URL not set');
+}
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString,
   ssl: { rejectUnauthorized: false }
 });
+
 
 exports.handler = async (event, context) => {
   const corsHeaders = {
