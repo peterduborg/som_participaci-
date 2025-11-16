@@ -1,44 +1,21 @@
 // netlify/functions/auth.js
 const { Pool } = require('pg');
 
-// ---- Connection-String aus den möglichen Umgebungsvariablen holen ----
-const connEnv =
-  process.env.DATABASE_URL ||
-  process.env.NEON_DATABASE_URL ||
-  process.env.NETLIFY_DATABASE_URL ||
-  'UNDEFINED';
-
 console.log(
-  'AUTH FUNCTION START, connectionString prefix:',
-  connEnv.slice(0, 40)
+  'AUTH FUNCTION START, DATABASE_URL prefix:',
+  (process.env.DATABASE_URL || 'UNDEFINED').slice(0, 40)
 );
 
-if (
-  !process.env.DATABASE_URL &&
-  !process.env.NEON_DATABASE_URL &&
-  !process.env.NETLIFY_DATABASE_URL
-) {
-  console.error(
-    'DATABASE_URL / NEON_DATABASE_URL / NETLIFY_DATABASE_URL not set on server'
-  );
-}
-
-// Effektiv verwendeter Connection-String
-const connectionString =
-  process.env.DATABASE_URL ||
-  process.env.NEON_DATABASE_URL ||
-  process.env.NETLIFY_DATABASE_URL;
-
 const pool = new Pool({
-  connectionString,
-  ssl: { rejectUnauthorized: false },
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
 });
 
 exports.handler = async (event, context) => {
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST,OPTIONS',
+    'Access-Control-Allow-Methods': 'POST,OPTIONS'
   };
 
   // CORS Preflight
@@ -50,7 +27,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 405,
       headers: corsHeaders,
-      body: JSON.stringify({ error: 'Method not allowed' }),
+      body: JSON.stringify({ error: 'Method not allowed' })
     };
   }
 
@@ -58,7 +35,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 400,
       headers: corsHeaders,
-      body: JSON.stringify({ error: 'Missing body' }),
+      body: JSON.stringify({ error: 'Missing body' })
     };
   }
 
@@ -69,17 +46,14 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 400,
       headers: corsHeaders,
-      body: JSON.stringify({ error: 'Invalid JSON' }),
+      body: JSON.stringify({ error: 'Invalid JSON' })
     };
   }
 
   const action = data.action;
 
   try {
-    // -------------------------------------------------------------
-    // 1. Tabelle anlegen, falls sie noch nicht existiert
-    //    (Einfache Variante: Passwort im Klartext – später gerne mit Hash)
-    // -------------------------------------------------------------
+    // Tabelle für User (Passwort aktuell im Klartext – Demo!)
     await pool.query(`
       CREATE TABLE IF NOT EXISTS app_users (
         id         SERIAL PRIMARY KEY,
@@ -91,9 +65,7 @@ exports.handler = async (event, context) => {
       );
     `);
 
-    // -------------------------------------------------------------
-    // 2. Default-Admin anlegen: tim@gmail.com / 12341234
-    // -------------------------------------------------------------
+    // Default-Admin tim@gmail.com / 12341234
     const defaultEmail = 'tim@gmail.com';
     const defaultPass  = '12341234';
     const defaultUser  = 'Tim';
@@ -102,19 +74,15 @@ exports.handler = async (event, context) => {
       'SELECT id FROM app_users WHERE email = $1',
       [defaultEmail]
     );
-
     if (existing.rowCount === 0) {
       await pool.query(
         `INSERT INTO app_users (email, username, password, is_admin)
-         VALUES ($1, $2, $3, true)`,
+         VALUES ($1,$2,$3,true)`,
         [defaultEmail, defaultUser, defaultPass]
       );
-      console.log('Default admin user created:', defaultEmail);
     }
 
-    // -------------------------------------------------------------
-    // 3. LOGIN
-    // -------------------------------------------------------------
+    // ---------- LOGIN ----------
     if (action === 'login') {
       const email = (data.email || '').trim().toLowerCase();
       const password = (data.password || '').trim();
@@ -123,37 +91,31 @@ exports.handler = async (event, context) => {
         return {
           statusCode: 400,
           headers: corsHeaders,
-          body: JSON.stringify({
-            ok: false,
-            error: 'Email i contrasenya requerits',
-          }),
+          body: JSON.stringify({ ok: false, error: 'Email i contrasenya requerits' })
         };
       }
 
       const res = await pool.query(
-        'SELECT email, username, password, is_admin FROM app_users WHERE email = $1',
+        'SELECT email, username, password, is_admin FROM app_users WHERE LOWER(email) = LOWER($1)',
         [email]
       );
-
       if (res.rowCount === 0) {
         return {
           statusCode: 200,
           headers: corsHeaders,
-          body: JSON.stringify({ ok: false, error: 'Usuari no trobat' }),
+          body: JSON.stringify({ ok: false, error: 'Usuari no trobat' })
         };
       }
 
       const row = res.rows[0];
-
       if (row.password !== password) {
         return {
           statusCode: 200,
           headers: corsHeaders,
-          body: JSON.stringify({ ok: false, error: 'Contrasenya incorrecta' }),
+          body: JSON.stringify({ ok: false, error: 'Contrasenya incorrecta' })
         };
       }
 
-      // Erfolg
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -162,15 +124,13 @@ exports.handler = async (event, context) => {
           user: {
             email: row.email,
             username: row.username,
-            is_admin: row.is_admin,
-          },
-        }),
+            is_admin: row.is_admin
+          }
+        })
       };
     }
 
-    // -------------------------------------------------------------
-    // 4. NEUEN USER ANLEGEN (nur Admin, z.B. Tim)
-    // -------------------------------------------------------------
+    // ---------- NEUEN USER ANLEGEN (nur für Admins) ----------
     if (action === 'createUser') {
       const adminEmail = (data.adminEmail || '').trim().toLowerCase();
       const email = (data.email || '').trim().toLowerCase();
@@ -181,40 +141,35 @@ exports.handler = async (event, context) => {
         return {
           statusCode: 400,
           headers: corsHeaders,
-          body: JSON.stringify({ error: 'Falten camps' }),
+          body: JSON.stringify({ error: 'Falten camps' })
         };
       }
 
-      // Prüfen, ob adminEmail tatsächlich Admin ist
+      // Prüfen, ob Admin
       const adminRes = await pool.query(
-        'SELECT is_admin FROM app_users WHERE email = $1',
+        'SELECT is_admin FROM app_users WHERE LOWER(email) = LOWER($1)',
         [adminEmail]
       );
-
       if (adminRes.rowCount === 0 || !adminRes.rows[0].is_admin) {
         return {
           statusCode: 403,
           headers: corsHeaders,
-          body: JSON.stringify({ error: 'No autoritzat' }),
+          body: JSON.stringify({ error: 'No autoritzat' })
         };
       }
 
       try {
         await pool.query(
           `INSERT INTO app_users (email, username, password, is_admin)
-           VALUES ($1, $2, $3, false)`,
+           VALUES ($1,$2,$3,false)`,
           [email, username, password]
         );
       } catch (e) {
         if (e.code === '23505') {
-          // unique_violation
           return {
             statusCode: 200,
             headers: corsHeaders,
-            body: JSON.stringify({
-              ok: false,
-              error: 'Usuari ja existent',
-            }),
+            body: JSON.stringify({ ok: false, error: 'Usuari ja existent' })
           };
         }
         throw e;
@@ -223,24 +178,70 @@ exports.handler = async (event, context) => {
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ok: true }),
+        body: JSON.stringify({ ok: true })
       };
     }
 
-    // -------------------------------------------------------------
-    // 5. Unbekannte Action
-    // -------------------------------------------------------------
+    // ---------- PASSWORT ÄNDERN ----------
+    if (action === 'changePassword') {
+      const email       = (data.email || '').trim().toLowerCase();
+      const oldPassword = (data.oldPassword || '').trim();
+      const newPassword = (data.newPassword || '').trim();
+
+      if (!email || !oldPassword || !newPassword) {
+        return {
+          statusCode: 400,
+          headers: corsHeaders,
+          body: JSON.stringify({ ok: false, error: 'Falten dades per canviar la contrasenya.' })
+        };
+      }
+
+      const userRes = await pool.query(
+        'SELECT id, password FROM app_users WHERE LOWER(email) = LOWER($1)',
+        [email]
+      );
+      if (userRes.rowCount === 0) {
+        return {
+          statusCode: 404,
+          headers: corsHeaders,
+          body: JSON.stringify({ ok: false, error: 'Usuari no trobat.' })
+        };
+      }
+
+      const user = userRes.rows[0];
+      if (user.password !== oldPassword) {
+        return {
+          statusCode: 200,
+          headers: corsHeaders,
+          body: JSON.stringify({ ok: false, error: 'Contrasenya actual incorrecta.' })
+        };
+      }
+
+      await pool.query(
+        'UPDATE app_users SET password = $1 WHERE id = $2',
+        [newPassword, user.id]
+      );
+
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ok: true })
+      };
+    }
+
+    // ---------- Unbekannte Action ----------
     return {
       statusCode: 400,
       headers: corsHeaders,
-      body: JSON.stringify({ error: 'Acció no vàlida' }),
+      body: JSON.stringify({ error: 'Acció no vàlida' })
     };
+
   } catch (err) {
     console.error('Error in auth function:', err);
     return {
       statusCode: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: err.message || 'Internal Server Error' }),
+      body: JSON.stringify({ error: err.message || 'Internal Server Error' })
     };
   }
 };
