@@ -2,8 +2,22 @@
 
 const { Pool } = require('pg');
 
+// Connection-String aus den verfügbaren Umgebungsvariablen ermitteln
+const connectionString =
+  process.env.DATABASE_URL ||
+  process.env.Database_URL ||
+  process.env.NETLIFY_DATABASE_URL ||
+  process.env.NETLIFY_DATABASE_URL_UNPOOLED;
+
+if (!connectionString) {
+  console.error(
+    'Keine Datenbank-URL gefunden! Bitte eine der Variablen setzen: ' +
+    'DATABASE_URL, Database_URL, NETLIFY_DATABASE_URL oder NETLIFY_DATABASE_URL_UNPOOLED.'
+  );
+}
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString,
   ssl: { rejectUnauthorized: false }
 });
 
