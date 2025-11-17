@@ -584,29 +584,52 @@
       <!-- TAB: PROPOSTES -->
       <div id="propostes" class="tab-content hidden">
         <div class="two-panels">
-          <div class="panel">
-            <h2>Crear una nova proposta</h2>
-            <div class="proposal-form">
-              <div class="form-group">
-                <label>Títol breu de la proposta</label>
-                <input type="text" id="proposalTitle" placeholder="Ex.: Millora de la il·luminació al barri X" />
+          <div class="two-cols">
+            <div class="panel">
+              <h2>Crear una nova proposta</h2>
+              <div class="proposal-form">
+                <div class="form-group">
+                  <label>Títol breu de la proposta</label>
+                  <input type="text" id="proposalTitle" placeholder="Ex.: Millora de la il·luminació al barri X" />
+                </div>
+                <div class="form-group">
+                  <label>Categoria principal</label>
+                  <select id="proposalCategory"></select>
+                </div>
+                <div class="form-group">
+                  <label>Descripció</label>
+                  <textarea id="proposalDesc" placeholder="Descriu la situació actual i què proposes fer per millorar-la."></textarea>
+                </div>
+                <button class="btn" id="btnAddProposal" onclick="addProposal()">Afegir proposta</button>
               </div>
-              <div class="form-group">
-                <label>Categoria principal</label>
-                <select id="proposalCategory"></select>
-              </div>
-              <div class="form-group">
-                <label>Descripció</label>
-                <textarea id="proposalDesc" placeholder="Descriu la situació actual i què proposes fer per millorar-la."></textarea>
-              </div>
-              <button class="btn" id="btnAddProposal" onclick="addProposal()">Afegir proposta</button>
+            </div>
+
+            <!-- Erklärung von Prioritats auch hier rechts -->
+            <div class="panel">
+              <h2>Prioritat i punts de votació</h2>
+              <p class="info">Aquesta eina està pensada per combinar:</p>
+              <ul class="info" style="margin-left:18px; margin-top:4px;">
+                <li>la vostra valoració de la necessitat d'acció en diferents àmbits;</li>
+                <li>un sistema de propostes concretes;</li>
+                <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
+              </ul>
+              <p class="info" style="margin-top:8px;">
+                Així podem canalitzar, avaluar i prioritzar les bones idees per fer créixer encara més l'atractiu del nostre poble, Matadepera.
+              </p>
+              <p class="info" style="margin-top:8px;">
+                Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes. Els teus vots poden ser tant a favor com en contra.
+              </p>
+              <p class="small-note" style="margin-top:10px;">
+                Recorda que els teus vots es poden ajustar en qualsevol moment des de la pestanya «Els meus vots».
+              </p>
             </div>
           </div>
 
+          <!-- Liste der eigenen Vorschläge in voller Breite -->
           <div class="panel">
             <h2>Les meves propostes</h2>
             <div id="myProposalsList" class="info">
-              Encara no has creat cap proposta. Comença afegint-ne una a la columna de l’esquerra.
+              Encara no has creat cap proposta. Comença afegint-ne una a la part superior esquerra.
             </div>
           </div>
         </div>
@@ -631,8 +654,29 @@
             </p>
             <div class="results" id="resultsChart">Encara no hi ha resultats.</div>
           </div>
+
           <div class="panel">
-            <h2>Detall de la proposta seleccionada</h2>
+            <!-- Erklärung von Prioritats auch hier -->
+            <h2>Prioritat i punts de votació</h2>
+            <p class="info">Aquesta eina està pensada per combinar:</p>
+            <ul class="info" style="margin-left:18px; margin-top:4px;">
+              <li>la vostra valoració de la necessitat d'acció en diferents àmbits;</li>
+              <li>un sistema de propostes concretes;</li>
+              <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
+            </ul>
+            <p class="info" style="margin-top:8px;">
+              Així podem canalitzar, avaluar i prioritzar les bones idees per fer créixer encara més l'atractiu del nostre poble, Matadepera.
+            </p>
+            <p class="info" style="margin-top:8px;">
+              Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes. Els teus vots poden ser tant a favor com en contra.
+            </p>
+            <p class="small-note" style="margin-top:10px;">
+              <strong>Has fet servir <span id="usedPointsInfo">0</span> punts dels teus 30 disponibles.</strong>
+            </p>
+
+            <hr style="margin:12px 0;">
+
+            <h3>Detall de la proposta seleccionada</h3>
             <div id="resultDetail" class="info">
               Fes clic en un projecte per veure'n el detall, votar-lo, comentar-lo i fer like/dislike als comentaris.
             </div>
@@ -815,7 +859,7 @@
     serverAverages = {};
     document.getElementById('passwordPanel').classList.add('hidden');
     document.getElementById('adminPanel').classList.add('hidden');
-    showTab('login');
+   showTab('login');
   }
 
   async function initAfterLogin() {
@@ -993,7 +1037,7 @@
         onclick="toggleProposals('${cat.key}', this)">
         Veure propostes d'aquesta categoria
       </button>
-      <div id="props_${cat.key}" class="hidden"></div>
+      <div class="hidden" id="props_${cat.key}"></div>
     `;
     return wrap;
   }
@@ -1136,7 +1180,7 @@
           </button>
         </div>
       </div>
-      <div class="proposal-comments hidden" id="comments_${p.id}">
+      <div class="proposal-comments hidden">
         <div class="comments-list"></div>
         <textarea class="comment-input" placeholder="Afegeix el teu comentari..."></textarea>
         <button class="btn"
@@ -1154,7 +1198,7 @@
     if (!list) return;
     const mine = proposals.filter(p => (p.email || '') === (currentUser.email || '').toLowerCase());
     if (mine.length === 0) {
-      list.innerHTML = 'Encara no has creat cap proposta. Comença afegint-ne una.';
+      list.innerHTML = 'Encara no has creat cap proposta. Comença afegint-ne una a la part superior esquerra.';
       return;
     }
     list.innerHTML = '';
@@ -1497,8 +1541,11 @@
 
   // ---------- Comments ----------
   async function toggleCommentsPanel(proposalId, btn) {
-    const panel = document.getElementById('comments_' + proposalId);
+    const proposalCard = btn.closest('.proposal');
+    if (!proposalCard) return;
+    const panel = proposalCard.querySelector('.proposal-comments');
     if (!panel) return;
+
     const isHidden = panel.classList.contains('hidden');
     if (isHidden) {
       panel.classList.remove('hidden');
@@ -1559,10 +1606,13 @@
       alert('Cal iniciar sessió per comentar.');
       return;
     }
-    const panel = document.getElementById('comments_' + proposalId);
+    const proposalCard = btn.closest('.proposal');
+    if (!proposalCard) return;
+    const panel = proposalCard.querySelector('.proposal-comments');
     if (!panel) return;
     const textarea = panel.querySelector('.comment-input');
     if (!textarea) return;
+
     const text = (textarea.value || '').trim();
     if (!text) return;
 
