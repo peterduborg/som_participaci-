@@ -1,81 +1,160 @@
-const { neon } = require('@neondatabase/serverless');
+// netlify/functions/comments.js
+const { Pool } = require('pg');
 
-const sql = neon(process.env.NETLIFY_DATABASE_URL);
+const pool = new Pool({
+  connectionString: process.env.NEON_DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+});
 
 exports.handler = async (event) => {
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Content-Type': 'application/json'
-  };
-
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers, body: '' };
-  }
-
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: 'Method not allowed' }),
+    };
   }
 
-  const { action, proposalId, userId, text, commentId, userEmail } = JSON.parse(event.body);
+  let payload;
+  try {
+    payload = JSON.parse(event.body || '{}');
+  } catch (e) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'Invalid JSON body' }),
+    };
+  }
+
+  const { action } = payload || {};
+  if (!action) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'Missing action' }),
+    };
+  }
 
   try {
-    // ✅ Kommentar hinzufügen
-    if (action === 'add') {
-      const result = await sql`
-        INSERT INTO comments (proposal_id, user_id, text)
-        VALUES (${proposalId}, ${userId}, ${text})
-        RETURNING *
-      `;
-      return { statusCode: 200, headers, body: JSON.stringify(result[0]) };
-    }
-
-    // ✅ Kommentare abrufen
-    if (action === 'get') {
-      const rows = await sql`
-        SELECT 
-          c.id, c.proposal_id, c.user_id, c.text, c.created_at,
-          COUNT(cl.user_email) AS likes
-        FROM comments c
-        LEFT JOIN comment_likes cl ON c.id = cl.comment_id
-        WHERE c.proposal_id = ${proposalId}
-        GROUP BY c.id
-        ORDER BY c.created_at ASC
-      `;
-      return { statusCode: 200, headers, body: JSON.stringify(rows) };
-    }
-
-    // ✅ Like/Unlike logik
-    if (action === 'like') {
-      const existing = await sql`
-        SELECT 1 FROM comment_likes 
-        WHERE comment_id = ${commentId} AND user_email = ${userEmail}
-      `;
-
-      if (existing.length > 0) {
-        await sql`DELETE FROM comment_likes WHERE comment_id = ${commentId} AND user_email = ${userEmail}`;
-      } else {
-        await sql`INSERT INTO comment_likes (comment_id, user_email) VALUES (${commentId}, ${userEmail})`;
+    if (action === 'list') {
+      // ------------------------------------------------
+      // Kommentare zu einem Proposal laden
+      // ------------------------------------------------
+      const { proposalId } = payload;
+      if (!proposalId) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: 'Missing proposalId' }),
+        };
       }
 
-      const count = await sql`
-        SELECT COUNT(*)::int AS likes 
-        FROM comment_likes 
-        WHERE comment_id = ${commentId}
-      `;
+      const { rows } = await pool.query(
+        `
+          SELECT
+            id,
+            proposal_id,
+            user_email AS email,
+            author,
+            text,
+            created_at
+          FROM comments
+          WHERE proposal_id = $1
+          ORDER BY created_at ASC
+        `,
+        [proposalId]
+      );
 
       return {
         statusCode: 200,
-        headers,
-        body: JSON.stringify({ likes: count[0].likes, liked: existing.length === 0 })
+        body: JSON.stringify({ comments: rows }),
       };
     }
 
-    return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid action' }) };
+    if (action === 'add') {
+      // ------------------------------------------------
+      // Neuen Kommentar anlegen
+      // ------------------------------------------------
+      const { proposalId, email, author, text } = payload;
 
-  } catch (error) {
-    console.error('Comments error:', error);
-    return { statusCode: 500, headers, body: JSON.stringify({ error: error.message }) };
+      if (!proposalId || !email || !author || !text) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: 'Missing proposalId, email, author or text' }),
+        };
+      }
+
+      const insert = await pool.query(
+        `
+          INSERT INTO comments (proposal_id, user_email, author, text)
+          VALUES ($1, $2, $3, $4)
+          RETURNING
+            id,
+            proposal_id,
+            user_email AS email,
+            author,
+            text,
+            created_at
+        `,
+        [proposalId, email.toLowerCase(), author, text]
+      );
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ comment: insert.rows[0] }),
+      };
+    }
+
+    if (action === 'vote') {
+      // ------------------------------------------------
+      // Like / Dislike für einen Kommentar setzen
+      // ------------------------------------------------
+      const { commentId, email, value } = payload;
+
+      if (!commentId || !email || typeof value !== 'number') {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: 'Missing commentId, email or value' }),
+        };
+      }
+
+      const v = Math.max(-1, Math.min(1, value)); // auf -1..1 begrenzen
+
+      if (v === 0) {
+        // 0 = Stimme zurückziehen → Eintrag löschen
+        await pool.query(
+          `DELETE FROM comment_votes WHERE comment_id = $1 AND user_email = $2`,
+          [commentId, email.toLowerCase()]
+        );
+      } else {
+        // upsert
+        await pool.query(
+          `
+            INSERT INTO comment_votes (comment_id, user_email, value)
+            VALUES ($1, $2, $3)
+            ON CONFLICT (comment_id, user_email)
+            DO UPDATE SET
+              value = EXCLUDED.value,
+              updated_at = now()
+          `,
+          [commentId, email.toLowerCase(), v]
+        );
+      }
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ ok: true }),
+      };
+    }
+
+    // --------------------------------------------------
+    // Unbekannte Action
+    // --------------------------------------------------
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'Invalid action' }),
+    };
+  } catch (err) {
+    console.error('comments function error', err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Server error', details: String(err) }),
+    };
   }
 };
