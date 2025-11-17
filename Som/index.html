@@ -60,9 +60,7 @@
       max-width: 480px;
       margin: 0 auto;
     }
-    .form-group {
-      margin-bottom: 16px;
-    }
+    .form-group { margin-bottom: 16px; }
     label {
       display: block;
       margin-bottom: 6px;
@@ -92,22 +90,14 @@
       cursor: pointer;
       transition: transform 0.2s;
     }
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .btn-secondary {
       background: #6c757d;
     }
-    .btn-wide {
-      width: 100%;
-    }
-    .hidden {
-      display: none;
-    }
+    .btn-wide { width: 100%; }
+    .hidden { display: none; }
+
     .user-info {
       background: #f0f0f0;
       display:flex;
@@ -137,9 +127,7 @@
       font-weight:700;
       flex-shrink:0;
     }
-    .user-text {
-      min-width:0;
-    }
+    .user-text { min-width:0; }
     .user-text div:first-child {
       font-weight:600;
       white-space:nowrap;
@@ -159,6 +147,7 @@
       flex-shrink:0;
       flex-wrap:wrap;
     }
+
     .tabs {
       display: flex;
       gap: 10px;
@@ -178,6 +167,7 @@
       color: white;
       border-color: #667eea;
     }
+
     .two-cols {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
@@ -196,31 +186,13 @@
       border: 1px solid #e0e0e0;
       position: relative;
     }
-    .panel h2 {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-    .panel h3 {
-      font-size: 16px;
-      margin-bottom: 8px;
-    }
-    .panel small {
-      color: #666;
-      display: block;
-      margin-bottom: 10px;
-    }
-    .info {
-      font-size: 14px;
-      color: #555;
-    }
-    .legenda {
-      font-size:13px;
-      color:#555;
-      margin-top:10px;
-    }
-    .categories {
-      margin-top: 10px;
-    }
+    .panel h2 { font-size: 20px; margin-bottom: 10px; }
+    .panel h3 { font-size: 16px; margin-bottom: 8px; }
+    .panel small { color: #666; display: block; margin-bottom: 10px; }
+    .info { font-size: 14px; color: #555; }
+    .legenda { font-size:13px; color:#555; margin-top:10px; }
+
+    .categories { margin-top: 10px; }
     .category-block {
       background: #ffffff;
       padding: 10px 12px 12px;
@@ -235,21 +207,11 @@
       margin-bottom: 8px;
       gap:10px;
     }
-    .category-header h3 {
-      margin: 0;
-      font-size: 15px;
-    }
-    .category-header small {
-      margin:0;
-    }
-    .slider-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .slider {
-      flex: 1;
-    }
+    .category-header h3 { margin: 0; font-size: 15px; }
+    .category-header small { margin:0; }
+
+    .slider-row { display: flex; align-items: center; gap: 10px; }
+    .slider { flex: 1; }
     .thumb-label {
       font-size: 13px;
       color: #333;
@@ -257,6 +219,7 @@
       min-width:40px;
       text-align:right;
     }
+
     input[type="range"] {
       -webkit-appearance: none;
       appearance: none;
@@ -285,6 +248,7 @@
       border: 2px solid #fff;
       box-shadow: 0 0 3px rgba(0,0,0,0.3);
     }
+
     .avg-bar {
       margin-top: 6px;
       width: 100%;
@@ -310,10 +274,12 @@
       color: #777;
       margin-top: 8px;
     }
+
     .proposal-form textarea {
       resize: vertical;
       min-height: 70px;
     }
+
     .proposal {
       background: #ffffff;
       padding: 10px 12px;
@@ -378,89 +344,10 @@
       color: #555;
     }
 
-    /* NEU: Kommentare an Proposals */
-    .proposal-comments {
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid #eee;
-    }
-    .comments-list {
-      margin-bottom: 6px;
-    }
-    .comment {
-      font-size: 12px;
-      margin-bottom: 6px;
-      padding: 4px 0;
-      border-bottom: 1px dashed #e0e0e0;
-    }
-    .comment:last-child {
-      border-bottom: none;
-    }
-    .comment-header {
-      display:flex;
-      justify-content:space-between;
-      margin-bottom:2px;
-      color:#777;
-    }
-    .comment-text {
-      font-size:13px;
-    }
-    .comment-actions {
-      margin-top:2px;
-      display:flex;
-      gap:6px;
-      align-items:center;
-    }
-    .comment-btn {
-      border:none;
-      background:transparent;
-      cursor:pointer;
-      font-size:14px;
-      padding:0 2px;
-    }
-    .comment-btn.active-like {
-      color:#28a745;
-    }
-    .comment-btn.active-dislike {
-      color:#dc3545;
-    }
-    .comment-form textarea {
-      width:100%;
-      resize:vertical;
-      min-height:40px;
-      margin-bottom:4px;
-      font-size:13px;
-    }
-    .comment-form .btn {
-      font-size:12px;
-      padding:6px 10px;
-    }
-
-    /* NEU: Header mit Beschreibung rechts in "Les meves propostes" */
-    .panel-header-inline {
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:15px;
-      margin-bottom:10px;
-    }
-    .panel-header-inline .panel-title {
-      font-size:20px;
-      font-weight:600;
-      margin:0;
-    }
-    .panel-header-inline .panel-info {
-      font-size:13px;
-      color:#555;
-      max-width:340px;
-      text-align:right;
-    }
-
-    .results {
-      margin-top: 15px;
-    }
-    .result-bar {
-      margin-bottom: 8px;
+    .results { margin-top: 15px; }
+    .result-bar { margin-bottom: 8px; cursor:pointer; }
+    .result-bar.selected .bar-container {
+      box-shadow: 0 0 0 2px #667eea inset;
     }
     .result-label {
       display:flex;
@@ -492,32 +379,63 @@
       white-space:nowrap;
     }
 
+    /* Kommentare */
+    .proposal-comments {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #ddd;
+    }
+    .comments-list {
+      margin-bottom: 8px;
+    }
+    .comment {
+      font-size: 13px;
+      margin-bottom: 6px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      background: #f8f9fa;
+    }
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 3px;
+    }
+    .comment-text { margin-bottom: 4px; }
+    .comment-footer {
+      display: flex;
+      gap: 10px;
+      font-size: 12px;
+      align-items: center;
+    }
+    .comment-like,
+    .comment-dislike {
+      cursor: pointer;
+      opacity: 0.5;
+      user-select: none;
+    }
+    .comment-like.active,
+    .comment-dislike.active {
+      opacity: 1;
+      color: #ff9800;
+    }
+    .comment-like-count,
+    .comment-dislike-count {
+      font-size: 11px;
+      margin-left: 4px;
+    }
+
     @media (max-width: 900px) {
-      .two-cols {
-        grid-template-columns: 1fr;
-      }
-      .user-info {
-        flex-direction: column;
-        align-items:flex-start;
-      }
-      .user-actions {
-        width:100%;
-        justify-content:flex-end;
-      }
-      .user-actions .btn {
-        width:auto;
-      }
+      .two-cols { grid-template-columns: 1fr; }
+      .user-info { flex-direction: column; align-items:flex-start; }
+      .user-actions { width:100%; justify-content:flex-end; }
+      .user-actions .btn { width:auto; }
     }
     @media (max-width: 600px) {
-      .header-text h1 {
-        font-size: 22px;
-      }
-      .content {
-        padding: 20px;
-      }
-      .user-info {
-        padding: 12px;
-      }
+      .header-text h1 { font-size: 22px; }
+      .content { padding: 20px; }
+      .user-info { padding: 12px; }
     }
   </style>
 </head>
@@ -588,7 +506,7 @@
         <button class="btn" onclick="changePassword()">Desar nova contrasenya</button>
       </div>
 
-      <!-- Admin panel: create users -->
+      <!-- Admin panel -->
       <div id="adminPanel" class="panel hidden" style="margin-bottom:20px;">
         <h2>Crear un nou usuari</h2>
         <p class="info" style="margin-bottom:10px;">
@@ -623,8 +541,12 @@
             <h2>Necessitat d'acció per categories</h2>
             <small>Avalua com veus la situació actual en cadascun d'aquests àmbits. Valors alts = més necessitat d'actuar.</small>
             <div class="categories" id="categoriesList">Carregant categories...</div>
-            <div class="legenda"><strong>Llegenda:</strong> 0 = No cal cap acció · 50 = Caldria millorar · 100 = Urgència màxima</div>
-            <div class="small-note">Pots modificar les teves valoracions sempre que vulguis; es poden sumar amb la resta de ciutadania.</div>
+            <div class="legenda">
+              <strong>Llegenda:</strong> 0 = No cal cap acció · 50 = Caldria millorar · 100 = Urgència màxima
+            </div>
+            <div class="small-note">
+              Pots modificar les teves valoracions sempre que vulguis; es poden sumar amb la resta de ciutadania.
+            </div>
           </div>
 
           <div class="panel">
@@ -641,11 +563,12 @@
             <p class="info" style="margin-top:8px;">
               Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes. Els teus vots poden ser tant a favor com en contra.
             </p>
-            <p class="info" style="margin-top:8px;">
-              <strong>Has fet servir <span id="usedPointsInfoTop">0</span> punts dels teus 30 disponibles.</strong>
-            </p>
             <p class="small-note" style="margin-top:10px;">
-              <strong>Punts assignats totals:</strong> <span id="assignedPoints">0</span>/30
+              <strong>Punts assignats totals:</strong>
+              <span id="assignedPoints">0</span>/30
+            </p>
+            <p class="small-note" style="margin-top:4px;">
+              <strong>Has fet servir <span id="usedPointsInfoTop">0</span> punts dels teus 30 disponibles.</strong>
             </p>
           </div>
         </div>
@@ -669,28 +592,12 @@
                 <label>Descripció</label>
                 <textarea id="proposalDesc" placeholder="Descriu la situació actual i què proposes fer per millorar-la."></textarea>
               </div>
-              <!-- NEU: Button mit ID, wird beim Absenden deaktiviert -->
               <button class="btn" id="btnAddProposal" onclick="addProposal()">Afegir proposta</button>
             </div>
           </div>
 
           <div class="panel">
-            <!-- NEU: Beschreibung oben rechts in diesem Panel -->
-            <div class="panel-header-inline">
-              <h2 class="panel-title">Les meves propostes</h2>
-              <div class="panel-info">
-                <p class="info">Aquesta eina està pensada per combinar:</p>
-                <ul class="info" style="margin-left:18px; margin-top:4px;">
-                  <li>la vostra valoració de la necessitat d'acció en diferents àmbits;</li>
-                  <li>un sistema de propostes concretes;</li>
-                  <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
-                </ul>
-                <p class="info" style="margin-top:8px;">
-                  Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes. Els teus vots poden ser tant a favor com en contra.
-                </p>
-              </div>
-            </div>
-            <!-- Liste wieder über die volle Breite -->
+            <h2>Les meves propostes</h2>
             <div id="myProposalsList" class="info">
               Encara no has creat cap proposta. Comença afegint-ne una a la columna de l’esquerra.
             </div>
@@ -712,44 +619,25 @@
         <div class="two-cols">
           <div class="panel">
             <h2>Resultats agregats</h2>
-            <p class="info">Aquí es mostren els resultats a partir dels punts assignats per totes les persones participants (via Neon).</p>
+            <p class="info">
+              Aquí es mostren els resultats a partir dels punts assignats per totes les persones participants (via Neon).
+            </p>
             <div class="results" id="resultsChart">Encara no hi ha resultats.</div>
           </div>
           <div class="panel">
-            <h3>Explicació del funcionament</h3>
-            <p class="info">Aquesta eina està pensada per combinar:</p>
-            <ul class="info" style="margin-left:18px; margin-top:4px;">
-              <li>la vostra valoració de la necessitat d'acció en diferents àmbits;</li>
-              <li>un sistema de propostes concretes;</li>
-              <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
-            </ul>
-            <p class="info" style="margin-top:8px;">
-              Així podem canalitzar, avaluar i prioritzar les bones idees per fer créixer encara més l'atractiu del nostre poble, Matadepera.
-            </p>
-            <p class="info" style="margin-top:8px;">
-              Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes. Els teus vots poden ser tant a favor com en contra.
-            </p>
-            <p class="info" style="margin-top:8px;">
-              <strong>Has fet servir <span id="usedPointsInfo">0</span> punts dels teus 30 disponibles.</strong>
-            </p>
+            <h2>Detall de la proposta seleccionada</h2>
+            <div id="resultDetail" class="info">
+              Fes clic en un projecte per veure'n el detall, votar-lo, comentar-lo i fer like/dislike als comentaris.
+            </div>
           </div>
         </div>
-
-        <!-- NEU: Voting direkt auf der Resultats-Seite -->
-        <div class="panel">
-          <h2>Votar propostes des dels resultats</h2>
-          <p class="info">
-            Des d'aquí també pots votar les propostes, ordenades segons els punts totals.
-          </p>
-          <div id="resultsVoteList" class="info">Encara no hi ha propostes.</div>
-        </div>
       </div>
-    </div>
-  </div>
-</div>
+
+    </div> <!-- /mainView -->
+  </div> <!-- /content -->
+</div> <!-- /container -->
 
 <script>
-  // ----------- Basis / Config -----------
   const API_BASE = '/.netlify/functions';
   const AUTH_URL = '/.netlify/functions/auth';
   const MAX_POINTS = 30;
@@ -802,22 +690,17 @@
       if (!res.ok) {
         let info = null;
         try { info = await res.json(); } catch (e) {}
-        console.warn('API error', fn, res.status, info);
-        alert(
-          'Error API ' + fn + ' (HTTP ' + res.status + '): ' +
-          (info && (info.details || info.error) ? (info.details || info.error) : 'cap detall addicional')
-        );
+        alert(`Error API ${fn} (HTTP ${res.status}): ` +
+          (info && (info.details || info.error) ? (info.details || info.error) : 'cap detall addicional'));
         return null;
       }
       return await res.json();
     } catch (e) {
-      console.warn('API request failed', fn, e);
       alert(`No s'ha pogut contactar amb el servidor (${fn}): ${e}`);
       return null;
     }
   }
 
-  // ----------- State -----------
   let proposals = [];
   let globalScores = {};
   let serverAverages = {};
@@ -830,8 +713,8 @@
     votes: {},
     satisfaction: {}
   };
+  let selectedResultProposalId = null;
 
-  // ----------- Tabs / Login -----------
   function showTab(tabName) {
     const loginView = document.getElementById('loginView');
     const mainView = document.getElementById('mainView');
@@ -860,12 +743,10 @@
   async function login() {
     const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
     const password = (document.getElementById('loginPassword').value || '').trim();
-
     if (!email || !password) {
       alert('Introdueix correu i contrasenya.');
       return;
     }
-
     try {
       const res = await fetch(`${API_BASE}/auth`, {
         method: 'POST',
@@ -875,7 +756,7 @@
       if (!res.ok) {
         let info = null;
         try { info = await res.json(); } catch (e) {}
-        const msg = info && info.error ? info.error : 'Error HTTP ' + res.status;
+        const msg = info && info.error ? info.error : `Error HTTP ${res.status}`;
         alert('Error en iniciar sessió: ' + msg);
         return;
       }
@@ -947,7 +828,6 @@
     showTab('participacio');
   }
 
-  // ----------- Password + Admin UI -----------
   function togglePasswordPanel() {
     const panel = document.getElementById('passwordPanel');
     if (!panel) return;
@@ -961,7 +841,6 @@
     }
     const oldPw = (document.getElementById('oldPassword').value || '').trim();
     const newPw = (document.getElementById('newPassword').value || '').trim();
-
     if (!oldPw || !newPw) {
       alert('Introdueix la contrasenya actual i la nova.');
       return;
@@ -984,7 +863,7 @@
       if (!res.ok) {
         let info = null;
         try { info = await res.json(); } catch (e) {}
-        const msg = info && info.error ? info.error : 'Error HTTP ' + res.status;
+        const msg = info && info.error ? info.error : `Error HTTP ${res.status}`;
         alert('No s\'ha pogut canviar la contrasenya: ' + msg);
         return;
       }
@@ -1021,12 +900,10 @@
     const email = (document.getElementById('newUserEmail').value || '').trim().toLowerCase();
     const username = (document.getElementById('newUserName').value || '').trim();
     const password = (document.getElementById('newUserPassword').value || '').trim();
-
     if (!email || !username || !password) {
       alert('Cal omplir el correu, el nom i la contrasenya inicial.');
       return;
     }
-
     try {
       const res = await fetch(`${API_BASE}/auth`, {
         method: 'POST',
@@ -1042,7 +919,7 @@
       if (!res.ok) {
         let info = null;
         try { info = await res.json(); } catch (e) {}
-        const msg = info && info.error ? info.error : 'Error HTTP ' + res.status;
+        const msg = info && info.error ? info.error : `Error HTTP ${res.status}`;
         alert('No s\'ha pogut crear l\'usuari: ' + msg);
         return;
       }
@@ -1061,7 +938,6 @@
     }
   }
 
-  // ----------- Kategorien / Mitjana -----------
   function createCategoryElement(cat) {
     const wrap = document.createElement('div');
     wrap.className = 'category-block';
@@ -1078,21 +954,14 @@
         </div>
       </div>
       <div class="slider-row">
-        <input
-          type="range"
-          class="slider"
-          id="slider_${cat.key}"
-          min="0" max="100" step="5"
-          value="${(currentUser.satisfaction || {})[cat.key] || 0}"
-          oninput="updateSlider('${cat.key}', this)"
-        />
+        <input type="range" class="slider" id="slider_${cat.key}" min="0" max="100" step="5"
+               value="${(currentUser.satisfaction || {})[cat.key] || 0}"
+               oninput="updateSlider('${cat.key}', this)" />
         <div class="thumb-label" id="thumb_${cat.key}">0</div>
       </div>
-      <button
-        class="btn btn-secondary"
-        style="margin-top:8px;font-size:12px;padding:6px 10px;"
-        onclick="toggleProposals('${cat.key}', this)"
-      >
+      <button class="btn btn-secondary"
+              style="margin-top:8px;font-size:12px;padding:6px 10px;"
+              onclick="toggleProposals('${cat.key}', this)">
         Veure propostes d'aquesta categoria
       </button>
       <div id="props_${cat.key}" class="hidden"></div>
@@ -1149,26 +1018,24 @@
     const val = parseInt(inputEl.value || '0', 10);
     if (!currentUser.satisfaction) currentUser.satisfaction = {};
     currentUser.satisfaction[key] = val;
-
     const label = document.getElementById('thumb_' + key);
     positionThumbLabel(inputEl, label);
 
-    if (currentUser.email) {
-      await apiRequest('satisfaction', {
-        action: 'saveRating',
-        email: currentUser.email,
-        category: key,
-        value: val
-      });
-      const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
-      if (avgRes && avgRes.averages) serverAverages = avgRes.averages;
-      applyAverage(key);
-    } else {
+    if (!currentUser.email) {
       alert('Cal iniciar sessió per guardar la valoració.');
+      return;
     }
+    await apiRequest('satisfaction', {
+      action: 'saveRating',
+      email: currentUser.email,
+      category: key,
+      value: val
+    });
+    const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
+    if (avgRes && avgRes.averages) serverAverages = avgRes.averages;
+    applyAverage(key);
   }
 
-  // ----------- Propostes -----------
   function populateCategorySelect() {
     const sel = document.getElementById('proposalCategory');
     if (!sel) return;
@@ -1186,11 +1053,7 @@
       const res = await fetch(`${API_BASE}/proposals`, { method: 'GET' });
       if (!res.ok) {
         const txt = await res.text();
-        console.warn('API error proposals (GET)', res.status, txt);
-        alert(
-          'Error API proposals (HTTP ' + res.status + '): ' +
-          (txt || 'cap detall addicional')
-        );
+        alert(`Error API proposals (HTTP ${res.status}): ${txt || 'cap detall addicional'}`);
         proposals = [];
         return;
       }
@@ -1208,132 +1071,9 @@
         createdAt: p.created_at || p.createdAt || new Date().toISOString()
       })).filter(p => p.id && p.title);
     } catch (e) {
-      console.warn('API request failed (GET proposals)', e);
       alert(`No s'ha pogut carregar les propostes: ${e}`);
       proposals = [];
     }
-  }
-
-  // ---- Kommentare pro Proposal laden / anzeigen ----
-  async function loadCommentsForProposal(proposalId, container) {
-    if (!container) return;
-    container.innerHTML = "<div class='info'>Carregant comentaris...</div>";
-
-    const res = await apiRequest('comments', {
-      action: 'list',
-      proposalId: proposalId
-    });
-    if (!res) {
-      container.innerHTML = "<div class='info'>No s'han pogut carregar els comentaris.</div>";
-      return;
-    }
-    const arr = Array.isArray(res)
-      ? res
-      : (Array.isArray(res.comments) ? res.comments : []);
-
-    if (!arr.length) {
-      container.innerHTML = "<div class='info'>Encara no hi ha comentaris. Sigues el primer a comentar!</div>";
-      return;
-    }
-
-    container.innerHTML = '';
-    arr.forEach(c => {
-      const commentEl = document.createElement('div');
-      commentEl.className = 'comment';
-
-      const id = String(c.id || c.comment_id || c.uuid);
-      const author =
-        c.author || c.username ||
-        ((c.email || '').split('@')[0] || 'Anònim');
-      const text = (c.text || c.content || '');
-      const created = c.created_at || c.createdAt;
-      const when = created ? new Date(created).toLocaleString('ca-ES') : '';
-      const userVote = typeof c.user_vote === 'number' ? c.user_vote : 0;
-
-      commentEl.dataset.commentId = id;
-      commentEl.dataset.userVote = userVote;
-
-      commentEl.innerHTML = `
-        <div class="comment-header">
-          <span>${author}</span>
-          <span class="comment-date">${when}</span>
-        </div>
-        <div class="comment-text">${text.replace(/\n/g, '<br>')}</div>
-        <div class="comment-actions">
-          <button
-            type="button"
-            class="comment-btn comment-like${userVote === 1 ? ' active-like' : ''}"
-            onclick="voteComment('${proposalId}','${id}',1,this)"
-          >👍</button>
-          <button
-            type="button"
-            class="comment-btn comment-dislike${userVote === -1 ? ' active-dislike' : ''}"
-            onclick="voteComment('${proposalId}','${id}',-1,this)"
-          >👎</button>
-        </div>
-      `;
-      container.appendChild(commentEl);
-    });
-  }
-
-  async function submitComment(proposalId, btn) {
-    if (!currentUser.email) {
-      alert('Cal iniciar sessió per afegir comentaris.');
-      return;
-    }
-    const form = btn.closest('.comment-form');
-    if (!form) return;
-    const textarea = form.querySelector('textarea');
-    if (!textarea) return;
-
-    const text = (textarea.value || '').trim();
-    if (!text) {
-      alert('El comentari no pot estar buit.');
-      return;
-    }
-
-    btn.disabled = true;
-    try {
-      const res = await apiRequest('comments', {
-        action: 'add',
-        proposalId: proposalId,
-        email: currentUser.email,
-        author: currentUser.username || 'Usuari',
-        text: text
-      });
-      if (!res) return;
-      textarea.value = '';
-      const container = btn.closest('.proposal').querySelector('.comments-list');
-      if (container) await loadCommentsForProposal(proposalId, container);
-    } finally {
-      btn.disabled = false;
-    }
-  }
-
-  async function voteComment(proposalId, commentId, value, btn) {
-    if (!currentUser.email) {
-      alert('Cal iniciar sessió per valorar comentaris.');
-      return;
-    }
-    const commentEl = btn.closest('.comment');
-    if (!commentEl) return;
-
-    const current = parseInt(commentEl.dataset.userVote || '0', 10);
-    const newVal = current === value ? 0 : value;
-    commentEl.dataset.userVote = newVal;
-
-    const likeBtn = commentEl.querySelector('.comment-like');
-    const dislikeBtn = commentEl.querySelector('.comment-dislike');
-    if (likeBtn) likeBtn.classList.toggle('active-like', newVal === 1);
-    if (dislikeBtn) dislikeBtn.classList.toggle('active-dislike', newVal === -1);
-
-    await apiRequest('comments', {
-      action: 'vote',
-      proposalId,
-      commentId,
-      email: currentUser.email,
-      value: newVal
-    });
   }
 
   function createProposalElement(p) {
@@ -1344,9 +1084,12 @@
     const catTitle = cat ? cat.title : p.category;
     const myVote = (currentUser.votes || {})[String(p.id)] || 0;
     const dateTxt = new Date(p.createdAt).toLocaleDateString('ca-ES');
+
     const canDelete = (p.email || '') === (currentUser.email || '').toLowerCase();
     const deleteBtnHtml = canDelete
-      ? `<button class="btn btn-secondary" style="font-size:11px;padding:4px 8px;" onclick="deleteProposal('${p.id}')">Esborrar</button>`
+      ? `<button class="btn btn-secondary"
+                 style="font-size:11px;padding:4px 8px;"
+                 onclick="deleteProposal('${p.id}')">Esborrar</button>`
       : '';
 
     div.innerHTML = `
@@ -1367,30 +1110,31 @@
           <button class="vote-btn ${myVote===2?'active-pos':''}"  onclick="setVote('${p.id}',2,this)">+2</button>
           <button class="vote-btn ${myVote===3?'active-pos':''}"  onclick="setVote('${p.id}',3,this)">+3</button>
         </div>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <div class="vote-info">Punts nets assignats: <span>${myVote}</span></div>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+          <div class="vote-info">
+            Punts nets assignats: <span>${myVote}</span>
+          </div>
           ${deleteBtnHtml}
+          <button class="btn btn-secondary"
+                  style="font-size:11px;padding:4px 8px;"
+                  onclick="toggleComments('${p.id}', this)">
+            Comentaris
+          </button>
+        </div>
+      </div>
+      <div id="comments_${p.id}" class="proposal-comments hidden">
+        <div class="comments-list"></div>
+        <div class="comment-form" style="margin-top:6px;">
+          <textarea style="width:100%;min-height:50px;font-size:13px;"
+                    placeholder="Afegeix el teu comentari..."></textarea>
+          <button class="btn"
+                  style="margin-top:4px;font-size:12px;padding:6px 10px;"
+                  onclick="submitComment('${p.id}', this)">
+            Enviar comentari
+          </button>
         </div>
       </div>
     `;
-
-    // NEU: Kommentarbereich anhängen
-    const commentsWrap = document.createElement('div');
-    commentsWrap.className = 'proposal-comments';
-    commentsWrap.innerHTML = `
-      <div class="comments-list"></div>
-      <div class="comment-form">
-        <textarea rows="2" placeholder="Afegeix un comentari..."></textarea>
-        <button type="button" class="btn btn-secondary" onclick="submitComment('${p.id}', this)">
-          Publicar comentari
-        </button>
-      </div>
-    `;
-    div.appendChild(commentsWrap);
-
-    const listEl = commentsWrap.querySelector('.comments-list');
-    loadCommentsForProposal(p.id, listEl);
-
     return div;
   }
 
@@ -1413,54 +1157,37 @@
       alert('Cal iniciar sessió per afegir propostes.');
       return;
     }
+    const title = (document.getElementById('proposalTitle').value || '').trim();
+    const category = document.getElementById('proposalCategory').value;
+    const desc = (document.getElementById('proposalDesc').value || '').trim();
+    if (!title || !category || !desc) {
+      alert('Cal omplir títol, categoria i descripció.');
+      return;
+    }
 
     const btn = document.getElementById('btnAddProposal');
     if (btn) btn.disabled = true;
 
+    const payload = {
+      title,
+      description: desc,
+      category,
+      author: currentUser.username || 'Usuari',
+      email: currentUser.email
+    };
     try {
-      const title = (document.getElementById('proposalTitle').value || '').trim();
-      const category = document.getElementById('proposalCategory').value;
-      const desc = (document.getElementById('proposalDesc').value || '').trim();
-
-      if (!title || !category || !desc) {
-        alert('Cal omplir títol, categoria i descripció.');
-        return;
-      }
-
-      const payload = {
-        title,
-        description: desc,
-        category,
-        author: currentUser.username || 'Usuari',
-        email: currentUser.email
-      };
-
-      let res;
-      try {
-        res = await fetch(`${API_BASE}/proposals`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-      } catch (e) {
-        console.error('Error al contactar el servidor de propostes:', e);
-        alert(`No s’ha pogut contactar amb el servidor de propostes: ${e}`);
-        return;
-      }
-
+      const res = await fetch(`${API_BASE}/proposals`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
       if (!res.ok) {
         const errorText = await res.text();
-        console.error('Error API proposals (POST)', res.status, errorText);
-        alert(
-          'Error API proposals (HTTP ' + res.status + '): ' +
-          (errorText || 'cap detall addicional')
-        );
+        alert(`Error API proposals (HTTP ${res.status}): ${errorText || 'cap detall addicional'}`);
         return;
       }
-
       const resJson = await res.json();
       const created = resJson.proposal ? resJson.proposal : resJson;
-
       const newProposal = {
         id: String(created.id || created.proposal_id || created.uuid),
         title: created.title,
@@ -1470,18 +1197,17 @@
         email: (created.email || created.user_email || payload.email || '').toLowerCase(),
         createdAt: created.created_at || created.createdAt || new Date().toISOString()
       };
-
       proposals.push(newProposal);
-
       document.getElementById('proposalTitle').value = '';
       document.getElementById('proposalCategory').value = '';
       document.getElementById('proposalDesc').value = '';
-
       renderProposals();
       renderMyVotes();
       updateResults();
       updatePointsInfo();
       alert('Proposta afegida correctament.');
+    } catch (e) {
+      alert(`No s’ha pogut contactar amb el servidor de propostes: ${e}`);
     } finally {
       if (btn) btn.disabled = false;
     }
@@ -1492,20 +1218,16 @@
       const box = document.getElementById('props_' + c.key);
       if (box && c.key !== catKey) box.classList.add('hidden');
     });
-
     const box = document.getElementById('props_' + catKey);
     if (!box) return;
-
     const isHidden = box.classList.contains('hidden');
     if (isHidden) {
       box.classList.remove('hidden');
       btn.textContent = "Amagar propostes d'aquesta categoria";
-
       const scores = computeGlobalScores();
       const items = proposals
         .filter(p => p.category === catKey)
         .sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
-
       box.innerHTML = items.length
         ? ''
         : "<div class='info'>Encara no hi ha propostes en aquesta categoria.</div>";
@@ -1516,14 +1238,10 @@
     }
   }
 
-  // ----------- Delete proposal -----------
   async function deleteProposal(proposalId) {
     const p = proposals.find(pr => String(pr.id) === String(proposalId));
     if (!p) return;
-
-    const ok = confirm(
-      "Vols esborrar aquesta proposta de manera definitiva? Aquesta acció no es pot desfer."
-    );
+    const ok = confirm("Vols esborrar aquesta proposta de manera definitiva? Aquesta acció no es pot desfer.");
     if (!ok) return;
 
     try {
@@ -1534,11 +1252,10 @@
       });
       if (!res.ok) {
         const txt = await res.text();
-        alert("No s'ha pogut esborrar la proposta: " + (txt || 'error'));
+        alert(`No s'ha pogut esborrar la proposta: ${txt || 'error'}`);
         return;
       }
     } catch (e) {
-      console.error('deleteProposal error', e);
       alert('No s\'ha pogut contactar amb el servidor de propostes.');
       return;
     }
@@ -1556,7 +1273,6 @@
     updatePointsInfo();
   }
 
-  // ----------- Votes / Resultats -----------
   async function loadUserVotesFromServer() {
     if (!currentUser.email) return;
     const res = await apiRequest('votes', {
@@ -1588,7 +1304,9 @@
       globalScores = {};
       return;
     }
-    const arr = Array.isArray(res) ? res : (res.scores || res.results || []);
+    const arr = Array.isArray(res)
+      ? res
+      : (res.scores || res.results || []);
     globalScores = {};
     arr.forEach(r => {
       const pid = String(r.proposal_id || r.id || r.proposalId);
@@ -1600,29 +1318,22 @@
   function renderMyVotes() {
     const list = document.getElementById('myVotesList');
     if (!list) return;
-
     const v = currentUser.votes || {};
     const votedIds = Object.keys(v).filter(id => v[id] && v[id] !== 0);
-
     if (votedIds.length === 0) {
       list.innerHTML = 'Encara no has votat cap proposta.';
       return;
     }
-
     const items = proposals
       .filter(p => votedIds.includes(String(p.id)))
       .sort((a, b) => (v[String(b.id)] || 0) - (v[String(a.id)] || 0));
-
     list.innerHTML = '';
     items.forEach(p => list.appendChild(createProposalElement(p)));
   }
 
   function getCurrentTotalPoints() {
     const v = currentUser.votes || {};
-    return Object.values(v).reduce(
-      (a, b) => a + Math.max(0, Math.abs(b)),
-      0
-    );
+    return Object.values(v).reduce((a, b) => a + Math.max(0, Math.abs(b)), 0);
   }
 
   function updatePointsInfo() {
@@ -1631,8 +1342,6 @@
     if (assignedSpan) assignedSpan.textContent = total;
     const usedTop = document.getElementById('usedPointsInfoTop');
     if (usedTop) usedTop.textContent = total;
-    const usedRight = document.getElementById('usedPointsInfo');
-    if (usedRight) usedRight.textContent = total;
   }
 
   async function setVote(proposalId, delta, btn) {
@@ -1642,16 +1351,13 @@
     }
     const v = currentUser.votes || {};
     const prev = v[String(proposalId)] || 0;
-
     const baseTotal = getCurrentTotalPoints() - Math.max(0, Math.abs(prev));
     const newVal = (prev === delta) ? 0 : delta;
     const newTotal = baseTotal + Math.max(0, Math.abs(newVal));
-
     if (newTotal > MAX_POINTS) {
       alert('Has superat el màxim de ' + MAX_POINTS + ' punts. Revisa els teus vots.');
       return;
     }
-
     v[String(proposalId)] = newVal;
     currentUser.votes = v;
     updatePointsInfo();
@@ -1661,7 +1367,7 @@
       const sumSpan = proposalEl.querySelector('.vote-info span');
       if (sumSpan) sumSpan.textContent = newVal;
       proposalEl.querySelectorAll('.vote-btn').forEach(b => {
-        b.classList.remove('active-pos', 'active-neg');
+        b.classList.remove('active-pos','active-neg');
         const val = parseInt(b.textContent, 10);
         if (val === newVal) {
           if (val > 0) b.classList.add('active-pos');
@@ -1684,11 +1390,8 @@
 
   function computeGlobalScores() {
     if (globalScores && Object.keys(globalScores).length > 0) return globalScores;
-
     const all = {};
-    proposals.forEach(p => {
-      all[String(p.id)] = 0;
-    });
+    proposals.forEach(p => { all[String(p.id)] = 0; });
     Object.entries(currentUser.votes || {}).forEach(([pid, val]) => {
       if (all[pid] != null) all[pid] += (val || 0);
     });
@@ -1701,62 +1404,216 @@
 
     const all = computeGlobalScores();
     const values = Object.values(all);
-
     if (!values.length) {
       box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>';
-      const rv = document.getElementById('resultsVoteList');
-      if (rv) rv.innerHTML = 'Encara no hi ha propostes.';
+      const detail = document.getElementById('resultDetail');
+      if (detail) {
+        detail.innerHTML =
+          "Fes clic en un projecte per veure'n el detall, votar-lo, comentar-lo i fer like/dislike als comentaris.";
+      }
+      selectedResultProposalId = null;
       return;
     }
 
-    const rows = proposals.map(p => {
-      const sum = all[String(p.id)] || 0;
-      return { id: p.id, title: p.title, sum };
-    }).sort((a, b) => b.sum - a.sum);
+    const rows = proposals
+      .map(p => {
+        const sum = all[String(p.id)] || 0;
+        return { id: p.id, title: p.title, sum };
+      })
+      .sort((a, b) => b.sum - a.sum);
 
     if (rows.length === 0) {
       box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>';
-    } else {
-      const maxPos = Math.max(...rows.map(r => Math.max(0, r.sum))) || 1;
-      box.innerHTML = rows.map(r => {
-        let width;
-        let color;
-        if (r.sum > 0) {
-          width = Math.max(5, (r.sum / maxPos) * 100);
-          color = '#007bff';
-        } else if (r.sum < 0) {
-          width = 5;
-          color = '#dc3545';
-        } else {
-          width = 5;
-          color = '#6c757d';
-        }
-        return `
-          <div class="result-bar">
-            <div class="result-label">
-              <span>${r.title}</span>
-              <span>${r.sum} punts</span>
-            </div>
-            <div class="bar-container">
-              <div class="bar-fill" style="width:${width}%;background:${color};">&nbsp;</div>
-            </div>
-          </div>
-        `;
-      }).join('');
+      return;
     }
 
-    // NEU: Voting-Liste auf Resultats-Seite
-    const voteList = document.getElementById('resultsVoteList');
-    if (voteList) {
-      if (!proposals.length) {
-        voteList.innerHTML = 'Encara no hi ha propostes.';
+    const maxPos = Math.max(...rows.map(r => Math.max(0, r.sum))) || 1;
+
+    box.innerHTML = rows.map(r => {
+      let width;
+      let color;
+      if (r.sum > 0) {
+        width = Math.max(5, (r.sum / maxPos) * 100);
+        color = '#007bff';
+      } else if (r.sum < 0) {
+        width = 5;
+        color = '#dc3545';
       } else {
-        voteList.innerHTML = '';
-        rows.forEach(r => {
-          const p = proposals.find(pr => String(pr.id) === String(r.id));
-          if (p) voteList.appendChild(createProposalElement(p));
-        });
+        width = 5;
+        color = '#6c757d';
       }
+      return `
+        <div class="result-bar" id="resultbar_${r.id}"
+             onclick="toggleResultDetail('${r.id}')">
+          <div class="result-label">
+            <span>${r.title}</span><span>${r.sum} punts</span>
+          </div>
+          <div class="bar-container">
+            <div class="bar-fill" style="width:${width}%;background:${color};">&nbsp;</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function toggleResultDetail(proposalId) {
+    const detail = document.getElementById('resultDetail');
+    if (!detail) return;
+
+    if (selectedResultProposalId === proposalId) {
+      selectedResultProposalId = null;
+      detail.innerHTML =
+        "Fes clic en un projecte per veure'n el detall, votar-lo, comentar-lo i fer like/dislike als comentaris.";
+      document.querySelectorAll('.result-bar.selected')
+        .forEach(el => el.classList.remove('selected'));
+      return;
+    }
+
+    selectedResultProposalId = proposalId;
+
+    document.querySelectorAll('.result-bar.selected')
+      .forEach(el => el.classList.remove('selected'));
+    const barEl = document.getElementById('resultbar_' + proposalId);
+    if (barEl) barEl.classList.add('selected');
+
+    const p = proposals.find(pr => String(pr.id) === String(proposalId));
+    if (!p) {
+      detail.innerHTML = "<div class='info'>No s'ha trobat la proposta seleccionada.</div>";
+      return;
+    }
+
+    const card = createProposalElement(p);
+    detail.innerHTML = '';
+    detail.appendChild(card);
+  }
+
+  function toggleComments(proposalId, btn) {
+    const box = document.getElementById('comments_' + proposalId);
+    if (!box) return;
+
+    const isHidden = box.classList.contains('hidden');
+    if (isHidden) {
+      box.classList.remove('hidden');
+      btn.classList.add('active');
+      const listEl = box.querySelector('.comments-list');
+      if (listEl && !listEl.dataset.loaded) {
+        loadCommentsForProposal(proposalId, listEl);
+        listEl.dataset.loaded = '1';
+      }
+    } else {
+      box.classList.add('hidden');
+      btn.classList.remove('active');
+    }
+  }
+
+  async function loadCommentsForProposal(proposalId, container) {
+    container.innerHTML = "<div class='info'>Carregant comentaris...</div>";
+
+    const payload = {
+      action: 'list',
+      proposalId,
+      email: currentUser.email || ''
+    };
+    const res = await apiRequest('comments', payload);
+    const arr = res && Array.isArray(res.comments) ? res.comments : [];
+
+    if (!arr.length) {
+      container.innerHTML = "<div class='info'>Encara no hi ha comentaris.</div>";
+      return;
+    }
+
+    container.innerHTML = '';
+    arr.forEach(c => {
+      container.appendChild(createCommentElement(proposalId, c));
+    });
+  }
+
+  function createCommentElement(proposalId, c) {
+    const div = document.createElement('div');
+    div.className = 'comment';
+
+    const author = c.author || (c.email || '').split('@')[0] || 'Anònim';
+    const created = c.created_at || c.createdAt;
+    const dateTxt = created ? new Date(created).toLocaleString('ca-ES') : '';
+    const likes = typeof c.likes === 'number' ? c.likes : 0;
+    const dislikes = typeof c.dislikes === 'number' ? c.dislikes : 0;
+    const userVote = typeof c.user_vote === 'number' ? c.user_vote : 0;
+
+    div.innerHTML = `
+      <div class="comment-header">
+        <span>${author}</span>
+        <span class="comment-date">${dateTxt}</span>
+      </div>
+      <div class="comment-text">${(c.text || '').replace(/\n/g,'<br>')}</div>
+      <div class="comment-footer">
+        <span class="comment-like ${userVote===1?'active':''}"
+              onclick="voteComment('${proposalId}','${c.id}',1,this)">
+          👍 <span class="comment-like-count">${likes}</span>
+        </span>
+        <span class="comment-dislike ${userVote===-1?'active':''}"
+              onclick="voteComment('${proposalId}','${c.id}',-1,this)">
+          👎 <span class="comment-dislike-count">${dislikes}</span>
+        </span>
+      </div>
+    `;
+    return div;
+  }
+
+  async function submitComment(proposalId, btn) {
+    if (!currentUser.email) {
+      alert('Cal iniciar sessió per comentar.');
+      return;
+    }
+    const box = document.getElementById('comments_' + proposalId);
+    if (!box) return;
+    const textarea = box.querySelector('textarea');
+    if (!textarea) return;
+
+    const text = (textarea.value || '').trim();
+    if (!text) {
+      alert('Introdueix un comentari.');
+      return;
+    }
+
+    btn.disabled = true;
+    try {
+      await apiRequest('comments', {
+        action: 'add',
+        proposalId,
+        email: currentUser.email,
+        author: currentUser.username || 'Usuari',
+        text
+      });
+      textarea.value = '';
+      const listEl = box.querySelector('.comments-list');
+      if (listEl) {
+        await loadCommentsForProposal(proposalId, listEl);
+      }
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function voteComment(proposalId, commentId, value, el) {
+    if (!currentUser.email) {
+      alert('Cal iniciar sessió per votar comentaris.');
+      return;
+    }
+
+    const commentBox = el.closest('.proposal-comments');
+    const listEl = commentBox ? commentBox.querySelector('.comments-list') : null;
+    const isActive = el.classList.contains('active');
+    const newValue = isActive ? 0 : value;
+
+    await apiRequest('comments', {
+      action: 'vote',
+      commentId,
+      email: currentUser.email,
+      value: newValue
+    });
+
+    if (listEl) {
+      await loadCommentsForProposal(proposalId, listEl);
     }
   }
 
