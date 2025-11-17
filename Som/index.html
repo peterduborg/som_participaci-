@@ -53,13 +53,9 @@
       font-size: 14px;
       color: #856404;
     }
-    .content {
-      padding: 30px;
-    }
-    .auth-form {
-      max-width: 480px;
-      margin: 0 auto;
-    }
+    .content { padding: 30px; }
+
+    .auth-form { max-width: 480px; margin: 0 auto; }
     .form-group { margin-bottom: 16px; }
     label {
       display: block;
@@ -79,6 +75,7 @@
       outline: none;
       border-color: #667eea;
     }
+
     .btn {
       width: auto;
       padding: 12px 16px;
@@ -92,9 +89,7 @@
     }
     .btn:hover { transform: translateY(-2px); }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn-secondary {
-      background: #6c757d;
-    }
+    .btn-secondary { background: #6c757d; }
     .btn-wide { width: 100%; }
     .hidden { display: none; }
 
@@ -191,6 +186,7 @@
     .panel small { color: #666; display: block; margin-bottom: 10px; }
     .info { font-size: 14px; color: #555; }
     .legenda { font-size:13px; color:#555; margin-top:10px; }
+    .small-note { font-size: 12px; color: #777; margin-top: 8px; }
 
     .categories { margin-top: 10px; }
     .category-block {
@@ -269,24 +265,24 @@
       margin-top: 2px;
       text-align: right;
     }
-    .small-note {
-      font-size: 12px;
-      color: #777;
-      margin-top: 8px;
-    }
 
     .proposal-form textarea {
       resize: vertical;
       min-height: 70px;
     }
 
+    /* ===== Hellblaue Hervorhebung aller Vorschläge ===== */
     .proposal {
-      background: #ffffff;
+      background: rgba(102,126,234,0.07);
       padding: 10px 12px;
       border-radius: 8px;
-      border: 1px solid #e0e0e0;
+      border: 1px solid rgba(102,126,234,0.15);
       margin-bottom: 10px;
     }
+    .proposal:hover {
+      background: rgba(102,126,234,0.13);
+    }
+
     .proposal-header {
       display: flex;
       justify-content: space-between;
@@ -345,8 +341,17 @@
     }
 
     .results { margin-top: 15px; }
-    .result-bar { margin-bottom: 8px; cursor:pointer; }
-    .result-bar.selected .bar-container {
+
+    /* Resultats-Karten */
+    .result-bar {
+      background: rgba(102,126,234,0.06);
+      padding: 6px 8px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(102,126,234,0.12);
+      cursor:pointer;
+    }
+    .result-bar.selected {
       box-shadow: 0 0 0 2px #667eea inset;
     }
     .result-label {
@@ -355,6 +360,8 @@
       font-size:13px;
       margin-bottom:3px;
       gap:8px;
+      font-weight:600;
+      color:#333;
     }
     .result-label span:first-child {
       flex:1;
@@ -366,7 +373,7 @@
       width:100%;
       height:16px;
       border-radius:999px;
-      background:#e9ecef;
+      background: rgba(102,126,234,0.15);
       overflow:hidden;
       font-size:11px;
       line-height:16px;
@@ -639,7 +646,6 @@
 
 <script>
   const API_BASE = '/.netlify/functions';
-  const AUTH_URL = '/.netlify/functions/auth';
   const MAX_POINTS = 30;
 
   const CATEGORIES = [
@@ -689,7 +695,7 @@
       });
       if (!res.ok) {
         let info = null;
-        try { info = await res.json(); } catch (e) {}
+        try { info = await res.json(); } catch(e) {}
         alert(`Error API ${fn} (HTTP ${res.status}): ` +
           (info && (info.details || info.error) ? (info.details || info.error) : 'cap detall addicional'));
         return null;
@@ -699,6 +705,12 @@
       alert(`No s'ha pogut contactar amb el servidor (${fn}): ${e}`);
       return null;
     }
+  }
+
+  function escapeHtml(str) {
+    return (str || '').replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
   }
 
   let proposals = [];
@@ -715,10 +727,10 @@
   };
   let selectedResultProposalId = null;
 
+  // ---------- Tabs / Login ----------
   function showTab(tabName) {
     const loginView = document.getElementById('loginView');
     const mainView = document.getElementById('mainView');
-
     if (tabName === 'login') {
       loginView.classList.remove('hidden');
       mainView.classList.add('hidden');
@@ -732,7 +744,6 @@
 
     const target = document.getElementById(tabName);
     if (target) target.classList.remove('hidden');
-
     const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
     if (btn) btn.classList.add('active');
 
@@ -785,7 +796,6 @@
 
       await initAfterLogin();
     } catch (err) {
-      console.error('Login error', err);
       alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
     }
   }
@@ -828,6 +838,7 @@
     showTab('participacio');
   }
 
+  // ---------- Password + Admin ----------
   function togglePasswordPanel() {
     const panel = document.getElementById('passwordPanel');
     if (!panel) return;
@@ -877,7 +888,6 @@
       document.getElementById('newPassword').value = '';
       document.getElementById('passwordPanel').classList.add('hidden');
     } catch (e) {
-      console.error('changePassword error', e);
       alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
     }
   }
@@ -933,8 +943,27 @@
       document.getElementById('newUserName').value = '';
       document.getElementById('newUserPassword').value = '';
     } catch (e) {
-      console.error('createNewUser error', e);
       alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
+    }
+  }
+
+  // ---------- Kategorien / Zufriedenheit ----------
+  function positionThumbLabel(slider, label) {
+    const val = parseInt(slider.value || '0', 10);
+    label.textContent = val;
+  }
+
+  function applyAverage(key) {
+    const avg = (serverAverages && typeof serverAverages[key] === 'number')
+      ? serverAverages[key] : null;
+    const bar = document.getElementById('avg_' + key);
+    const t = document.getElementById('avg_txt_' + key);
+    if (avg != null && isFinite(avg)) {
+      if (bar) bar.style.width = Math.round(avg) + '%';
+      if (t) t.textContent = Math.round(avg) + '%';
+    } else {
+      if (bar) bar.style.width = '0%';
+      if (t) t.textContent = '—';
     }
   }
 
@@ -955,13 +984,13 @@
       </div>
       <div class="slider-row">
         <input type="range" class="slider" id="slider_${cat.key}" min="0" max="100" step="5"
-               value="${(currentUser.satisfaction || {})[cat.key] || 0}"
-               oninput="updateSlider('${cat.key}', this)" />
+          value="${(currentUser.satisfaction || {})[cat.key] || 0}"
+          oninput="updateSlider('${cat.key}', this)" />
         <div class="thumb-label" id="thumb_${cat.key}">0</div>
       </div>
       <button class="btn btn-secondary"
-              style="margin-top:8px;font-size:12px;padding:6px 10px;"
-              onclick="toggleProposals('${cat.key}', this)">
+        style="margin-top:8px;font-size:12px;padding:6px 10px;"
+        onclick="toggleProposals('${cat.key}', this)">
         Veure propostes d'aquesta categoria
       </button>
       <div id="props_${cat.key}" class="hidden"></div>
@@ -981,25 +1010,6 @@
       positionThumbLabel(slider, label);
       applyAverage(cat.key);
     });
-  }
-
-  function positionThumbLabel(slider, label) {
-    const val = parseInt(slider.value || '0', 10);
-    label.textContent = val;
-  }
-
-  function applyAverage(key) {
-    const avg = (serverAverages && typeof serverAverages[key] === 'number')
-      ? serverAverages[key] : null;
-    const bar = document.getElementById('avg_' + key);
-    const t = document.getElementById('avg_txt_' + key);
-    if (avg != null && isFinite(avg)) {
-      if (bar) bar.style.width = Math.round(avg) + '%';
-      if (t) t.textContent = Math.round(avg) + '%';
-    } else {
-      if (bar) bar.style.width = '0%';
-      if (t) t.textContent = '—';
-    }
   }
 
   async function loadAveragesFromServer() {
@@ -1036,6 +1046,7 @@
     applyAverage(key);
   }
 
+  // ---------- Propostes ----------
   function populateCategorySelect() {
     const sel = document.getElementById('proposalCategory');
     if (!sel) return;
@@ -1058,9 +1069,8 @@
         return;
       }
       const data = await res.json();
-      const arr = Array.isArray(data)
-        ? data
-        : (Array.isArray(data.proposals) ? data.proposals : []);
+      const arr = Array.isArray(data) ? data :
+                  (Array.isArray(data.proposals) ? data.proposals : []);
       proposals = arr.map(p => ({
         id: String(p.id || p.proposal_id || p.uuid),
         title: p.title,
@@ -1083,32 +1093,36 @@
     const cat = CATEGORIES.find(c => c.key === p.category);
     const catTitle = cat ? cat.title : p.category;
     const myVote = (currentUser.votes || {})[String(p.id)] || 0;
-    const dateTxt = new Date(p.createdAt).toLocaleDateString('ca-ES');
-
+    const dateTxt = p.createdAt ? new Date(p.createdAt).toLocaleDateString('ca-ES') : '';
     const canDelete = (p.email || '') === (currentUser.email || '').toLowerCase();
     const deleteBtnHtml = canDelete
-      ? `<button class="btn btn-secondary"
-                 style="font-size:11px;padding:4px 8px;"
-                 onclick="deleteProposal('${p.id}')">Esborrar</button>`
+      ? `<button class="btn btn-secondary" style="font-size:11px;padding:4px 8px;"
+           onclick="deleteProposal('${p.id}')">Esborrar</button>`
       : '';
 
     div.innerHTML = `
       <div class="proposal-header">
         <div>
-          <div class="proposal-title">${p.title}</div>
-          <div class="proposal-meta">${catTitle} · ${p.author || 'Anònim'}</div>
+          <div class="proposal-title">${escapeHtml(p.title)}</div>
+          <div class="proposal-meta">${escapeHtml(catTitle)} · ${escapeHtml(p.author || 'Anònim')}</div>
         </div>
         <div class="proposal-meta">${dateTxt}</div>
       </div>
-      <div class="proposal-desc">${(p.desc || '').replace(/\n/g,'<br>')}</div>
+      <div class="proposal-desc">${escapeHtml(p.desc).replace(/\n/g,'<br>')}</div>
       <div class="proposal-actions">
         <div class="vote-buttons">
-          <button class="vote-btn ${myVote===-3?'active-neg':''}" onclick="setVote('${p.id}',-3,this)">-3</button>
-          <button class="vote-btn ${myVote===-2?'active-neg':''}" onclick="setVote('${p.id}',-2,this)">-2</button>
-          <button class="vote-btn ${myVote===-1?'active-neg':''}" onclick="setVote('${p.id}',-1,this)">-1</button>
-          <button class="vote-btn ${myVote===1?'active-pos':''}"  onclick="setVote('${p.id}',1,this)">+1</button>
-          <button class="vote-btn ${myVote===2?'active-pos':''}"  onclick="setVote('${p.id}',2,this)">+2</button>
-          <button class="vote-btn ${myVote===3?'active-pos':''}"  onclick="setVote('${p.id}',3,this)">+3</button>
+          <button class="vote-btn ${myVote===-3?'active-neg':''}"
+            onclick="setVote('${p.id}',-3,this)">-3</button>
+          <button class="vote-btn ${myVote===-2?'active-neg':''}"
+            onclick="setVote('${p.id}',-2,this)">-2</button>
+          <button class="vote-btn ${myVote===-1?'active-neg':''}"
+            onclick="setVote('${p.id}',-1,this)">-1</button>
+          <button class="vote-btn ${myVote===1?'active-pos':''}"
+            onclick="setVote('${p.id}',1,this)">+1</button>
+          <button class="vote-btn ${myVote===2?'active-pos':''}"
+            onclick="setVote('${p.id}',2,this)">+2</button>
+          <button class="vote-btn ${myVote===3?'active-pos':''}"
+            onclick="setVote('${p.id}',3,this)">+3</button>
         </div>
         <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
           <div class="vote-info">
@@ -1116,23 +1130,20 @@
           </div>
           ${deleteBtnHtml}
           <button class="btn btn-secondary"
-                  style="font-size:11px;padding:4px 8px;"
-                  onclick="toggleComments('${p.id}', this)">
+            style="font-size:11px;padding:4px 8px;"
+            onclick="toggleCommentsPanel('${p.id}', this)">
             Comentaris
           </button>
         </div>
       </div>
-      <div id="comments_${p.id}" class="proposal-comments hidden">
+      <div class="proposal-comments hidden" id="comments_${p.id}">
         <div class="comments-list"></div>
-        <div class="comment-form" style="margin-top:6px;">
-          <textarea style="width:100%;min-height:50px;font-size:13px;"
-                    placeholder="Afegeix el teu comentari..."></textarea>
-          <button class="btn"
-                  style="margin-top:4px;font-size:12px;padding:6px 10px;"
-                  onclick="submitComment('${p.id}', this)">
-            Enviar comentari
-          </button>
-        </div>
+        <textarea class="comment-input" placeholder="Afegeix el teu comentari..."></textarea>
+        <button class="btn"
+          style="margin-top:6px;font-size:12px;padding:6px 10px;"
+          onclick="submitComment('${p.id}', this)">
+          Enviar comentari
+        </button>
       </div>
     `;
     return div;
@@ -1141,9 +1152,7 @@
   function renderProposals() {
     const list = document.getElementById('myProposalsList');
     if (!list) return;
-    const mine = proposals.filter(
-      p => (p.email || '') === (currentUser.email || '').toLowerCase()
-    );
+    const mine = proposals.filter(p => (p.email || '') === (currentUser.email || '').toLowerCase());
     if (mine.length === 0) {
       list.innerHTML = 'Encara no has creat cap proposta. Comença afegint-ne una.';
       return;
@@ -1175,49 +1184,62 @@
       author: currentUser.username || 'Usuari',
       email: currentUser.email
     };
+
+    let res;
     try {
-      const res = await fetch(`${API_BASE}/proposals`, {
+      res = await fetch(`${API_BASE}/proposals`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      if (!res.ok) {
-        const errorText = await res.text();
-        alert(`Error API proposals (HTTP ${res.status}): ${errorText || 'cap detall addicional'}`);
-        return;
-      }
-      const resJson = await res.json();
-      const created = resJson.proposal ? resJson.proposal : resJson;
-      const newProposal = {
-        id: String(created.id || created.proposal_id || created.uuid),
-        title: created.title,
-        category: created.category,
-        desc: created.description || created.desc || desc,
-        author: created.author || created.username || payload.author,
-        email: (created.email || created.user_email || payload.email || '').toLowerCase(),
-        createdAt: created.created_at || created.createdAt || new Date().toISOString()
-      };
-      proposals.push(newProposal);
-      document.getElementById('proposalTitle').value = '';
-      document.getElementById('proposalCategory').value = '';
-      document.getElementById('proposalDesc').value = '';
-      renderProposals();
-      renderMyVotes();
-      updateResults();
-      updatePointsInfo();
-      alert('Proposta afegida correctament.');
     } catch (e) {
       alert(`No s’ha pogut contactar amb el servidor de propostes: ${e}`);
-    } finally {
       if (btn) btn.disabled = false;
+      return;
     }
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      alert(`Error API proposals (HTTP ${res.status}): ${errorText || 'cap detall addicional'}`);
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    const resJson = await res.json();
+    const created = resJson.proposal ? resJson.proposal : resJson;
+    const newProposal = {
+      id: String(created.id || created.proposal_id || created.uuid),
+      title: created.title,
+      category: created.category,
+      desc: created.description || created.desc || desc,
+      author: created.author || created.username || payload.author,
+      email: (created.email || created.user_email || payload.email || '').toLowerCase(),
+      createdAt: created.created_at || created.createdAt || new Date().toISOString()
+    };
+    proposals.push(newProposal);
+
+    document.getElementById('proposalTitle').value = '';
+    document.getElementById('proposalCategory').value = '';
+    document.getElementById('proposalDesc').value = '';
+    renderProposals();
+    renderMyVotes();
+    await loadGlobalScoresFromServer();
+    updateResults();
+    updatePointsInfo();
+    if (btn) btn.disabled = false;
+    alert('Proposta afegida correctament.');
   }
 
   function toggleProposals(catKey, btn) {
     CATEGORIES.forEach(c => {
-      const box = document.getElementById('props_' + c.key);
-      if (box && c.key !== catKey) box.classList.add('hidden');
+      const boxOther = document.getElementById('props_' + c.key);
+      if (boxOther && c.key !== catKey) boxOther.classList.add('hidden');
+      const btnOther = document.querySelector(`button[onclick*="${c.key}"]`);
+      if (btnOther && c.key !== catKey) {
+        btnOther.textContent = "Veure propostes d'aquesta categoria";
+      }
     });
+
     const box = document.getElementById('props_' + catKey);
     if (!box) return;
     const isHidden = box.classList.contains('hidden');
@@ -1259,7 +1281,6 @@
       alert('No s\'ha pogut contactar amb el servidor de propostes.');
       return;
     }
-
     proposals = proposals.filter(pr => String(pr.id) !== String(proposalId));
     if (currentUser.votes && currentUser.votes[proposalId]) {
       delete currentUser.votes[proposalId];
@@ -1273,6 +1294,7 @@
     updatePointsInfo();
   }
 
+  // ---------- Votes / Resultats ----------
   async function loadUserVotesFromServer() {
     if (!currentUser.email) return;
     const res = await apiRequest('votes', {
@@ -1280,14 +1302,12 @@
       email: currentUser.email
     });
     if (!res) return;
-
     let votesObj = {};
     const pushVote = v => {
       const pid = String(v.proposal_id || v.proposalId || v.id);
       const value = v.points ?? v.value ?? v.vote ?? 0;
       if (pid) votesObj[pid] = value;
     };
-
     if (Array.isArray(res)) res.forEach(pushVote);
     else if (Array.isArray(res.votes)) res.votes.forEach(pushVote);
     else if (res.votes && typeof res.votes === 'object') {
@@ -1304,9 +1324,7 @@
       globalScores = {};
       return;
     }
-    const arr = Array.isArray(res)
-      ? res
-      : (res.scores || res.results || []);
+    const arr = Array.isArray(res) ? res : (res.scores || res.results || []);
     globalScores = {};
     arr.forEach(r => {
       const pid = String(r.proposal_id || r.id || r.proposalId);
@@ -1342,6 +1360,8 @@
     if (assignedSpan) assignedSpan.textContent = total;
     const usedTop = document.getElementById('usedPointsInfoTop');
     if (usedTop) usedTop.textContent = total;
+    const usedRight = document.getElementById('usedPointsInfo');
+    if (usedRight) usedRight.textContent = total;
   }
 
   async function setVote(proposalId, delta, btn) {
@@ -1375,9 +1395,7 @@
         }
       });
     }
-
     renderMyVotes();
-
     await apiRequest('votes', {
       action: 'setVote',
       email: currentUser.email,
@@ -1401,32 +1419,22 @@
   function updateResults() {
     const box = document.getElementById('resultsChart');
     if (!box) return;
-
     const all = computeGlobalScores();
     const values = Object.values(all);
     if (!values.length) {
       box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>';
-      const detail = document.getElementById('resultDetail');
-      if (detail) {
-        detail.innerHTML =
-          "Fes clic en un projecte per veure'n el detall, votar-lo, comentar-lo i fer like/dislike als comentaris.";
-      }
-      selectedResultProposalId = null;
       return;
     }
-
     const rows = proposals
       .map(p => {
         const sum = all[String(p.id)] || 0;
         return { id: p.id, title: p.title, sum };
       })
       .sort((a, b) => b.sum - a.sum);
-
     if (rows.length === 0) {
       box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>';
       return;
     }
-
     const maxPos = Math.max(...rows.map(r => Math.max(0, r.sum))) || 1;
 
     box.innerHTML = rows.map(r => {
@@ -1443,10 +1451,10 @@
         color = '#6c757d';
       }
       return `
-        <div class="result-bar" id="resultbar_${r.id}"
-             onclick="toggleResultDetail('${r.id}')">
+        <div class="result-bar" data-proposal-id="${r.id}">
           <div class="result-label">
-            <span>${r.title}</span><span>${r.sum} punts</span>
+            <span>${escapeHtml(r.title)}</span>
+            <span>${r.sum} punts</span>
           </div>
           <div class="bar-container">
             <div class="bar-fill" style="width:${width}%;background:${color};">&nbsp;</div>
@@ -1454,97 +1462,84 @@
         </div>
       `;
     }).join('');
+
+    box.querySelectorAll('.result-bar').forEach(bar => {
+      bar.addEventListener('click', () => {
+        const pid = bar.getAttribute('data-proposal-id');
+        toggleResultDetail(pid, bar);
+      });
+    });
   }
 
-  function toggleResultDetail(proposalId) {
+  function toggleResultDetail(proposalId, barEl) {
     const detail = document.getElementById('resultDetail');
     if (!detail) return;
 
     if (selectedResultProposalId === proposalId) {
       selectedResultProposalId = null;
-      detail.innerHTML =
-        "Fes clic en un projecte per veure'n el detall, votar-lo, comentar-lo i fer like/dislike als comentaris.";
-      document.querySelectorAll('.result-bar.selected')
-        .forEach(el => el.classList.remove('selected'));
+      detail.innerHTML = 'Fes clic en un projecte per veure\'n el detall, votar-lo, comentar-lo i fer like/dislike als comentaris.';
+      document.querySelectorAll('.result-bar').forEach(b => b.classList.remove('selected'));
       return;
     }
 
     selectedResultProposalId = proposalId;
-
-    document.querySelectorAll('.result-bar.selected')
-      .forEach(el => el.classList.remove('selected'));
-    const barEl = document.getElementById('resultbar_' + proposalId);
+    document.querySelectorAll('.result-bar').forEach(b => b.classList.remove('selected'));
     if (barEl) barEl.classList.add('selected');
 
     const p = proposals.find(pr => String(pr.id) === String(proposalId));
     if (!p) {
-      detail.innerHTML = "<div class='info'>No s'ha trobat la proposta seleccionada.</div>";
+      detail.innerHTML = 'No s\'ha trobat la proposta seleccionada.';
       return;
     }
-
-    const card = createProposalElement(p);
     detail.innerHTML = '';
-    detail.appendChild(card);
+    detail.appendChild(createProposalElement(p));
   }
 
-  function toggleComments(proposalId, btn) {
-    const box = document.getElementById('comments_' + proposalId);
-    if (!box) return;
-
-    const isHidden = box.classList.contains('hidden');
+  // ---------- Comments ----------
+  async function toggleCommentsPanel(proposalId, btn) {
+    const panel = document.getElementById('comments_' + proposalId);
+    if (!panel) return;
+    const isHidden = panel.classList.contains('hidden');
     if (isHidden) {
-      box.classList.remove('hidden');
-      btn.classList.add('active');
-      const listEl = box.querySelector('.comments-list');
-      if (listEl && !listEl.dataset.loaded) {
-        loadCommentsForProposal(proposalId, listEl);
-        listEl.dataset.loaded = '1';
-      }
+      panel.classList.remove('hidden');
+      await loadCommentsForProposal(proposalId, panel);
     } else {
-      box.classList.add('hidden');
-      btn.classList.remove('active');
+      panel.classList.add('hidden');
     }
   }
 
   async function loadCommentsForProposal(proposalId, container) {
-    container.innerHTML = "<div class='info'>Carregant comentaris...</div>";
-
-    const payload = {
+    const res = await apiRequest('comments', {
       action: 'list',
       proposalId,
-      email: currentUser.email || ''
-    };
-    const res = await apiRequest('comments', payload);
-    const arr = res && Array.isArray(res.comments) ? res.comments : [];
-
-    if (!arr.length) {
-      container.innerHTML = "<div class='info'>Encara no hi ha comentaris.</div>";
-      return;
-    }
-
-    container.innerHTML = '';
-    arr.forEach(c => {
-      container.appendChild(createCommentElement(proposalId, c));
+      email: currentUser.email || null
     });
+    const listDiv = container.querySelector('.comments-list');
+    if (!listDiv) return;
+    listDiv.innerHTML = '';
+    const comments = (res && res.comments) ? res.comments : [];
+    comments.forEach(c => listDiv.appendChild(createCommentElement(proposalId, c)));
   }
 
   function createCommentElement(proposalId, c) {
     const div = document.createElement('div');
     div.className = 'comment';
-
     const author = c.author || (c.email || '').split('@')[0] || 'Anònim';
     const created = c.created_at || c.createdAt;
     const dateTxt = created ? new Date(created).toLocaleString('ca-ES') : '';
-    const likes = typeof c.likes === 'number' ? c.likes : 0;
-    const dislikes = typeof c.dislikes === 'number' ? c.dislikes : 0;
-    const userVote = typeof c.user_vote === 'number' ? c.user_vote : 0;
+    const likes = c.likes == null ? 0 : Number(c.likes);
+    const dislikes = c.dislikes == null ? 0 : Number(c.dislikes);
+    const userVote = c.user_vote == null ? 0 : Number(c.user_vote);
+
+    div.dataset.commentId = c.id;
+    div.dataset.userVote = String(userVote);
 
     div.innerHTML = `
       <div class="comment-header">
-        <span>${author}</span>
+        <span>${escapeHtml(author)}</span>
         <span class="comment-date">${dateTxt}</span>
       </div>
-      <div class="comment-text">${(c.text || '').replace(/\n/g,'<br>')}</div>
+      <div class="comment-text">${escapeHtml(c.text || '').replace(/\n/g,'<br>')}</div>
       <div class="comment-footer">
         <span class="comment-like ${userVote===1?'active':''}"
               onclick="voteComment('${proposalId}','${c.id}',1,this)">
@@ -1564,57 +1559,64 @@
       alert('Cal iniciar sessió per comentar.');
       return;
     }
-    const box = document.getElementById('comments_' + proposalId);
-    if (!box) return;
-    const textarea = box.querySelector('textarea');
+    const panel = document.getElementById('comments_' + proposalId);
+    if (!panel) return;
+    const textarea = panel.querySelector('.comment-input');
     if (!textarea) return;
-
     const text = (textarea.value || '').trim();
-    if (!text) {
-      alert('Introdueix un comentari.');
-      return;
-    }
+    if (!text) return;
 
     btn.disabled = true;
-    try {
-      await apiRequest('comments', {
-        action: 'add',
-        proposalId,
-        email: currentUser.email,
-        author: currentUser.username || 'Usuari',
-        text
-      });
-      textarea.value = '';
-      const listEl = box.querySelector('.comments-list');
-      if (listEl) {
-        await loadCommentsForProposal(proposalId, listEl);
-      }
-    } finally {
-      btn.disabled = false;
-    }
+    const res = await apiRequest('comments', {
+      action: 'add',
+      proposalId,
+      email: currentUser.email,
+      author: currentUser.username || 'Usuari',
+      text
+    });
+    btn.disabled = false;
+    if (!res) return;
+    textarea.value = '';
+    await loadCommentsForProposal(proposalId, panel);
   }
 
   async function voteComment(proposalId, commentId, value, el) {
     if (!currentUser.email) {
-      alert('Cal iniciar sessió per votar comentaris.');
+      alert('Cal iniciar sessió per valorar comentaris.');
       return;
     }
+    const root = el.closest('.comment');
+    if (!root) return;
+    const current = Number(root.dataset.userVote || 0);
+    let newVal = (current === value) ? 0 : value;
 
-    const commentBox = el.closest('.proposal-comments');
-    const listEl = commentBox ? commentBox.querySelector('.comments-list') : null;
-    const isActive = el.classList.contains('active');
-    const newValue = isActive ? 0 : value;
+    const likeSpan = root.querySelector('.comment-like-count');
+    const dislikeSpan = root.querySelector('.comment-dislike-count');
+    let likes = Number(likeSpan.textContent || 0);
+    let dislikes = Number(dislikeSpan.textContent || 0);
+
+    if (current === 1) likes--;
+    else if (current === -1) dislikes--;
+
+    if (newVal === 1) likes++;
+    else if (newVal === -1) dislikes++;
+
+    likeSpan.textContent = likes;
+    dislikeSpan.textContent = dislikes;
+
+    const likeBtn = root.querySelector('.comment-like');
+    const dislikeBtn = root.querySelector('.comment-dislike');
+    likeBtn.classList.toggle('active', newVal === 1);
+    dislikeBtn.classList.toggle('active', newVal === -1);
+
+    root.dataset.userVote = String(newVal);
 
     await apiRequest('comments', {
       action: 'vote',
       commentId,
       email: currentUser.email,
-      value: newValue
+      value: newVal
     });
-
-    if (listEl) {
-      await loadCommentsForProposal(proposalId, listEl);
-    }
   }
 
   (function init() {
