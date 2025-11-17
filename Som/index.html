@@ -30,10 +30,20 @@
       gap: 20px;
       flex-wrap: wrap;
     }
-    .header-logo { background: white; padding: 10px; border-radius: 8px; }
-    .header-logo img { height: 60px; width: auto; display: block; }
-    .header-text h1 { font-size: 28px; margin-bottom: 10px; }
-
+    .header-logo {
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .header-logo img {
+      height: 60px;
+      width: auto;
+      display: block;
+    }
+    .header-text h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
     .disclaimer {
       background: #fff3cd;
       border-left: 4px solid #ffecb5;
@@ -43,11 +53,22 @@
       font-size: 14px;
       color: #856404;
     }
-    .content { padding: 30px; }
-
-    .auth-form { max-width: 480px; margin: 0 auto; }
-    .form-group { margin-bottom: 16px; }
-    label { display: block; margin-bottom: 6px; font-weight: 600; color: #333; }
+    .content {
+      padding: 30px;
+    }
+    .auth-form {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #333;
+    }
     input, textarea, select {
       width: 100%;
       padding: 12px;
@@ -56,7 +77,10 @@
       font-size: 16px;
       font-family: inherit;
     }
-    input:focus, textarea:focus, select:focus { outline: none; border-color: #667eea; }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
     .btn {
       width: auto;
       padding: 12px 16px;
@@ -68,371 +92,825 @@
       cursor: pointer;
       transition: transform 0.2s;
     }
-    .btn:hover { transform: translateY(-2px); }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn-secondary { background: #6c757d; }
-    .btn-wide { width: 100%; }
-
-    .hidden { display: none; }
-
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .btn-secondary {
+      background: #6c757d;
+    }
+    .btn-wide {
+      width: 100%;
+    }
+    .hidden {
+      display: none;
+    }
     .user-info {
       background: #f0f0f0;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px; flex-wrap:nowrap; padding: 15px; border-radius: 10px; margin-bottom: 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:nowrap;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
     }
-    .user-main { display:flex; align-items:center; gap:10px; min-width:0; }
+    .user-main {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
     .user-badge {
-      background:#667eea; color:white; border-radius:50%; width:40px; height:40px;
-      display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0;
+      background:#667eea;
+      color:white;
+      border-radius:50%;
+      width:40px;
+      height:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      flex-shrink:0;
     }
-    .user-text { min-width:0; }
-    .user-text div:first-child { font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .user-text small { color:#555; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; }
-    .user-actions { display:flex; gap:8px; flex-shrink:0; flex-wrap:wrap; }
-
-    .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-    .tab-btn { padding: 8px 14px; border-radius: 20px; border: 1px solid #ccc; background: #f8f9fa; cursor: pointer; font-size: 14px; }
-    .tab-btn.active { background: #667eea; color: white; border-color: #667eea; }
-
-    .two-cols { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 25px; align-items: flex-start; }
-    .two-panels { display:flex; flex-direction:column; gap:20px; }
-    .panel { background: #f8f9fa; border-radius: 10px; padding: 18px 18px 20px; border: 1px solid #e0e0e0; position: relative; }
-    .panel h2 { font-size: 20px; margin-bottom: 10px; }
-    .panel h3 { font-size: 16px; margin-bottom: 8px; }
-    .panel small { color: #666; display: block; margin-bottom: 10px; }
-    .info { font-size: 14px; color: #555; }
-
-    .legenda { font-size:13px; color:#555; margin-top:10px; }
-
-    .categories { margin-top: 10px; }
-    .category-block { background: #ffffff; padding: 10px 12px 12px; border-radius: 8px; border: 1px solid #e0e0e0; margin-bottom: 10px; }
-    .category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap:10px; }
-    .category-header h3 { margin: 0; font-size: 15px; }
-    .category-header small { margin:0; }
-    .slider-row { display: flex; align-items: center; gap: 10px; }
-    .slider { flex: 1; }
-    .thumb-label { font-size: 13px; color: #333; white-space:nowrap; min-width:40px; text-align:right; }
-
-    input[type="range"] { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 5px; background: #e0e0e0; outline: none; }
+    .user-text {
+      min-width:0;
+    }
+    .user-text div:first-child {
+      font-weight:600;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .user-text small {
+      color:#555;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      display:block;
+    }
+    .user-actions {
+      display:flex;
+      gap:8px;
+      flex-shrink:0;
+      flex-wrap:wrap;
+    }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      background: #f8f9fa;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .tab-btn.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+    .two-cols {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 25px;
+      align-items: flex-start;
+    }
+    .two-panels {
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+    .panel {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 18px 18px 20px;
+      border: 1px solid #e0e0e0;
+      position: relative;
+    }
+    .panel h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .panel h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+    .panel small {
+      color: #666;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .info {
+      font-size: 14px;
+      color: #555;
+    }
+    .legenda {
+      font-size:13px;
+      color:#555;
+      margin-top:10px;
+    }
+    .categories {
+      margin-top: 10px;
+    }
+    .category-block {
+      background: #ffffff;
+      padding: 10px 12px 12px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      margin-bottom: 10px;
+    }
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap:10px;
+    }
+    .category-header h3 {
+      margin: 0;
+      font-size: 15px;
+    }
+    .category-header small {
+      margin:0;
+    }
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .slider {
+      flex: 1;
+    }
+    .thumb-label {
+      font-size: 13px;
+      color: #333;
+      white-space:nowrap;
+      min-width:40px;
+      text-align:right;
+    }
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 5px;
+      background: #e0e0e0;
+      outline: none;
+    }
     input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none; appearance: none;
-      width: 18px; height: 18px; border-radius: 50%;
-      background: #667eea; cursor: pointer;
-      border: 2px solid #fff; box-shadow: 0 0 3px rgba(0,0,0,0.3);
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #667eea;
+      cursor: pointer;
+      border: 2px solid #fff;
+      box-shadow: 0 0 3px rgba(0,0,0,0.3);
     }
     input[type="range"]::-moz-range-thumb {
-      width: 18px; height: 18px; border-radius: 50%;
-      background: #667eea; cursor: pointer;
-      border: 2px solid #fff; box-shadow: 0 0 3px rgba(0,0,0,0.3);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #667eea;
+      cursor: pointer;
+      border: 2px solid #fff;
+      box-shadow: 0 0 3px rgba(0,0,0,0.3);
+    }
+    .avg-bar {
+      margin-top: 6px;
+      width: 100%;
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .avg-fill {
+      height: 100%;
+      background: linear-gradient(90deg,#dc3545,#ffc107,#28a745);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .avg-label {
+      font-size: 12px;
+      color: #555;
+      margin-top: 2px;
+      text-align: right;
+    }
+    .small-note {
+      font-size: 12px;
+      color: #777;
+      margin-top: 8px;
+    }
+    .proposal-form textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+    .proposal {
+      background: #ffffff;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      margin-bottom: 10px;
+    }
+    .proposal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      gap:10px;
+    }
+    .proposal-title {
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .proposal-meta {
+      font-size: 11px;
+      color: #777;
+    }
+    .proposal-desc {
+      font-size: 13px;
+      margin-bottom: 6px;
+      white-space: pre-line;
+    }
+    .proposal-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .vote-buttons {
+      display: inline-flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .vote-btn {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid #ddd;
+      background: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      min-width: 36px;
+      text-align:center;
+    }
+    .vote-btn.active-pos {
+      background: #28a745;
+      color: white;
+      border-color: #28a745;
+    }
+    .vote-btn.active-neg {
+      background: #dc3545;
+      color: white;
+      border-color: #dc3545;
+    }
+    .vote-info {
+      font-size: 11px;
+      color: #555;
     }
 
-    .avg-bar { margin-top: 6px; width: 100%; height: 8px; background: #e9ecef; border-radius: 999px; overflow: hidden; }
-    .avg-fill { height: 100%; background: linear-gradient(90deg,#dc3545,#ffc107,#28a745); width: 0%; transition: width 0.3s ease; }
-    .avg-label { font-size: 12px; color: #555; margin-top: 2px; text-align: right; }
+    /* NEU: Kommentare an Proposals */
+    .proposal-comments {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #eee;
+    }
+    .comments-list {
+      margin-bottom: 6px;
+    }
+    .comment {
+      font-size: 12px;
+      margin-bottom: 6px;
+      padding: 4px 0;
+      border-bottom: 1px dashed #e0e0e0;
+    }
+    .comment:last-child {
+      border-bottom: none;
+    }
+    .comment-header {
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:2px;
+      color:#777;
+    }
+    .comment-text {
+      font-size:13px;
+    }
+    .comment-actions {
+      margin-top:2px;
+      display:flex;
+      gap:6px;
+      align-items:center;
+    }
+    .comment-btn {
+      border:none;
+      background:transparent;
+      cursor:pointer;
+      font-size:14px;
+      padding:0 2px;
+    }
+    .comment-btn.active-like {
+      color:#28a745;
+    }
+    .comment-btn.active-dislike {
+      color:#dc3545;
+    }
+    .comment-form textarea {
+      width:100%;
+      resize:vertical;
+      min-height:40px;
+      margin-bottom:4px;
+      font-size:13px;
+    }
+    .comment-form .btn {
+      font-size:12px;
+      padding:6px 10px;
+    }
 
-    .small-note { font-size: 12px; color: #777; margin-top: 8px; }
+    /* NEU: Header mit Beschreibung rechts in "Les meves propostes" */
+    .panel-header-inline {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:15px;
+      margin-bottom:10px;
+    }
+    .panel-header-inline .panel-title {
+      font-size:20px;
+      font-weight:600;
+      margin:0;
+    }
+    .panel-header-inline .panel-info {
+      font-size:13px;
+      color:#555;
+      max-width:340px;
+      text-align:right;
+    }
 
-    .proposal-form textarea { resize: vertical; min-height: 70px; }
-
-    .proposal { background: #ffffff; padding: 10px 12px; border-radius: 8px; border: 1px solid #e0e0e0; margin-bottom: 10px; }
-    .proposal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap:10px; }
-    .proposal-title { font-weight: 600; font-size: 14px; }
-    .proposal-meta { font-size: 11px; color: #777; }
-    .proposal-desc { font-size: 13px; margin-bottom: 6px; white-space: pre-line; }
-    .proposal-actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
-
-    .vote-buttons { display: inline-flex; gap: 4px; flex-wrap: wrap; }
-    .vote-btn { padding: 4px 8px; border-radius: 999px; border: 1px solid #ddd; background: #fff; font-size: 12px; cursor: pointer; min-width: 36px; text-align:center; }
-    .vote-btn.active-pos { background: #28a745; color: white; border-color: #28a745; }
-    .vote-btn.active-neg { background: #dc3545; color: white; border-color: #dc3545; }
-    .vote-info { font-size: 11px; color: #555; }
-
-    .results { margin-top: 15px; }
-    .result-bar { margin-bottom: 8px; }
-    .result-label { display:flex; justify-content:space-between; font-size:13px; margin-bottom:3px; gap:8px; }
-    .result-label span:first-child { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .bar-container { width:100%; height:16px; border-radius:999px; background:#e9ecef; overflow:hidden; font-size:11px; line-height:16px; }
-    .bar-fill { height:100%; color:white; text-align:right; padding-right:6px; white-space:nowrap; }
+    .results {
+      margin-top: 15px;
+    }
+    .result-bar {
+      margin-bottom: 8px;
+    }
+    .result-label {
+      display:flex;
+      justify-content:space-between;
+      font-size:13px;
+      margin-bottom:3px;
+      gap:8px;
+    }
+    .result-label span:first-child {
+      flex:1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .bar-container {
+      width:100%;
+      height:16px;
+      border-radius:999px;
+      background:#e9ecef;
+      overflow:hidden;
+      font-size:11px;
+      line-height:16px;
+    }
+    .bar-fill {
+      height:100%;
+      color:white;
+      text-align:right;
+      padding-right:6px;
+      white-space:nowrap;
+    }
 
     @media (max-width: 900px) {
-      .two-cols { grid-template-columns: 1fr; }
-      .user-info { flex-direction: column; align-items:flex-start; }
-      .user-actions { width:100%; justify-content:flex-end; }
-      .user-actions .btn { width:auto; }
+      .two-cols {
+        grid-template-columns: 1fr;
+      }
+      .user-info {
+        flex-direction: column;
+        align-items:flex-start;
+      }
+      .user-actions {
+        width:100%;
+        justify-content:flex-end;
+      }
+      .user-actions .btn {
+        width:auto;
+      }
     }
     @media (max-width: 600px) {
-      .header-text h1 { font-size: 22px; }
-      .content { padding: 20px; }
-      .user-info { padding: 12px; }
+      .header-text h1 {
+        font-size: 22px;
+      }
+      .content {
+        padding: 20px;
+      }
+      .user-info {
+        padding: 12px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <div class="header-logo"><img src="som.jpg" alt="SOM Matadepera" /></div>
-      <div class="header-text">
-        <h1>Participació Ciutadana Matadepera</h1>
-        <p>La teva veu compta - Avalua i proposa millores</p>
-      </div>
-    </div>
-
-    <div class="disclaimer">
-      <strong>⚠️ Nota Important:</strong>
-      Aquesta plataforma és consultiva i no oficial. Les dades recollides s’utilitzaran per elaborar propostes concretes per al municipi, però no substitueixen els canals institucionals de participació de l’Ajuntament.
-    </div>
-
-    <div class="content">
-      <!-- LOGIN VIEW -->
-      <div id="loginView">
-        <div class="auth-form">
-          <h2 style="text-align:center;margin-bottom:20px">Iniciar Sessió</h2>
-          <p style="font-size:13px;color:#555;margin-bottom:15px">
-            Entra amb el teu correu i la teva contrasenya.
-          </p>
-          <div class="form-group">
-            <label>Correu electrònic</label>
-            <input type="email" id="loginEmail" placeholder="el.teu@correu.cat" />
-          </div>
-          <div class="form-group">
-            <label>Contrasenya</label>
-            <input type="password" id="loginPassword" placeholder="••••••••" />
-          </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="btn btn-wide" onclick="login()">Accedir</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- MAIN APP VIEW -->
-      <div id="mainView" class="hidden">
-        <div class="user-info">
-          <div class="user-main">
-            <div class="user-badge" id="userBadge">U</div>
-            <div class="user-text">
-              <div id="userName">Usuari</div>
-              <small id="userEmail">correu@example.com</small>
-            </div>
-          </div>
-          <div class="user-actions">
-            <button class="btn btn-secondary" onclick="togglePasswordPanel()">Canviar contrasenya</button>
-            <button class="btn btn-secondary hidden" id="btnAdminPanel" onclick="toggleAdminPanel()">Gestió d'usuaris</button>
-            <button class="btn btn-secondary" onclick="logout()">Sortir</button>
-          </div>
-        </div>
-
-        <!-- Password change panel -->
-        <div id="passwordPanel" class="panel hidden" style="margin-bottom:20px;">
-          <h2>Canviar contrasenya</h2>
-          <div class="form-group">
-            <label>Contrasenya actual</label>
-            <input type="password" id="oldPassword" />
-          </div>
-          <div class="form-group">
-            <label>Nova contrasenya</label>
-            <input type="password" id="newPassword" />
-          </div>
-          <button class="btn" onclick="changePassword()">Desar nova contrasenya</button>
-        </div>
-
-        <!-- Admin panel: create users -->
-        <div id="adminPanel" class="panel hidden" style="margin-bottom:20px;">
-          <h2>Crear un nou usuari</h2>
-          <p class="info" style="margin-bottom:10px;">
-            Com a administrador pots donar d'alta nous usuaris amb accés a l'eina.
-          </p>
-          <div class="form-group">
-            <label>Correu del nou usuari</label>
-            <input type="email" id="newUserEmail" placeholder="nou.usuari@exemple.cat" />
-          </div>
-          <div class="form-group">
-            <label>Nom de l'usuari</label>
-            <input type="text" id="newUserName" placeholder="Nom i cognoms" />
-          </div>
-          <div class="form-group">
-            <label>Contrasenya inicial</label>
-            <input type="password" id="newUserPassword" />
-          </div>
-          <button class="btn" onclick="createNewUser()">Crear usuari</button>
-        </div>
-
-        <div class="tabs">
-          <button class="tab-btn active" data-tab="participacio" onclick="showTab('participacio')">Participació</button>
-          <button class="tab-btn" data-tab="propostes" onclick="showTab('propostes')">Les meves propostes</button>
-          <button class="tab-btn" data-tab="vots" onclick="showTab('vots')">Els meus vots</button>
-          <button class="tab-btn" data-tab="resultats" onclick="showTab('resultats')">Resultats</button>
-        </div>
-
-        <!-- TAB: PARTICIPACIÓ -->
-        <div id="participacio" class="tab-content">
-          <div class="two-cols">
-            <div class="panel">
-              <h2>Necessitat d'acció per categories</h2>
-              <small>Avalua com veus la situació actual en cadascun d'aquests àmbits. Valors alts = més necessitat d'actuar.</small>
-
-              <div class="categories" id="categoriesList">Carregant categories...</div>
-
-              <div class="legenda"><strong>Llegenda:</strong> 0 = No cal cap acció · 50 = Caldria millorar · 100 = Urgència màxima</div>
-              <div class="small-note">Pots modificar les teves valoracions sempre que vulguis; es poden sumar amb la resta de ciutadania.</div>
-            </div>
-
-            <div class="panel">
-              <h2>Prioritat i punts de votació</h2>
-
-              <p class="info">Aquesta eina està pensada per combinar:</p>
-              <ul class="info" style="margin-left:18px; margin-top:4px;">
-                <li>la vostra valoració de la necessitat d'acció en diferents àmbits;</li>
-                <li>un sistema de propostes concretes;</li>
-                <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
-              </ul>
-
-              <p class="info" style="margin-top:8px;">
-                Així podem canalitzar, avaluar i prioritzar les bones idees per fer créixer
-                encara més l'atractiu del nostre poble, Matadepera.
-              </p>
-
-              <p class="info" style="margin-top:8px;">
-                Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes.
-                Els teus vots poden ser tant a favor com en contra.
-              </p>
-
-              <p class="info" style="margin-top:8px;">
-                <strong>Has fet servir <span id="usedPointsInfoTop">0</span> punts dels teus 30 disponibles.</strong>
-              </p>
-
-              <p class="small-note" style="margin-top:10px;">
-                <strong>Punts assignats totals:</strong> <span id="assignedPoints">0</span>/30
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB: PROPOSTES -->
-        <div id="propostes" class="tab-content hidden">
-          <div class="two-panels">
-            <div class="panel">
-              <h2>Crear una nova proposta</h2>
-              <div class="proposal-form">
-                <div class="form-group">
-                  <label>Títol breu de la proposta</label>
-                  <input type="text" id="proposalTitle" placeholder="Ex.: Millora de la il·luminació al barri X" />
-                </div>
-                <div class="form-group">
-                  <label>Categoria principal</label>
-                  <select id="proposalCategory"></select>
-                </div>
-                <div class="form-group">
-                  <label>Descripció</label>
-                  <textarea id="proposalDesc" placeholder="Descriu la situació actual i què proposes fer per millorar-la."></textarea>
-                </div>
-                <button class="btn" onclick="addProposal()">Afegir proposta</button>
-              </div>
-            </div>
-
-            <div class="panel">
-              <h2>Les meves propostes</h2>
-              <div id="myProposalsList" class="info">Encara no has creat cap proposta. Comença afegint-ne una a la columna de l’esquerra.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB: VOTS -->
-        <div id="vots" class="tab-content hidden">
-          <div class="panel">
-            <h2>Els meus vots</h2>
-            <p class="info">Aquí veus totes les propostes a les quals has assignat punts. Pots ajustar els teus vots en qualsevol moment.</p>
-            <div id="myVotesList" class="info">Encara no has votat cap proposta.</div>
-          </div>
-        </div>
-
-        <!-- TAB: RESULTATS -->
-        <div id="resultats" class="tab-content hidden">
-          <div class="two-cols">
-            <div class="panel">
-              <h2>Resultats agregats</h2>
-              <p class="info">Aquí es mostren els resultats a partir dels punts assignats per totes les persones participants (via Neon).</p>
-              <div class="results" id="resultsChart">Encara no hi ha resultats.</div>
-            </div>
-            <div class="panel">
-              <h3>Explicació del funcionament</h3>
-
-              <p class="info">Aquesta eina està pensada per combinar:</p>
-              <ul class="info" style="margin-left:18px; margin-top:4px;">
-                <li>la vostra valoració de la necessitat d'acció en diferents àmbits;</li>
-                <li>un sistema de propostes concretes;</li>
-                <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
-              </ul>
-
-              <p class="info" style="margin-top:8px;">
-                Així podem canalitzar, avaluar i prioritzar les bones idees per fer créixer
-                encara més l'atractiu del nostre poble, Matadepera.
-              </p>
-
-              <p class="info" style="margin-top:8px;">
-                Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes.
-                Els teus vots poden ser tant a favor com en contra.
-              </p>
-
-              <p class="info" style="margin-top:8px;">
-                <strong>Has fet servir <span id="usedPointsInfo">0</span> punts dels teus 30 disponibles.</strong>
-              </p>
-            </div>
-          </div>
-        </div>
-
-      </div>
+<div class="container">
+  <div class="header">
+    <div class="header-logo"><img src="som.jpg" alt="SOM Matadepera" /></div>
+    <div class="header-text">
+      <h1>Participació Ciutadana Matadepera</h1>
+      <p>La teva veu compta - Avalua i proposa millores</p>
     </div>
   </div>
 
-  <script>
-    // ----------- Basis / Config -----------
-    const API_BASE = '/.netlify/functions';
-    const AUTH_URL = '/.netlify/functions/auth';
-    const MAX_POINTS = 30;
+  <div class="disclaimer">
+    <strong>⚠️ Nota Important:</strong> Aquesta plataforma és consultiva i no oficial. Les dades recollides s’utilitzaran per elaborar propostes concretes per al municipi, però no substitueixen els canals institucionals de participació de l’Ajuntament.
+  </div>
 
-    const CATEGORIES = [
-      { key: 'estat_poble', title: "Estat del poble - necessitat d'acció", desc: "Estètica urbana, neteja, manteniment de voreres i mobiliari, il·luminació, soroll, control de plagues, senyalització." },
-      { key: 'entorn_natural', title: "Entorn natural de Matadepera - necessitat d'acció", desc: "Zones verdes, bosc, camins, prevenció d’incendis, gestió d'aigua i sequera, paisatge i patrimoni natural." },
-      { key: 'qualitat_vida', title: "Qualitat de vida - necessitat d'acció", desc: "Cultura, esport, convivència, cohesió social, associacions, festes i tradicions, joventut i gent gran, inclusió." },
-      { key: 'salut_seguretat', title: "Salut i seguretat de trànsit - necessitat d'acció", desc: "Atenció primària i salut comunitària, salut mental, emergències i protecció civil, policia local, seguretat viària, prevenció de riscos." },
-      { key: 'seguretat_ciutadana', title: "Seguretat ciutadana - necessitat d'acció", desc: "Seguretat al veïnat, prevenció de delictes, presència policial, il·luminació de punts crítics, coordinació amb Mossos i Policia Local." },
-      { key: 'vida_quotidiana', title: "Vida quotidiana (mobilitat i serveis) - necessitat d'acció", desc: "Transport públic, circulació, aparcament, carrils bici, comerç local, serveis bàsics, energia, digitalització, sostenibilitat i economia circular." },
-      { key: 'organitzacio_govern', title: "Organització municipal i govern obert - necessitat d'acció", desc: "Transparència, comunicació amb l’Ajuntament, participació ciutadana, resposta a incidències, queixes i propostes, coordinació amb altres administracions." }
-    ];
+  <div class="content">
+    <!-- LOGIN VIEW -->
+    <div id="loginView">
+      <div class="auth-form">
+        <h2 style="text-align:center;margin-bottom:20px">Iniciar Sessió</h2>
+        <p style="font-size:13px;color:#555;margin-bottom:15px">
+          Entra amb el teu correu i la teva contrasenya.
+        </p>
+        <div class="form-group">
+          <label>Correu electrònic</label>
+          <input type="email" id="loginEmail" placeholder="el.teu@correu.cat" />
+        </div>
+        <div class="form-group">
+          <label>Contrasenya</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" />
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-wide" onclick="login()">Accedir</button>
+        </div>
+      </div>
+    </div>
 
-    async function apiRequest(fn, payload) {
-      try {
-        const res = await fetch(`${API_BASE}/${fn}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload || {})
-        });
+    <!-- MAIN APP VIEW -->
+    <div id="mainView" class="hidden">
+      <div class="user-info">
+        <div class="user-main">
+          <div class="user-badge" id="userBadge">U</div>
+          <div class="user-text">
+            <div id="userName">Usuari</div>
+            <small id="userEmail">correu@example.com</small>
+          </div>
+        </div>
+        <div class="user-actions">
+          <button class="btn btn-secondary" onclick="togglePasswordPanel()">Canviar contrasenya</button>
+          <button class="btn btn-secondary hidden" id="btnAdminPanel" onclick="toggleAdminPanel()">Gestió d'usuaris</button>
+          <button class="btn btn-secondary" onclick="logout()">Sortir</button>
+        </div>
+      </div>
 
-        if (!res.ok) {
-          let info = null;
-          try { info = await res.json(); } catch (e) {}
-          console.warn('API error', fn, res.status, info);
-          alert(
-            `Error API ${fn} (HTTP ${res.status}): ` +
-            (info && (info.details || info.error)
-              ? (info.details || info.error)
-              : 'cap detall addicional')
-          );
-          return null;
-        }
-        return await res.json();
-      } catch (e) {
-        console.warn('API request failed', fn, e);
-        alert(`No s'ha pogut contactar amb el servidor (${fn}): ${e}`);
+      <!-- Password change panel -->
+      <div id="passwordPanel" class="panel hidden" style="margin-bottom:20px;">
+        <h2>Canviar contrasenya</h2>
+        <div class="form-group">
+          <label>Contrasenya actual</label>
+          <input type="password" id="oldPassword" />
+        </div>
+        <div class="form-group">
+          <label>Nova contrasenya</label>
+          <input type="password" id="newPassword" />
+        </div>
+        <button class="btn" onclick="changePassword()">Desar nova contrasenya</button>
+      </div>
+
+      <!-- Admin panel: create users -->
+      <div id="adminPanel" class="panel hidden" style="margin-bottom:20px;">
+        <h2>Crear un nou usuari</h2>
+        <p class="info" style="margin-bottom:10px;">
+          Com a administrador pots donar d'alta nous usuaris amb accés a l'eina.
+        </p>
+        <div class="form-group">
+          <label>Correu del nou usuari</label>
+          <input type="email" id="newUserEmail" placeholder="nou.usuari@exemple.cat" />
+        </div>
+        <div class="form-group">
+          <label>Nom de l'usuari</label>
+          <input type="text" id="newUserName" placeholder="Nom i cognoms" />
+        </div>
+        <div class="form-group">
+          <label>Contrasenya inicial</label>
+          <input type="password" id="newUserPassword" />
+        </div>
+        <button class="btn" onclick="createNewUser()">Crear usuari</button>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="participacio" onclick="showTab('participacio')">Participació</button>
+        <button class="tab-btn" data-tab="propostes" onclick="showTab('propostes')">Les meves propostes</button>
+        <button class="tab-btn" data-tab="vots" onclick="showTab('vots')">Els meus vots</button>
+        <button class="tab-btn" data-tab="resultats" onclick="showTab('resultats')">Resultats</button>
+      </div>
+
+      <!-- TAB: PARTICIPACIÓ -->
+      <div id="participacio" class="tab-content">
+        <div class="two-cols">
+          <div class="panel">
+            <h2>Necessitat d'acció per categories</h2>
+            <small>Avalua com veus la situació actual en cadascun d'aquests àmbits. Valors alts = més necessitat d'actuar.</small>
+            <div class="categories" id="categoriesList">Carregant categories...</div>
+            <div class="legenda"><strong>Llegenda:</strong> 0 = No cal cap acció · 50 = Caldria millorar · 100 = Urgència màxima</div>
+            <div class="small-note">Pots modificar les teves valoracions sempre que vulguis; es poden sumar amb la resta de ciutadania.</div>
+          </div>
+
+          <div class="panel">
+            <h2>Prioritat i punts de votació</h2>
+            <p class="info">Aquesta eina està pensada per combinar:</p>
+            <ul class="info" style="margin-left:18px; margin-top:4px;">
+              <li>la vostra valoració de la necessitat d'acció en diferents àmbits;</li>
+              <li>un sistema de propostes concretes;</li>
+              <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
+            </ul>
+            <p class="info" style="margin-top:8px;">
+              Així podem canalitzar, avaluar i prioritzar les bones idees per fer créixer encara més l'atractiu del nostre poble, Matadepera.
+            </p>
+            <p class="info" style="margin-top:8px;">
+              Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes. Els teus vots poden ser tant a favor com en contra.
+            </p>
+            <p class="info" style="margin-top:8px;">
+              <strong>Has fet servir <span id="usedPointsInfoTop">0</span> punts dels teus 30 disponibles.</strong>
+            </p>
+            <p class="small-note" style="margin-top:10px;">
+              <strong>Punts assignats totals:</strong> <span id="assignedPoints">0</span>/30
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: PROPOSTES -->
+      <div id="propostes" class="tab-content hidden">
+        <div class="two-panels">
+          <div class="panel">
+            <h2>Crear una nova proposta</h2>
+            <div class="proposal-form">
+              <div class="form-group">
+                <label>Títol breu de la proposta</label>
+                <input type="text" id="proposalTitle" placeholder="Ex.: Millora de la il·luminació al barri X" />
+              </div>
+              <div class="form-group">
+                <label>Categoria principal</label>
+                <select id="proposalCategory"></select>
+              </div>
+              <div class="form-group">
+                <label>Descripció</label>
+                <textarea id="proposalDesc" placeholder="Descriu la situació actual i què proposes fer per millorar-la."></textarea>
+              </div>
+              <!-- NEU: Button mit ID, wird beim Absenden deaktiviert -->
+              <button class="btn" id="btnAddProposal" onclick="addProposal()">Afegir proposta</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <!-- NEU: Beschreibung oben rechts in diesem Panel -->
+            <div class="panel-header-inline">
+              <h2 class="panel-title">Les meves propostes</h2>
+              <div class="panel-info">
+                <p class="info">Aquesta eina està pensada per combinar:</p>
+                <ul class="info" style="margin-left:18px; margin-top:4px;">
+                  <li>la vostra valoració de la necessitat d'acció en diferents àmbits;</li>
+                  <li>un sistema de propostes concretes;</li>
+                  <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
+                </ul>
+                <p class="info" style="margin-top:8px;">
+                  Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes. Els teus vots poden ser tant a favor com en contra.
+                </p>
+              </div>
+            </div>
+            <!-- Liste wieder über die volle Breite -->
+            <div id="myProposalsList" class="info">
+              Encara no has creat cap proposta. Comença afegint-ne una a la columna de l’esquerra.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: VOTS -->
+      <div id="vots" class="tab-content hidden">
+        <div class="panel">
+          <h2>Els meus vots</h2>
+          <p class="info">Aquí veus totes les propostes a les quals has assignat punts. Pots ajustar els teus vots en qualsevol moment.</p>
+          <div id="myVotesList" class="info">Encara no has votat cap proposta.</div>
+        </div>
+      </div>
+
+      <!-- TAB: RESULTATS -->
+      <div id="resultats" class="tab-content hidden">
+        <div class="two-cols">
+          <div class="panel">
+            <h2>Resultats agregats</h2>
+            <p class="info">Aquí es mostren els resultats a partir dels punts assignats per totes les persones participants (via Neon).</p>
+            <div class="results" id="resultsChart">Encara no hi ha resultats.</div>
+          </div>
+          <div class="panel">
+            <h3>Explicació del funcionament</h3>
+            <p class="info">Aquesta eina està pensada per combinar:</p>
+            <ul class="info" style="margin-left:18px; margin-top:4px;">
+              <li>la vostra valoració de la necessitat d'acció en diferents àmbits;</li>
+              <li>un sistema de propostes concretes;</li>
+              <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
+            </ul>
+            <p class="info" style="margin-top:8px;">
+              Així podem canalitzar, avaluar i prioritzar les bones idees per fer créixer encara més l'atractiu del nostre poble, Matadepera.
+            </p>
+            <p class="info" style="margin-top:8px;">
+              Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes. Els teus vots poden ser tant a favor com en contra.
+            </p>
+            <p class="info" style="margin-top:8px;">
+              <strong>Has fet servir <span id="usedPointsInfo">0</span> punts dels teus 30 disponibles.</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- NEU: Voting direkt auf der Resultats-Seite -->
+        <div class="panel">
+          <h2>Votar propostes des dels resultats</h2>
+          <p class="info">
+            Des d'aquí també pots votar les propostes, ordenades segons els punts totals.
+          </p>
+          <div id="resultsVoteList" class="info">Encara no hi ha propostes.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ----------- Basis / Config -----------
+  const API_BASE = '/.netlify/functions';
+  const AUTH_URL = '/.netlify/functions/auth';
+  const MAX_POINTS = 30;
+
+  const CATEGORIES = [
+    {
+      key: 'estat_poble',
+      title: "Estat del poble - necessitat d'acció",
+      desc: "Estètica urbana, neteja, manteniment de voreres i mobiliari, il·luminació, soroll, control de plagues, senyalització."
+    },
+    {
+      key: 'entorn_natural',
+      title: "Entorn natural de Matadepera - necessitat d'acció",
+      desc: "Zones verdes, bosc, camins, prevenció d’incendis, gestió d'aigua i sequera, paisatge i patrimoni natural."
+    },
+    {
+      key: 'qualitat_vida',
+      title: "Qualitat de vida - necessitat d'acció",
+      desc: "Cultura, esport, convivència, cohesió social, associacions, festes i tradicions, joventut i gent gran, inclusió."
+    },
+    {
+      key: 'salut_seguretat',
+      title: "Salut i seguretat de trànsit - necessitat d'acció",
+      desc: "Atenció primària i salut comunitària, salut mental, emergències i protecció civil, policia local, seguretat viària, prevenció de riscos."
+    },
+    {
+      key: 'seguretat_ciutadana',
+      title: "Seguretat ciutadana - necessitat d'acció",
+      desc: "Seguretat al veïnat, prevenció de delictes, presència policial, il·luminació de punts crítics, coordinació amb Mossos i Policia Local."
+    },
+    {
+      key: 'vida_quotidiana',
+      title: "Vida quotidiana (mobilitat i serveis) - necessitat d'acció",
+      desc: "Transport públic, circulació, aparcament, carrils bici, comerç local, serveis bàsics, energia, digitalització, sostenibilitat i economia circular."
+    },
+    {
+      key: 'organitzacio_govern',
+      title: "Organització municipal i govern obert - necessitat d'acció",
+      desc: "Transparència, comunicació amb l’Ajuntament, participació ciutadana, resposta a incidències, queixes i propostes, coordinació amb altres administracions."
+    }
+  ];
+
+  async function apiRequest(fn, payload) {
+    try {
+      const res = await fetch(`${API_BASE}/${fn}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload || {})
+      });
+      if (!res.ok) {
+        let info = null;
+        try { info = await res.json(); } catch (e) {}
+        console.warn('API error', fn, res.status, info);
+        alert(
+          'Error API ' + fn + ' (HTTP ' + res.status + '): ' +
+          (info && (info.details || info.error) ? (info.details || info.error) : 'cap detall addicional')
+        );
         return null;
       }
+      return await res.json();
+    } catch (e) {
+      console.warn('API request failed', fn, e);
+      alert(`No s'ha pogut contactar amb el servidor (${fn}): ${e}`);
+      return null;
+    }
+  }
+
+  // ----------- State -----------
+  let proposals = [];
+  let globalScores = {};
+  let serverAverages = {};
+  let currentUser = {
+    username: '',
+    email: '',
+    verified: false,
+    isGuest: false,
+    isAdmin: false,
+    votes: {},
+    satisfaction: {}
+  };
+
+  // ----------- Tabs / Login -----------
+  function showTab(tabName) {
+    const loginView = document.getElementById('loginView');
+    const mainView = document.getElementById('mainView');
+
+    if (tabName === 'login') {
+      loginView.classList.remove('hidden');
+      mainView.classList.add('hidden');
+      return;
+    }
+    loginView.classList.add('hidden');
+    mainView.classList.remove('hidden');
+
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+    const target = document.getElementById(tabName);
+    if (target) target.classList.remove('hidden');
+
+    const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+    if (btn) btn.classList.add('active');
+
+    if (tabName === 'vots') renderMyVotes();
+    if (tabName === 'resultats') updateResults();
+  }
+
+  async function login() {
+    const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
+    const password = (document.getElementById('loginPassword').value || '').trim();
+
+    if (!email || !password) {
+      alert('Introdueix correu i contrasenya.');
+      return;
     }
 
-    // ----------- State -----------
-    let proposals = [];
-    let globalScores = {};
-    let serverAverages = {};
-    let currentUser = {
+    try {
+      const res = await fetch(`${API_BASE}/auth`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'login', email, password })
+      });
+      if (!res.ok) {
+        let info = null;
+        try { info = await res.json(); } catch (e) {}
+        const msg = info && info.error ? info.error : 'Error HTTP ' + res.status;
+        alert('Error en iniciar sessió: ' + msg);
+        return;
+      }
+      const data = await res.json();
+      if (!data.ok) {
+        alert(data.error || 'Credencials incorrectes.');
+        return;
+      }
+      const user = data.user || {};
+      currentUser.email = user.email || email;
+      currentUser.username = user.username || (email.split('@')[0]);
+      currentUser.verified = true;
+      currentUser.isGuest = false;
+      currentUser.isAdmin = !!user.is_admin;
+
+      document.getElementById('userBadge').textContent =
+        (currentUser.username || '?').charAt(0).toUpperCase();
+      document.getElementById('userName').textContent = currentUser.username || 'Usuari';
+      document.getElementById('userEmail').textContent = currentUser.email || '';
+
+      const adminBtn = document.getElementById('btnAdminPanel');
+      if (adminBtn) {
+        if (currentUser.isAdmin) adminBtn.classList.remove('hidden');
+        else adminBtn.classList.add('hidden');
+      }
+
+      await initAfterLogin();
+    } catch (err) {
+      console.error('Login error', err);
+      alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
+    }
+  }
+
+  function logout() {
+    currentUser = {
       username: '',
       email: '',
       verified: false,
@@ -441,451 +919,509 @@
       votes: {},
       satisfaction: {}
     };
+    proposals = [];
+    globalScores = {};
+    serverAverages = {};
+    document.getElementById('passwordPanel').classList.add('hidden');
+    document.getElementById('adminPanel').classList.add('hidden');
+    showTab('login');
+  }
 
-    // ----------- Tabs / Login -----------
-    function showTab(tabName) {
-      const loginView = document.getElementById('loginView');
-      const mainView = document.getElementById('mainView');
+  async function initAfterLogin() {
+    populateCategories();
+    populateCategorySelect();
+    updatePointsInfo();
 
-      if (tabName === 'login') {
-        loginView.classList.remove('hidden');
-        mainView.classList.add('hidden');
-        return;
-      }
+    await Promise.all([
+      loadAveragesFromServer(),
+      loadProposalsFromServer(),
+      loadGlobalScoresFromServer(),
+      loadUserVotesFromServer()
+    ]);
 
-      loginView.classList.add('hidden');
-      mainView.classList.remove('hidden');
+    populateCategories();
+    renderProposals();
+    renderMyVotes();
+    updateResults();
+    updatePointsInfo();
+    showTab('participacio');
+  }
 
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  // ----------- Password + Admin UI -----------
+  function togglePasswordPanel() {
+    const panel = document.getElementById('passwordPanel');
+    if (!panel) return;
+    panel.classList.toggle('hidden');
+  }
 
-      const target = document.getElementById(tabName);
-      if (target) target.classList.remove('hidden');
-      const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
-      if (btn) btn.classList.add('active');
-
-      if (tabName === 'vots') renderMyVotes();
-      if (tabName === 'resultats') updateResults();
+  async function changePassword() {
+    if (!currentUser.email) {
+      alert('Cal iniciar sessió per canviar la contrasenya.');
+      return;
     }
+    const oldPw = (document.getElementById('oldPassword').value || '').trim();
+    const newPw = (document.getElementById('newPassword').value || '').trim();
 
-    async function login() {
-      const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
-      const password = (document.getElementById('loginPassword').value || '').trim();
-
-      if (!email || !password) {
-        alert('Introdueix correu i contrasenya.');
-        return;
-      }
-
-      try {
-        const res = await fetch(`${API_BASE}/auth`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'login',
-            email,
-            password
-          })
-        });
-
-        if (!res.ok) {
-          let info = null;
-          try { info = await res.json(); } catch (e) {}
-          const msg = info && info.error ? info.error : `Error HTTP ${res.status}`;
-          alert('Error en iniciar sessió: ' + msg);
-          return;
-        }
-
-        const data = await res.json();
-
-        if (!data.ok) {
-          alert(data.error || 'Credencials incorrectes.');
-          return;
-        }
-
-        const user = data.user || {};
-        currentUser.email = user.email || email;
-        currentUser.username = user.username || (email.split('@')[0]);
-        currentUser.verified = true;
-        currentUser.isGuest = false;
-        currentUser.isAdmin = !!user.is_admin;
-
-        document.getElementById('userBadge').textContent =
-          (currentUser.username || '?').charAt(0).toUpperCase();
-        document.getElementById('userName').textContent = currentUser.username || 'Usuari';
-        document.getElementById('userEmail').textContent = currentUser.email || '';
-
-        const adminBtn = document.getElementById('btnAdminPanel');
-        if (adminBtn) {
-          if (currentUser.isAdmin) adminBtn.classList.remove('hidden');
-          else adminBtn.classList.add('hidden');
-        }
-
-        await initAfterLogin();
-      } catch (err) {
-        console.error('Login error', err);
-        alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
-      }
+    if (!oldPw || !newPw) {
+      alert('Introdueix la contrasenya actual i la nova.');
+      return;
     }
-
-    function logout() {
-      currentUser = {
-        username: '',
-        email: '',
-        verified: false,
-        isGuest: false,
-        isAdmin: false,
-        votes: {},
-        satisfaction: {}
-      };
-      proposals = [];
-      globalScores = {};
-      serverAverages = {};
-      document.getElementById('passwordPanel').classList.add('hidden');
-      document.getElementById('adminPanel').classList.add('hidden');
-      showTab('login');
+    if (oldPw === newPw) {
+      alert('La nova contrasenya ha de ser diferent de l\'actual.');
+      return;
     }
-
-    async function initAfterLogin() {
-      populateCategories();
-      populateCategorySelect();
-      updatePointsInfo();
-
-      await Promise.all([
-        loadAveragesFromServer(),
-        loadProposalsFromServer(),
-        loadGlobalScoresFromServer(),
-        loadUserVotesFromServer()
-      ]);
-
-      populateCategories();
-      renderProposals();
-      renderMyVotes();
-      updateResults();
-
-      updatePointsInfo();
-      showTab('participacio');
-    }
-
-    // ----------- Password + Admin UI -----------
-    function togglePasswordPanel() {
-      const panel = document.getElementById('passwordPanel');
-      if (!panel) return;
-      panel.classList.toggle('hidden');
-    }
-
-    async function changePassword() {
-      if (!currentUser.email) {
-        alert('Cal iniciar sessió per canviar la contrasenya.');
-        return;
-      }
-      const oldPw = (document.getElementById('oldPassword').value || '').trim();
-      const newPw = (document.getElementById('newPassword').value || '').trim();
-
-      if (!oldPw || !newPw) {
-        alert('Introdueix la contrasenya actual i la nova.');
-        return;
-      }
-      if (oldPw === newPw) {
-        alert('La nova contrasenya ha de ser diferent de l\'actual.');
-        return;
-      }
-
-      try {
-        const res = await fetch(`${API_BASE}/auth`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'changePassword',
-            email: currentUser.email,
-            oldPassword: oldPw,
-            newPassword: newPw
-          })
-        });
-
-        if (!res.ok) {
-          let info = null;
-          try { info = await res.json(); } catch (e) {}
-          const msg = info && info.error ? info.error : `Error HTTP ${res.status}`;
-          alert('No s\'ha pogut canviar la contrasenya: ' + msg);
-          return;
-        }
-
-        const data = await res.json();
-        if (!data.ok) {
-          alert(data.error || 'No s\'ha pogut canviar la contrasenya.');
-          return;
-        }
-
-        alert('Contrasenya actualitzada correctament.');
-        document.getElementById('oldPassword').value = '';
-        document.getElementById('newPassword').value = '';
-        document.getElementById('passwordPanel').classList.add('hidden');
-      } catch (e) {
-        console.error('changePassword error', e);
-        alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
-      }
-    }
-
-    function toggleAdminPanel() {
-      if (!currentUser.isAdmin) {
-        alert('Només els administradors poden gestionar usuaris.');
-        return;
-      }
-      const panel = document.getElementById('adminPanel');
-      if (!panel) return;
-      panel.classList.toggle('hidden');
-    }
-
-    async function createNewUser() {
-      if (!currentUser.isAdmin) {
-        alert('Només els administradors poden crear usuaris.');
-        return;
-      }
-      const email = (document.getElementById('newUserEmail').value || '').trim().toLowerCase();
-      const username = (document.getElementById('newUserName').value || '').trim();
-      const password = (document.getElementById('newUserPassword').value || '').trim();
-
-      if (!email || !username || !password) {
-        alert('Cal omplir el correu, el nom i la contrasenya inicial.');
-        return;
-      }
-
-      try {
-        const res = await fetch(`${API_BASE}/auth`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'createUser',
-            adminEmail: currentUser.email,
-            email,
-            username,
-            password
-          })
-        });
-
-        if (!res.ok) {
-          let info = null;
-          try { info = await res.json(); } catch (e) {}
-          const msg = info && info.error ? info.error : `Error HTTP ${res.status}`;
-          alert('No s\'ha pogut crear l\'usuari: ' + msg);
-          return;
-        }
-
-        const data = await res.json();
-        if (!data.ok) {
-          alert(data.error || 'No s\'ha pogut crear l\'usuari.');
-          return;
-        }
-
-        alert('Usuari creat correctament.');
-        document.getElementById('newUserEmail').value = '';
-        document.getElementById('newUserName').value = '';
-        document.getElementById('newUserPassword').value = '';
-      } catch (e) {
-        console.error('createNewUser error', e);
-        alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
-      }
-    }
-
-    // ----------- Kategorien / Mitjana -----------
-    function createCategoryElement(cat) {
-      const wrap = document.createElement('div');
-      wrap.className = 'category-block';
-      wrap.innerHTML = `
-        <div class="category-header">
-          <div>
-            <h3>${cat.title}</h3>
-            <small>${cat.desc}</small>
-          </div>
-          <div style="text-align:right;min-width:60px;">
-            <div style="font-size:12px;color:#555;">Mitjana</div>
-            <div class="avg-bar"><div class="avg-fill" id="avg_${cat.key}"></div></div>
-            <div class="avg-label"><span id="avg_txt_${cat.key}">—</span></div>
-          </div>
-        </div>
-        <div class="slider-row">
-          <input type="range" class="slider" id="slider_${cat.key}" min="0" max="100" step="5"
-                 value="${(currentUser.satisfaction || {})[cat.key] || 0}"
-                 oninput="updateSlider('${cat.key}', this)" />
-          <div class="thumb-label" id="thumb_${cat.key}">0</div>
-        </div>
-        <button class="btn btn-secondary" style="margin-top:8px;font-size:12px;padding:6px 10px;"
-          onclick="toggleProposals('${cat.key}', this)">
-          Veure / amagar propostes d'aquesta categoria
-        </button>
-        <div id="props_${cat.key}" class="hidden"></div>`;
-      return wrap;
-    }
-
-    function populateCategories() {
-      const list = document.getElementById('categoriesList');
-      if (!list) return;
-      list.innerHTML = '';
-      CATEGORIES.forEach(cat => {
-        const el = createCategoryElement(cat);
-        list.appendChild(el);
-        const slider = el.querySelector('.slider');
-        const label = document.getElementById('thumb_' + cat.key);
-        positionThumbLabel(slider, label);
-        applyAverage(cat.key);
-      });
-    }
-
-    function positionThumbLabel(slider, label) {
-      const val = parseInt(slider.value || '0', 10);
-      label.textContent = val;
-    }
-
-    function applyAverage(key) {
-      const avg = (serverAverages && typeof serverAverages[key] === 'number')
-        ? serverAverages[key]
-        : null;
-      const bar = document.getElementById('avg_' + key);
-      const t = document.getElementById('avg_txt_' + key);
-      if (avg != null && isFinite(avg)) {
-        if (bar) bar.style.width = Math.round(avg) + '%';
-        if (t) t.textContent = Math.round(avg) + '%';
-      } else {
-        if (bar) bar.style.width = '0%';
-        if (t) t.textContent = '—';
-      }
-    }
-
-    async function loadAveragesFromServer() {
-      const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
-      serverAverages = (avgRes && avgRes.averages) ? avgRes.averages : {};
-      if (currentUser.email) {
-        const userRes = await apiRequest('satisfaction', {
-          action: 'getUserRatings',
-          email: currentUser.email
-        });
-        if (userRes && userRes.ratings) currentUser.satisfaction = userRes.ratings;
-      }
-    }
-
-    async function updateSlider(key, inputEl) {
-      const val = parseInt(inputEl.value || '0', 10);
-      if (!currentUser.satisfaction) currentUser.satisfaction = {};
-      currentUser.satisfaction[key] = val;
-      const label = document.getElementById('thumb_' + key);
-      positionThumbLabel(inputEl, label);
-
-      if (currentUser.email) {
-        await apiRequest('satisfaction', {
-          action: 'saveRating',
+    try {
+      const res = await fetch(`${API_BASE}/auth`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'changePassword',
           email: currentUser.email,
-          category: key,
-          value: val
-        });
-        const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
-        if (avgRes && avgRes.averages) serverAverages = avgRes.averages;
-        applyAverage(key);
-      } else {
-        alert('Cal iniciar sessió per guardar la valoració.');
-      }
-    }
-
-    // ----------- Propostes -----------
-    function populateCategorySelect() {
-      const sel = document.getElementById('proposalCategory');
-      if (!sel) return;
-      sel.innerHTML = '<option value="">-- Tria una categoria --</option>';
-      CATEGORIES.forEach(cat => {
-        const opt = document.createElement('option');
-        opt.value = cat.key;
-        opt.textContent = cat.title;
-        sel.appendChild(opt);
+          oldPassword: oldPw,
+          newPassword: newPw
+        })
       });
-    }
-
-    async function loadProposalsFromServer() {
-      try {
-        const res = await fetch(`${API_BASE}/proposals`, { method: 'GET' });
-        if (!res.ok) {
-          const txt = await res.text();
-          console.warn('API error proposals (GET)', res.status, txt);
-          alert(`Error API proposals (HTTP ${res.status}): ${txt || 'cap detall addicional'}`);
-          proposals = [];
-          return;
-        }
-        const data = await res.json();
-        const arr = Array.isArray(data)
-          ? data
-          : (Array.isArray(data.proposals) ? data.proposals : []);
-        proposals = arr.map(p => ({
-          id: String(p.id || p.proposal_id || p.uuid),
-          title: p.title,
-          category: p.category,
-          desc: p.description || p.desc || '',
-          author: p.author || p.username || '',
-          email: (p.email || p.user_email || '').toLowerCase(),
-          createdAt: p.created_at || p.createdAt || new Date().toISOString()
-        })).filter(p => p.id && p.title);
-      } catch (e) {
-        console.warn('API request failed (GET proposals)', e);
-        alert(`No s'ha pogut carregar les propostes: ${e}`);
-        proposals = [];
+      if (!res.ok) {
+        let info = null;
+        try { info = await res.json(); } catch (e) {}
+        const msg = info && info.error ? info.error : 'Error HTTP ' + res.status;
+        alert('No s\'ha pogut canviar la contrasenya: ' + msg);
+        return;
       }
+      const data = await res.json();
+      if (!data.ok) {
+        alert(data.error || 'No s\'ha pogut canviar la contrasenya.');
+        return;
+      }
+      alert('Contrasenya actualitzada correctament.');
+      document.getElementById('oldPassword').value = '';
+      document.getElementById('newPassword').value = '';
+      document.getElementById('passwordPanel').classList.add('hidden');
+    } catch (e) {
+      console.error('changePassword error', e);
+      alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
+    }
+  }
+
+  function toggleAdminPanel() {
+    if (!currentUser.isAdmin) {
+      alert('Només els administradors poden gestionar usuaris.');
+      return;
+    }
+    const panel = document.getElementById('adminPanel');
+    if (!panel) return;
+    panel.classList.toggle('hidden');
+  }
+
+  async function createNewUser() {
+    if (!currentUser.isAdmin) {
+      alert('Només els administradors poden crear usuaris.');
+      return;
+    }
+    const email = (document.getElementById('newUserEmail').value || '').trim().toLowerCase();
+    const username = (document.getElementById('newUserName').value || '').trim();
+    const password = (document.getElementById('newUserPassword').value || '').trim();
+
+    if (!email || !username || !password) {
+      alert('Cal omplir el correu, el nom i la contrasenya inicial.');
+      return;
     }
 
-    function createProposalElement(p) {
-      const div = document.createElement('div');
-      div.className = 'proposal';
-      const cat = CATEGORIES.find(c => c.key === p.category);
-      const catTitle = cat ? cat.title : p.category;
-      const myVote = (currentUser.votes || {})[String(p.id)] || 0;
-      const dateTxt = new Date(p.createdAt).toLocaleDateString('ca-ES');
-      const canDelete = (p.email || '') === (currentUser.email || '').toLowerCase();
-      const deleteBtnHtml = canDelete
-        ? `<button class="btn btn-secondary" style="font-size:11px;padding:4px 8px;" onclick="deleteProposal('${p.id}')">Esborrar</button>`
-        : '';
-      div.innerHTML = `
-        <div class="proposal-header">
-          <div>
-            <div class="proposal-title">${p.title}</div>
-            <div class="proposal-meta">${catTitle} · ${p.author || 'Anònim'}</div>
-          </div>
-          <div class="proposal-meta">${dateTxt}</div>
+    try {
+      const res = await fetch(`${API_BASE}/auth`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'createUser',
+          adminEmail: currentUser.email,
+          email,
+          username,
+          password
+        })
+      });
+      if (!res.ok) {
+        let info = null;
+        try { info = await res.json(); } catch (e) {}
+        const msg = info && info.error ? info.error : 'Error HTTP ' + res.status;
+        alert('No s\'ha pogut crear l\'usuari: ' + msg);
+        return;
+      }
+      const data = await res.json();
+      if (!data.ok) {
+        alert(data.error || 'No s\'ha pogut crear l\'usuari.');
+        return;
+      }
+      alert('Usuari creat correctament.');
+      document.getElementById('newUserEmail').value = '';
+      document.getElementById('newUserName').value = '';
+      document.getElementById('newUserPassword').value = '';
+    } catch (e) {
+      console.error('createNewUser error', e);
+      alert('No s\'ha pogut contactar amb el servidor d\'autenticació.');
+    }
+  }
+
+  // ----------- Kategorien / Mitjana -----------
+  function createCategoryElement(cat) {
+    const wrap = document.createElement('div');
+    wrap.className = 'category-block';
+    wrap.innerHTML = `
+      <div class="category-header">
+        <div>
+          <h3>${cat.title}</h3>
+          <small>${cat.desc}</small>
         </div>
-        <div class="proposal-desc">${(p.desc || '').replace(/\n/g,'<br>')}</div>
-        <div class="proposal-actions">
-          <div class="vote-buttons">
-            <button class="vote-btn ${myVote===-3?'active-neg':''}" onclick="setVote('${p.id}',-3,this)">-3</button>
-            <button class="vote-btn ${myVote===-2?'active-neg':''}" onclick="setVote('${p.id}',-2,this)">-2</button>
-            <button class="vote-btn ${myVote===-1?'active-neg':''}" onclick="setVote('${p.id}',-1,this)">-1</button>
-            <button class="vote-btn ${myVote===1?'active-pos':''}"  onclick="setVote('${p.id}',1,this)">+1</button>
-            <button class="vote-btn ${myVote===2?'active-pos':''}"  onclick="setVote('${p.id}',2,this)">+2</button>
-            <button class="vote-btn ${myVote===3?'active-pos':''}"  onclick="setVote('${p.id}',3,this)">+3</button>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <div class="vote-info">Punts nets assignats: <span>${myVote}</span></div>
-            ${deleteBtnHtml}
-          </div>
-        </div>`;
-      return div;
-    }
+        <div style="text-align:right;min-width:60px;">
+          <div style="font-size:12px;color:#555;">Mitjana</div>
+          <div class="avg-bar"><div class="avg-fill" id="avg_${cat.key}"></div></div>
+          <div class="avg-label"><span id="avg_txt_${cat.key}">—</span></div>
+        </div>
+      </div>
+      <div class="slider-row">
+        <input
+          type="range"
+          class="slider"
+          id="slider_${cat.key}"
+          min="0" max="100" step="5"
+          value="${(currentUser.satisfaction || {})[cat.key] || 0}"
+          oninput="updateSlider('${cat.key}', this)"
+        />
+        <div class="thumb-label" id="thumb_${cat.key}">0</div>
+      </div>
+      <button
+        class="btn btn-secondary"
+        style="margin-top:8px;font-size:12px;padding:6px 10px;"
+        onclick="toggleProposals('${cat.key}', this)"
+      >
+        Veure propostes d'aquesta categoria
+      </button>
+      <div id="props_${cat.key}" class="hidden"></div>
+    `;
+    return wrap;
+  }
 
-    function renderProposals() {
-      const list = document.getElementById('myProposalsList');
-      if (!list) return;
-      const mine = proposals.filter(p => (p.email || '') === (currentUser.email || '').toLowerCase());
-      if (mine.length === 0) {
-        list.innerHTML = 'Encara no has creat cap proposta. Comença afegint-ne una.';
+  function populateCategories() {
+    const list = document.getElementById('categoriesList');
+    if (!list) return;
+    list.innerHTML = '';
+    CATEGORIES.forEach(cat => {
+      const el = createCategoryElement(cat);
+      list.appendChild(el);
+      const slider = el.querySelector('.slider');
+      const label = document.getElementById('thumb_' + cat.key);
+      positionThumbLabel(slider, label);
+      applyAverage(cat.key);
+    });
+  }
+
+  function positionThumbLabel(slider, label) {
+    const val = parseInt(slider.value || '0', 10);
+    label.textContent = val;
+  }
+
+  function applyAverage(key) {
+    const avg = (serverAverages && typeof serverAverages[key] === 'number')
+      ? serverAverages[key] : null;
+    const bar = document.getElementById('avg_' + key);
+    const t = document.getElementById('avg_txt_' + key);
+    if (avg != null && isFinite(avg)) {
+      if (bar) bar.style.width = Math.round(avg) + '%';
+      if (t) t.textContent = Math.round(avg) + '%';
+    } else {
+      if (bar) bar.style.width = '0%';
+      if (t) t.textContent = '—';
+    }
+  }
+
+  async function loadAveragesFromServer() {
+    const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
+    serverAverages = (avgRes && avgRes.averages) ? avgRes.averages : {};
+    if (currentUser.email) {
+      const userRes = await apiRequest('satisfaction', {
+        action: 'getUserRatings',
+        email: currentUser.email
+      });
+      if (userRes && userRes.ratings) currentUser.satisfaction = userRes.ratings;
+    }
+  }
+
+  async function updateSlider(key, inputEl) {
+    const val = parseInt(inputEl.value || '0', 10);
+    if (!currentUser.satisfaction) currentUser.satisfaction = {};
+    currentUser.satisfaction[key] = val;
+
+    const label = document.getElementById('thumb_' + key);
+    positionThumbLabel(inputEl, label);
+
+    if (currentUser.email) {
+      await apiRequest('satisfaction', {
+        action: 'saveRating',
+        email: currentUser.email,
+        category: key,
+        value: val
+      });
+      const avgRes = await apiRequest('satisfaction', { action: 'getAverages' });
+      if (avgRes && avgRes.averages) serverAverages = avgRes.averages;
+      applyAverage(key);
+    } else {
+      alert('Cal iniciar sessió per guardar la valoració.');
+    }
+  }
+
+  // ----------- Propostes -----------
+  function populateCategorySelect() {
+    const sel = document.getElementById('proposalCategory');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">-- Tria una categoria --</option>';
+    CATEGORIES.forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat.key;
+      opt.textContent = cat.title;
+      sel.appendChild(opt);
+    });
+  }
+
+  async function loadProposalsFromServer() {
+    try {
+      const res = await fetch(`${API_BASE}/proposals`, { method: 'GET' });
+      if (!res.ok) {
+        const txt = await res.text();
+        console.warn('API error proposals (GET)', res.status, txt);
+        alert(
+          'Error API proposals (HTTP ' + res.status + '): ' +
+          (txt || 'cap detall addicional')
+        );
+        proposals = [];
         return;
       }
-      list.innerHTML = '';
-      mine.forEach(p => list.appendChild(createProposalElement(p)));
+      const data = await res.json();
+      const arr = Array.isArray(data)
+        ? data
+        : (Array.isArray(data.proposals) ? data.proposals : []);
+      proposals = arr.map(p => ({
+        id: String(p.id || p.proposal_id || p.uuid),
+        title: p.title,
+        category: p.category,
+        desc: p.description || p.desc || '',
+        author: p.author || p.username || '',
+        email: (p.email || p.user_email || '').toLowerCase(),
+        createdAt: p.created_at || p.createdAt || new Date().toISOString()
+      })).filter(p => p.id && p.title);
+    } catch (e) {
+      console.warn('API request failed (GET proposals)', e);
+      alert(`No s'ha pogut carregar les propostes: ${e}`);
+      proposals = [];
+    }
+  }
+
+  // ---- Kommentare pro Proposal laden / anzeigen ----
+  async function loadCommentsForProposal(proposalId, container) {
+    if (!container) return;
+    container.innerHTML = "<div class='info'>Carregant comentaris...</div>";
+
+    const res = await apiRequest('comments', {
+      action: 'list',
+      proposalId: proposalId
+    });
+    if (!res) {
+      container.innerHTML = "<div class='info'>No s'han pogut carregar els comentaris.</div>";
+      return;
+    }
+    const arr = Array.isArray(res)
+      ? res
+      : (Array.isArray(res.comments) ? res.comments : []);
+
+    if (!arr.length) {
+      container.innerHTML = "<div class='info'>Encara no hi ha comentaris. Sigues el primer a comentar!</div>";
+      return;
     }
 
-    async function addProposal() {
-      if (!currentUser.email) {
-        alert('Cal iniciar sessió per afegir propostes.');
-        return;
-      }
+    container.innerHTML = '';
+    arr.forEach(c => {
+      const commentEl = document.createElement('div');
+      commentEl.className = 'comment';
+
+      const id = String(c.id || c.comment_id || c.uuid);
+      const author =
+        c.author || c.username ||
+        ((c.email || '').split('@')[0] || 'Anònim');
+      const text = (c.text || c.content || '');
+      const created = c.created_at || c.createdAt;
+      const when = created ? new Date(created).toLocaleString('ca-ES') : '';
+      const userVote = typeof c.user_vote === 'number' ? c.user_vote : 0;
+
+      commentEl.dataset.commentId = id;
+      commentEl.dataset.userVote = userVote;
+
+      commentEl.innerHTML = `
+        <div class="comment-header">
+          <span>${author}</span>
+          <span class="comment-date">${when}</span>
+        </div>
+        <div class="comment-text">${text.replace(/\n/g, '<br>')}</div>
+        <div class="comment-actions">
+          <button
+            type="button"
+            class="comment-btn comment-like${userVote === 1 ? ' active-like' : ''}"
+            onclick="voteComment('${proposalId}','${id}',1,this)"
+          >👍</button>
+          <button
+            type="button"
+            class="comment-btn comment-dislike${userVote === -1 ? ' active-dislike' : ''}"
+            onclick="voteComment('${proposalId}','${id}',-1,this)"
+          >👎</button>
+        </div>
+      `;
+      container.appendChild(commentEl);
+    });
+  }
+
+  async function submitComment(proposalId, btn) {
+    if (!currentUser.email) {
+      alert('Cal iniciar sessió per afegir comentaris.');
+      return;
+    }
+    const form = btn.closest('.comment-form');
+    if (!form) return;
+    const textarea = form.querySelector('textarea');
+    if (!textarea) return;
+
+    const text = (textarea.value || '').trim();
+    if (!text) {
+      alert('El comentari no pot estar buit.');
+      return;
+    }
+
+    btn.disabled = true;
+    try {
+      const res = await apiRequest('comments', {
+        action: 'add',
+        proposalId: proposalId,
+        email: currentUser.email,
+        author: currentUser.username || 'Usuari',
+        text: text
+      });
+      if (!res) return;
+      textarea.value = '';
+      const container = btn.closest('.proposal').querySelector('.comments-list');
+      if (container) await loadCommentsForProposal(proposalId, container);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function voteComment(proposalId, commentId, value, btn) {
+    if (!currentUser.email) {
+      alert('Cal iniciar sessió per valorar comentaris.');
+      return;
+    }
+    const commentEl = btn.closest('.comment');
+    if (!commentEl) return;
+
+    const current = parseInt(commentEl.dataset.userVote || '0', 10);
+    const newVal = current === value ? 0 : value;
+    commentEl.dataset.userVote = newVal;
+
+    const likeBtn = commentEl.querySelector('.comment-like');
+    const dislikeBtn = commentEl.querySelector('.comment-dislike');
+    if (likeBtn) likeBtn.classList.toggle('active-like', newVal === 1);
+    if (dislikeBtn) dislikeBtn.classList.toggle('active-dislike', newVal === -1);
+
+    await apiRequest('comments', {
+      action: 'vote',
+      proposalId,
+      commentId,
+      email: currentUser.email,
+      value: newVal
+    });
+  }
+
+  function createProposalElement(p) {
+    const div = document.createElement('div');
+    div.className = 'proposal';
+
+    const cat = CATEGORIES.find(c => c.key === p.category);
+    const catTitle = cat ? cat.title : p.category;
+    const myVote = (currentUser.votes || {})[String(p.id)] || 0;
+    const dateTxt = new Date(p.createdAt).toLocaleDateString('ca-ES');
+    const canDelete = (p.email || '') === (currentUser.email || '').toLowerCase();
+    const deleteBtnHtml = canDelete
+      ? `<button class="btn btn-secondary" style="font-size:11px;padding:4px 8px;" onclick="deleteProposal('${p.id}')">Esborrar</button>`
+      : '';
+
+    div.innerHTML = `
+      <div class="proposal-header">
+        <div>
+          <div class="proposal-title">${p.title}</div>
+          <div class="proposal-meta">${catTitle} · ${p.author || 'Anònim'}</div>
+        </div>
+        <div class="proposal-meta">${dateTxt}</div>
+      </div>
+      <div class="proposal-desc">${(p.desc || '').replace(/\n/g,'<br>')}</div>
+      <div class="proposal-actions">
+        <div class="vote-buttons">
+          <button class="vote-btn ${myVote===-3?'active-neg':''}" onclick="setVote('${p.id}',-3,this)">-3</button>
+          <button class="vote-btn ${myVote===-2?'active-neg':''}" onclick="setVote('${p.id}',-2,this)">-2</button>
+          <button class="vote-btn ${myVote===-1?'active-neg':''}" onclick="setVote('${p.id}',-1,this)">-1</button>
+          <button class="vote-btn ${myVote===1?'active-pos':''}"  onclick="setVote('${p.id}',1,this)">+1</button>
+          <button class="vote-btn ${myVote===2?'active-pos':''}"  onclick="setVote('${p.id}',2,this)">+2</button>
+          <button class="vote-btn ${myVote===3?'active-pos':''}"  onclick="setVote('${p.id}',3,this)">+3</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div class="vote-info">Punts nets assignats: <span>${myVote}</span></div>
+          ${deleteBtnHtml}
+        </div>
+      </div>
+    `;
+
+    // NEU: Kommentarbereich anhängen
+    const commentsWrap = document.createElement('div');
+    commentsWrap.className = 'proposal-comments';
+    commentsWrap.innerHTML = `
+      <div class="comments-list"></div>
+      <div class="comment-form">
+        <textarea rows="2" placeholder="Afegeix un comentari..."></textarea>
+        <button type="button" class="btn btn-secondary" onclick="submitComment('${p.id}', this)">
+          Publicar comentari
+        </button>
+      </div>
+    `;
+    div.appendChild(commentsWrap);
+
+    const listEl = commentsWrap.querySelector('.comments-list');
+    loadCommentsForProposal(p.id, listEl);
+
+    return div;
+  }
+
+  function renderProposals() {
+    const list = document.getElementById('myProposalsList');
+    if (!list) return;
+    const mine = proposals.filter(
+      p => (p.email || '') === (currentUser.email || '').toLowerCase()
+    );
+    if (mine.length === 0) {
+      list.innerHTML = 'Encara no has creat cap proposta. Comença afegint-ne una.';
+      return;
+    }
+    list.innerHTML = '';
+    mine.forEach(p => list.appendChild(createProposalElement(p)));
+  }
+
+  async function addProposal() {
+    if (!currentUser.email) {
+      alert('Cal iniciar sessió per afegir propostes.');
+      return;
+    }
+
+    const btn = document.getElementById('btnAddProposal');
+    if (btn) btn.disabled = true;
+
+    try {
       const title = (document.getElementById('proposalTitle').value || '').trim();
       const category = document.getElementById('proposalCategory').value;
       const desc = (document.getElementById('proposalDesc').value || '').trim();
+
       if (!title || !category || !desc) {
         alert('Cal omplir títol, categoria i descripció.');
         return;
@@ -915,7 +1451,10 @@
       if (!res.ok) {
         const errorText = await res.text();
         console.error('Error API proposals (POST)', res.status, errorText);
-        alert(`Error API proposals (HTTP ${res.status}): ${errorText || 'cap detall addicional'}`);
+        alert(
+          'Error API proposals (HTTP ' + res.status + '): ' +
+          (errorText || 'cap detall addicional')
+        );
         return;
       }
 
@@ -933,224 +1472,252 @@
       };
 
       proposals.push(newProposal);
+
       document.getElementById('proposalTitle').value = '';
       document.getElementById('proposalCategory').value = '';
       document.getElementById('proposalDesc').value = '';
+
       renderProposals();
       renderMyVotes();
       updateResults();
       updatePointsInfo();
       alert('Proposta afegida correctament.');
+    } finally {
+      if (btn) btn.disabled = false;
     }
+  }
 
-    function toggleProposals(catKey, btn) {
-      CATEGORIES.forEach(c => {
-        const box = document.getElementById('props_' + c.key);
-        if (box && c.key !== catKey) box.classList.add('hidden');
-      });
-      const box = document.getElementById('props_' + catKey);
-      if (!box) return;
+  function toggleProposals(catKey, btn) {
+    CATEGORIES.forEach(c => {
+      const box = document.getElementById('props_' + c.key);
+      if (box && c.key !== catKey) box.classList.add('hidden');
+    });
 
-      const isHidden = box.classList.contains('hidden');
-      if (isHidden) {
-        box.classList.remove('hidden');
-        btn.textContent = "Amagar propostes d'aquesta categoria";
-        const scores = computeGlobalScores();
-        const items = proposals
-          .filter(p => p.category === catKey)
-          .sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
-        box.innerHTML = items.length
-          ? ''
-          : "<div class='info'>Encara no hi ha propostes en aquesta categoria.</div>";
-        items.forEach(p => box.appendChild(createProposalElement(p)));
-      } else {
-        box.classList.add('hidden');
-        btn.textContent = "Veure / amagar propostes d'aquesta categoria";
-      }
-    }
+    const box = document.getElementById('props_' + catKey);
+    if (!box) return;
 
-    // ----------- Delete proposal -----------
-    async function deleteProposal(proposalId) {
-      const p = proposals.find(pr => String(pr.id) === String(proposalId));
-      if (!p) return;
+    const isHidden = box.classList.contains('hidden');
+    if (isHidden) {
+      box.classList.remove('hidden');
+      btn.textContent = "Amagar propostes d'aquesta categoria";
 
-      const ok = confirm("Vols esborrar aquesta proposta de manera definitiva? Aquesta acció no es pot desfer.");
-      if (!ok) return;
-
-      try {
-        const res = await fetch(`${API_BASE}/proposals`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: proposalId, email: currentUser.email })
-        });
-        if (!res.ok) {
-          const txt = await res.text();
-          alert(`No s'ha pogut esborrar la proposta: ${txt || 'error'}`);
-          return;
-        }
-      } catch (e) {
-        console.error('deleteProposal error', e);
-        alert('No s\'ha pogut contactar amb el servidor de propostes.');
-        return;
-      }
-
-      proposals = proposals.filter(pr => String(pr.id) !== String(proposalId));
-      if (currentUser.votes && currentUser.votes[proposalId]) {
-        delete currentUser.votes[proposalId];
-      }
-      if (globalScores && globalScores[proposalId]) {
-        delete globalScores[proposalId];
-      }
-      renderProposals();
-      renderMyVotes();
-      updateResults();
-      updatePointsInfo();
-    }
-
-    // ----------- Votes / Resultats -----------
-    async function loadUserVotesFromServer() {
-      if (!currentUser.email) return;
-      const res = await apiRequest('votes', {
-        action: 'getUserVotes',
-        email: currentUser.email
-      });
-      if (!res) return;
-      let votesObj = {};
-      const pushVote = v => {
-        const pid = String(v.proposal_id || v.proposalId || v.id);
-        const value = v.points ?? v.value ?? v.vote ?? 0;
-        if (pid) votesObj[pid] = value;
-      };
-      if (Array.isArray(res)) res.forEach(pushVote);
-      else if (Array.isArray(res.votes)) res.votes.forEach(pushVote);
-      else if (res.votes && typeof res.votes === 'object') {
-        Object.keys(res.votes).forEach(k => {
-          votesObj[String(k)] = res.votes[k];
-        });
-      }
-      currentUser.votes = votesObj;
-    }
-
-    async function loadGlobalScoresFromServer() {
-      const res = await apiRequest('votes', { action: 'getScores' });
-      if (!res) { globalScores = {}; return; }
-      const arr = Array.isArray(res) ? res : (res.scores || res.results || []);
-      globalScores = {};
-      arr.forEach(r => {
-        const pid = String(r.proposal_id || r.id || r.proposalId);
-        const total = r.total_points ?? r.points ?? r.sum ?? r.total ?? 0;
-        if (pid) globalScores[pid] = total;
-      });
-    }
-
-    function renderMyVotes() {
-      const list = document.getElementById('myVotesList');
-      if (!list) return;
-      const v = currentUser.votes || {};
-      const votedIds = Object.keys(v).filter(id => v[id] && v[id] !== 0);
-      if (votedIds.length === 0) {
-        list.innerHTML = 'Encara no has votat cap proposta.';
-        return;
-      }
+      const scores = computeGlobalScores();
       const items = proposals
-        .filter(p => votedIds.includes(String(p.id)))
-        .sort((a, b) => (v[String(b.id)] || 0) - (v[String(a.id)] || 0));
-      list.innerHTML = '';
-      items.forEach(p => list.appendChild(createProposalElement(p)));
+        .filter(p => p.category === catKey)
+        .sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
+
+      box.innerHTML = items.length
+        ? ''
+        : "<div class='info'>Encara no hi ha propostes en aquesta categoria.</div>";
+      items.forEach(p => box.appendChild(createProposalElement(p)));
+    } else {
+      box.classList.add('hidden');
+      btn.textContent = "Veure propostes d'aquesta categoria";
     }
+  }
 
-    function getCurrentTotalPoints() {
-      const v = currentUser.votes || {};
-      return Object.values(v).reduce((a, b) => a + Math.max(0, Math.abs(b)), 0);
-    }
+  // ----------- Delete proposal -----------
+  async function deleteProposal(proposalId) {
+    const p = proposals.find(pr => String(pr.id) === String(proposalId));
+    if (!p) return;
 
-    function updatePointsInfo() {
-      const total = getCurrentTotalPoints();
-      const assignedSpan = document.getElementById('assignedPoints');
-      if (assignedSpan) assignedSpan.textContent = total;
-      const usedTop = document.getElementById('usedPointsInfoTop');
-      if (usedTop) usedTop.textContent = total;
-      const usedRight = document.getElementById('usedPointsInfo');
-      if (usedRight) usedRight.textContent = total;
-    }
+    const ok = confirm(
+      "Vols esborrar aquesta proposta de manera definitiva? Aquesta acció no es pot desfer."
+    );
+    if (!ok) return;
 
-    async function setVote(proposalId, delta, btn) {
-      if (!currentUser.email) {
-        alert('Cal iniciar sessió per votar.');
-        return;
-      }
-      const v = currentUser.votes || {};
-      const prev = v[String(proposalId)] || 0;
-      const baseTotal = getCurrentTotalPoints() - Math.max(0, Math.abs(prev));
-      const newVal = (prev === delta) ? 0 : delta;
-      const newTotal = baseTotal + Math.max(0, Math.abs(newVal));
-      if (newTotal > MAX_POINTS) {
-        alert('Has superat el màxim de ' + MAX_POINTS + ' punts. Revisa els teus vots.');
-        return;
-      }
-      v[String(proposalId)] = newVal;
-      currentUser.votes = v;
-      updatePointsInfo();
-
-      const proposalEl = btn.closest('.proposal');
-      if (proposalEl) {
-        const sumSpan = proposalEl.querySelector('.vote-info span');
-        if (sumSpan) sumSpan.textContent = newVal;
-        proposalEl.querySelectorAll('.vote-btn').forEach(b => {
-          b.classList.remove('active-pos','active-neg');
-          const val = parseInt(b.textContent, 10);
-          if (val === newVal) {
-            if (val > 0) b.classList.add('active-pos');
-            else if (val < 0) b.classList.add('active-neg');
-          }
-        });
-      }
-      renderMyVotes();
-
-      await apiRequest('votes', {
-        action: 'setVote',
-        email: currentUser.email,
-        proposalId: proposalId,
-        value: newVal
+    try {
+      const res = await fetch(`${API_BASE}/proposals`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: proposalId, email: currentUser.email })
       });
-      await loadGlobalScoresFromServer();
-      updateResults();
+      if (!res.ok) {
+        const txt = await res.text();
+        alert("No s'ha pogut esborrar la proposta: " + (txt || 'error'));
+        return;
+      }
+    } catch (e) {
+      console.error('deleteProposal error', e);
+      alert('No s\'ha pogut contactar amb el servidor de propostes.');
+      return;
     }
 
-    function computeGlobalScores() {
-      if (globalScores && Object.keys(globalScores).length > 0) return globalScores;
-      const all = {};
-      proposals.forEach(p => { all[String(p.id)] = 0; });
-      Object.entries(currentUser.votes || {}).forEach(([pid, val]) => {
-        if (all[pid] != null) all[pid] += (val || 0);
+    proposals = proposals.filter(pr => String(pr.id) !== String(proposalId));
+    if (currentUser.votes && currentUser.votes[proposalId]) {
+      delete currentUser.votes[proposalId];
+    }
+    if (globalScores && globalScores[proposalId]) {
+      delete globalScores[proposalId];
+    }
+    renderProposals();
+    renderMyVotes();
+    updateResults();
+    updatePointsInfo();
+  }
+
+  // ----------- Votes / Resultats -----------
+  async function loadUserVotesFromServer() {
+    if (!currentUser.email) return;
+    const res = await apiRequest('votes', {
+      action: 'getUserVotes',
+      email: currentUser.email
+    });
+    if (!res) return;
+
+    let votesObj = {};
+    const pushVote = v => {
+      const pid = String(v.proposal_id || v.proposalId || v.id);
+      const value = v.points ?? v.value ?? v.vote ?? 0;
+      if (pid) votesObj[pid] = value;
+    };
+
+    if (Array.isArray(res)) res.forEach(pushVote);
+    else if (Array.isArray(res.votes)) res.votes.forEach(pushVote);
+    else if (res.votes && typeof res.votes === 'object') {
+      Object.keys(res.votes).forEach(k => {
+        votesObj[String(k)] = res.votes[k];
       });
-      return all;
+    }
+    currentUser.votes = votesObj;
+  }
+
+  async function loadGlobalScoresFromServer() {
+    const res = await apiRequest('votes', { action: 'getScores' });
+    if (!res) {
+      globalScores = {};
+      return;
+    }
+    const arr = Array.isArray(res) ? res : (res.scores || res.results || []);
+    globalScores = {};
+    arr.forEach(r => {
+      const pid = String(r.proposal_id || r.id || r.proposalId);
+      const total = r.total_points ?? r.points ?? r.sum ?? r.total ?? 0;
+      if (pid) globalScores[pid] = total;
+    });
+  }
+
+  function renderMyVotes() {
+    const list = document.getElementById('myVotesList');
+    if (!list) return;
+
+    const v = currentUser.votes || {};
+    const votedIds = Object.keys(v).filter(id => v[id] && v[id] !== 0);
+
+    if (votedIds.length === 0) {
+      list.innerHTML = 'Encara no has votat cap proposta.';
+      return;
     }
 
-    function updateResults() {
-      const box = document.getElementById('resultsChart');
-      if (!box) return;
-      const all = computeGlobalScores();
-      const values = Object.values(all);
-      if (!values.length) {
-        box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>';
-        return;
-      }
+    const items = proposals
+      .filter(p => votedIds.includes(String(p.id)))
+      .sort((a, b) => (v[String(b.id)] || 0) - (v[String(a.id)] || 0));
 
-      const rows = proposals
-        .map(p => {
-          const sum = all[String(p.id)] || 0;
-          return { id: p.id, title: p.title, sum };
-        })
-        .sort((a, b) => b.sum - a.sum);
+    list.innerHTML = '';
+    items.forEach(p => list.appendChild(createProposalElement(p)));
+  }
 
-      if (rows.length === 0) {
-        box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>';
-        return;
-      }
+  function getCurrentTotalPoints() {
+    const v = currentUser.votes || {};
+    return Object.values(v).reduce(
+      (a, b) => a + Math.max(0, Math.abs(b)),
+      0
+    );
+  }
 
+  function updatePointsInfo() {
+    const total = getCurrentTotalPoints();
+    const assignedSpan = document.getElementById('assignedPoints');
+    if (assignedSpan) assignedSpan.textContent = total;
+    const usedTop = document.getElementById('usedPointsInfoTop');
+    if (usedTop) usedTop.textContent = total;
+    const usedRight = document.getElementById('usedPointsInfo');
+    if (usedRight) usedRight.textContent = total;
+  }
+
+  async function setVote(proposalId, delta, btn) {
+    if (!currentUser.email) {
+      alert('Cal iniciar sessió per votar.');
+      return;
+    }
+    const v = currentUser.votes || {};
+    const prev = v[String(proposalId)] || 0;
+
+    const baseTotal = getCurrentTotalPoints() - Math.max(0, Math.abs(prev));
+    const newVal = (prev === delta) ? 0 : delta;
+    const newTotal = baseTotal + Math.max(0, Math.abs(newVal));
+
+    if (newTotal > MAX_POINTS) {
+      alert('Has superat el màxim de ' + MAX_POINTS + ' punts. Revisa els teus vots.');
+      return;
+    }
+
+    v[String(proposalId)] = newVal;
+    currentUser.votes = v;
+    updatePointsInfo();
+
+    const proposalEl = btn.closest('.proposal');
+    if (proposalEl) {
+      const sumSpan = proposalEl.querySelector('.vote-info span');
+      if (sumSpan) sumSpan.textContent = newVal;
+      proposalEl.querySelectorAll('.vote-btn').forEach(b => {
+        b.classList.remove('active-pos', 'active-neg');
+        const val = parseInt(b.textContent, 10);
+        if (val === newVal) {
+          if (val > 0) b.classList.add('active-pos');
+          else if (val < 0) b.classList.add('active-neg');
+        }
+      });
+    }
+
+    renderMyVotes();
+
+    await apiRequest('votes', {
+      action: 'setVote',
+      email: currentUser.email,
+      proposalId: proposalId,
+      value: newVal
+    });
+    await loadGlobalScoresFromServer();
+    updateResults();
+  }
+
+  function computeGlobalScores() {
+    if (globalScores && Object.keys(globalScores).length > 0) return globalScores;
+
+    const all = {};
+    proposals.forEach(p => {
+      all[String(p.id)] = 0;
+    });
+    Object.entries(currentUser.votes || {}).forEach(([pid, val]) => {
+      if (all[pid] != null) all[pid] += (val || 0);
+    });
+    return all;
+  }
+
+  function updateResults() {
+    const box = document.getElementById('resultsChart');
+    if (!box) return;
+
+    const all = computeGlobalScores();
+    const values = Object.values(all);
+
+    if (!values.length) {
+      box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>';
+      const rv = document.getElementById('resultsVoteList');
+      if (rv) rv.innerHTML = 'Encara no hi ha propostes.';
+      return;
+    }
+
+    const rows = proposals.map(p => {
+      const sum = all[String(p.id)] || 0;
+      return { id: p.id, title: p.title, sum };
+    }).sort((a, b) => b.sum - a.sum);
+
+    if (rows.length === 0) {
+      box.innerHTML = '<div class="info">Encara no hi ha resultats.</div>';
+    } else {
       const maxPos = Math.max(...rows.map(r => Math.max(0, r.sum))) || 1;
-
       box.innerHTML = rows.map(r => {
         let width;
         let color;
@@ -1158,25 +1725,44 @@
           width = Math.max(5, (r.sum / maxPos) * 100);
           color = '#007bff';
         } else if (r.sum < 0) {
-          width = 5;          // kleinster Balken
-          color = '#dc3545';  // rot
+          width = 5;
+          color = '#dc3545';
         } else {
-          width = 5;          // kleinster Balken bei 0
-          color = '#6c757d';  // neutrale Farbe
+          width = 5;
+          color = '#6c757d';
         }
         return `
           <div class="result-bar">
-            <div class="result-label"><span>${r.title}</span><span>${r.sum} punts</span></div>
+            <div class="result-label">
+              <span>${r.title}</span>
+              <span>${r.sum} punts</span>
+            </div>
             <div class="bar-container">
               <div class="bar-fill" style="width:${width}%;background:${color};">&nbsp;</div>
             </div>
-          </div>`;
+          </div>
+        `;
       }).join('');
     }
 
-    (function init() {
-      showTab('login');
-    })();
-  </script>
+    // NEU: Voting-Liste auf Resultats-Seite
+    const voteList = document.getElementById('resultsVoteList');
+    if (voteList) {
+      if (!proposals.length) {
+        voteList.innerHTML = 'Encara no hi ha propostes.';
+      } else {
+        voteList.innerHTML = '';
+        rows.forEach(r => {
+          const p = proposals.find(pr => String(pr.id) === String(r.id));
+          if (p) voteList.appendChild(createProposalElement(p));
+        });
+      }
+    }
+  }
+
+  (function init() {
+    showTab('login');
+  })();
+</script>
 </body>
 </html>
