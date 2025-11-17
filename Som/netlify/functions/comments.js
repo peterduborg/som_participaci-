@@ -1,10 +1,27 @@
 // netlify/functions/comments.js
+// netlify/functions/comments.js
 const { Pool } = require('pg');
 
+const connectionString =
+  process.env.DATABASE_URL ||
+  process.env.Database_URL ||
+  process.env.NETLIFY_DATABASE_URL ||
+  process.env.NETLIFY_DATABASE_URL_UNPOOLED;
+
+console.log(
+  'COMMENTS FUNCTION START, connectionString prefix:',
+  (connectionString || 'UNDEFINED').slice(0, 40)
+);
+
+if (!connectionString) {
+  throw new Error('DATABASE_URL / Database_URL / NETLIFY_DATABASE_URL not set');
+}
+
 const pool = new Pool({
-  connectionString: process.env.NEON_DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
+  connectionString,
+  ssl: { rejectUnauthorized: false }
 });
+
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
