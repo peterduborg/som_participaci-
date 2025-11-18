@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administració d'usuaris (Admin)</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color:#333;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.98);
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      padding: 20px 24px 28px;
+    }
+    .header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:16px;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .header h1 {
+      font-size:24px;
+      color:#333;
+    }
+    .header small {
+      font-size:12px;
+      color:#666;
+    }
+    .badge-admin {
+      background:#667eea;
+      color:#fff;
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:600;
+    }
+    .auth-info {
+      font-size:13px;
+      color:#555;
+    }
+
+    .form-group { margin-bottom: 14px; }
+    label {
+      display:block;
+      margin-bottom:5px;
+      font-weight:600;
+      font-size:14px;
+    }
+    input {
+      width:100%;
+      padding:9px 10px;
+      border-radius:8px;
+      border:1px solid #ddd;
+      font-size:14px;
+      font-family:inherit;
+    }
+    input:focus {
+      outline:none;
+      border-color:#667eea;
+    }
+
+    .btn {
+      border:none;
+      border-radius:8px;
+      padding:9px 14px;
+      font-size:14px;
+      font-weight:600;
+      cursor:pointer;
+      background: linear-gradient(135deg,#667eea,#764ba2);
+      color:#fff;
+      transition:transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow:0 2px 6px rgba(0,0,0,0.2);
+    }
+    .btn:disabled {
+      opacity:0.6;
+      cursor: not-allowed;
+      box-shadow:none;
+      transform:none;
+    }
+    .btn-secondary {
+      background:#6c757d;
+    }
+    .btn-danger {
+      background:#dc3545;
+    }
+    .btn-small {
+      padding:4px 8px;
+      font-size:12px;
+      border-radius:6px;
+    }
+
+    .login-box, .admin-box {
+      margin-top:20px;
+    }
+    .login-card {
+      max-width:420px;
+      padding:18px 18px 20px;
+      border-radius:12px;
+      border:1px solid #e0e0e0;
+      background:#f8f9fa;
+    }
+    .login-card h2 {
+      font-size:20px;
+      margin-bottom:10px;
+    }
+    .hint {
+      font-size:12px;
+      color:#777;
+      margin-bottom:10px;
+    }
+
+    .top-bar {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .user-summary {
+      font-size:13px;
+      color:#555;
+    }
+
+    .grid {
+      display:grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap:20px;
+      align-items:flex-start;
+    }
+    @media(max-width: 900px) {
+      .grid { grid-template-columns:1fr; }
+    }
+
+    .card {
+      background:#f8f9fa;
+      border-radius:12px;
+      border:1px solid #e0e0e0;
+      padding:16px 16px 18px;
+    }
+    .card h3 {
+      font-size:18px;
+      margin-bottom:8px;
+    }
+    .card p {
+      font-size:13px;
+      color:#555;
+      margin-bottom:8px;
+    }
+
+    table {
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+    }
+    th, td {
+      padding:6px 4px;
+      border-bottom:1px solid #ddd;
+      vertical-align:middle;
+    }
+    th {
+      text-align:left;
+      font-weight:600;
+      font-size:12px;
+      background:#f0f1f5;
+    }
+    td input[type="email"],
+    td input[type="text"] {
+      width:100%;
+      font-size:12px;
+      padding:4px 5px;
+      border-radius:6px;
+    }
+    td input[type="checkbox"] {
+      transform:scale(1.05);
+      cursor:pointer;
+    }
+    td.actions {
+      white-space:nowrap;
+    }
+    .tag-self {
+      display:inline-block;
+      margin-left:4px;
+      padding:0 6px;
+      border-radius:999px;
+      background:#e2e6ff;
+      font-size:10px;
+      color:#333;
+    }
+
+    .alert {
+      padding:8px 10px;
+      border-radius:8px;
+      margin-bottom:10px;
+      font-size:13px;
+    }
+    .alert-info {
+      background:#e7f1ff;
+      border:1px solid #cde0ff;
+      color:#234f9c;
+    }
+    .alert-error {
+      background:#fdecea;
+      border:1px solid #f5c2c0;
+      color:#842029;
+    }
+    .muted {
+      color:#888;
+      font-size:12px;
+    }
+    .text-right { text-align:right; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div>
+      <h1>Administració d'usuaris</h1>
+      <small>Panell separat només per a administradors · Gestió completa d'usuaris</small>
+    </div>
+    <div>
+      <span class="badge-admin">Admin</span>
+    </div>
+  </div>
+
+  <!-- LOGIN VIEW -->
+  <div id="loginView" class="login-box">
+    <div class="login-card">
+      <h2>Iniciar sessió com a administrador</h2>
+      <p class="hint">
+        Introdueix el teu correu i contrasenya. Només comptes amb rol <strong>admin</strong> poden accedir.
+      </p>
+      <div id="loginError" class="alert alert-error" style="display:none;"></div>
+
+      <div class="form-group">
+        <label>Correu electrònic (admin)</label>
+        <input type="email" id="loginEmail" placeholder="admin@exemple.cat" />
+      </div>
+      <div class="form-group">
+        <label>Contrasenya</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" />
+      </div>
+      <button class="btn" onclick="loginAdmin()">Accedir</button>
+    </div>
+  </div>
+
+  <!-- ADMIN VIEW -->
+  <div id="adminView" class="admin-box" style="display:none;">
+    <div class="top-bar">
+      <div class="user-summary" id="adminSummary">
+        <!-- Wird per JS gesetzt -->
+      </div>
+      <div>
+        <button class="btn btn-secondary btn-small" onclick="reloadUsers()">Actualitzar llista</button>
+        <button class="btn btn-secondary btn-small" onclick="logoutAdmin()">Tancar sessió</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- User-Liste -->
+      <div class="card">
+        <h3>Llista d'usuaris</h3>
+        <p>
+          Aquí pots veure tots els comptes, modificar dades bàsiques i esborrar usuaris (excepte tu mateix).
+        </p>
+        <div id="usersTable" class="muted">
+          Carregant usuaris...
+        </div>
+      </div>
+
+      <!-- Neuer User -->
+      <div class="card">
+        <h3>Crear nou usuari</h3>
+        <p>
+          Com a administrador pots donar d'alta comptes nous amb accés a la plataforma principal.
+        </p>
+        <div id="createUserError" class="alert alert-error" style="display:none;"></div>
+        <div id="createUserOk" class="alert alert-info" style="display:none;"></div>
+
+        <div class="form-group">
+          <label>Correu del nou usuari</label>
+          <input type="email" id="newUserEmail" placeholder="nou.usuari@exemple.cat" />
+        </div>
+        <div class="form-group">
+          <label>Nom d'usuari</label>
+          <input type="text" id="newUserName" placeholder="Nom i cognoms" />
+        </div>
+        <div class="form-group">
+          <label>Contrasenya inicial</label>
+          <input type="password" id="newUserPassword" placeholder="Contrasenya temporal" />
+        </div>
+        <button class="btn" id="btnCreateUser" onclick="createNewUserAdmin()">
+          Crear usuari
+        </button>
+        <p class="muted" style="margin-top:8px;">
+          El nou usuari podrà canviar la contrasenya des de la plataforma principal.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API_BASE = '/.netlify/functions';
+  let adminUser = { email: '', username: '', isAdmin: false };
+
+  function showLoginError(msg) {
+    const box = document.getElementById('loginError');
+    if (!box) return;
+    if (!msg) {
+      box.style.display = 'none';
+      box.textContent = '';
+    } else {
+      box.style.display = 'block';
+      box.textContent = msg;
+    }
+  }
+
+  function showCreateUserMsg(okMsg, errMsg) {
+    const okBox = document.getElementById('createUserOk');
+    const errBox = document.getElementById('createUserError');
+    if (okBox) {
+      if (okMsg) {
+        okBox.style.display = 'block';
+        okBox.textContent = okMsg;
+      } else {
+        okBox.style.display = 'none';
+        okBox.textContent = '';
+      }
+    }
+    if (errBox) {
+      if (errMsg) {
+        errBox.style.display = 'block';
+        errBox.textContent = errMsg;
+      } else {
+        errBox.style.display = 'none';
+        errBox.textContent = '';
+      }
+    }
+  }
+
+  async function apiRequest(fn, payload) {
+    try {
+      const res = await fetch(`${API_BASE}/${fn}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload || {})
+      });
+      let data;
+      try {
+        data = await res.json();
+      } catch (e) {
+        data = null;
+      }
+      if (!res.ok) {
+        throw new Error(
+          (data && (data.error || data.details)) ||
+          `HTTP ${res.status}`
+        );
+      }
+      return data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async function loginAdmin() {
+    const emailInput = document.getElementById('loginEmail');
+    const pwInput = document.getElementById('loginPassword');
+    const email = (emailInput.value || '').trim().toLowerCase();
+    const password = (pwInput.value || '').trim();
+
+    showLoginError(null);
+
+    if (!email || !password) {
+      showLoginError('Introdueix correu i contrasenya.');
+      return;
+    }
+
+    try {
+      const res = await apiRequest('auth', {
+        action: 'login',
+        email,
+        password
+      });
+
+      if (!res || !res.ok || !res.user) {
+        showLoginError(res && res.error ? res.error : 'Credencials incorrectes.');
+        return;
+      }
+
+      const user = res.user;
+      if (!user.is_admin) {
+        showLoginError('Aquest compte no té permisos d\'administrador.');
+        return;
+      }
+
+      adminUser = {
+        email: user.email || email,
+        username: user.username || (email.split('@')[0]),
+        isAdmin: !!user.is_admin
+      };
+
+      document.getElementById('loginView').style.display = 'none';
+      document.getElementById('adminView').style.display = 'block';
+
+      const summary = document.getElementById('adminSummary');
+      if (summary) {
+        summary.innerHTML =
+          `Sessió iniciada com <strong>${adminUser.username}</strong> ` +
+          `(<span>${adminUser.email}</span>) &middot; rol: <strong>admin</strong>`;
+      }
+
+      reloadUsers();
+    } catch (e) {
+      showLoginError('Error en iniciar sessió: ' + e.message);
+    }
+  }
+
+  function logoutAdmin() {
+    adminUser = { email: '', username: '', isAdmin: false };
+    document.getElementById('adminView').style.display = 'none';
+    document.getElementById('loginView').style.display = 'block';
+    showLoginError(null);
+  }
+
+  async function reloadUsers() {
+    const box = document.getElementById('usersTable');
+    if (!box) return;
+    box.textContent = 'Carregant usuaris...';
+
+    if (!adminUser.email || !adminUser.isAdmin) {
+      box.textContent = 'Has de ser administrador per veure aquesta llista.';
+      return;
+    }
+
+    try {
+      const res = await apiRequest('userAdmin', {
+        action: 'listUsers',
+        adminEmail: adminUser.email
+      });
+      if (!res || !res.ok) {
+        box.textContent = res && res.error
+          ? `Error: ${res.error}`
+          : 'No s\'han pogut carregar els usuaris.';
+        return;
+      }
+      renderUserList(res.users || []);
+    } catch (e) {
+      box.textContent = 'Error en carregar usuaris: ' + e.message;
+    }
+  }
+
+  function renderUserList(users) {
+    const box = document.getElementById('usersTable');
+    if (!box) return;
+
+    if (!users.length) {
+      box.textContent = 'Encara no hi ha usuaris a la base de dades.';
+      return;
+    }
+
+    const rowsHtml = users.map(u => {
+      const created = u.created_at ? new Date(u.created_at).toLocaleString('ca-ES') : '';
+      const updated = u.updated_at ? new Date(u.updated_at).toLocaleString('ca-ES') : '';
+      const isAdminChecked = u.is_admin ? 'checked' : '';
+      const isSelf = adminUser.email &&
+                     u.email &&
+                     u.email.toLowerCase() === adminUser.email.toLowerCase();
+
+      return `
+        <tr data-user-id="${u.id}">
+          <td><input type="email" value="${u.email}" /></td>
+          <td><input type="text" value="${u.username || ''}" /></td>
+          <td class="text-right">
+            <input type="checkbox" ${isAdminChecked}>
+          </td>
+          <td>${created}</td>
+          <td>${updated}</td>
+          <td class="actions">
+            <button class="btn btn-secondary btn-small"
+                    onclick="saveUserRow('${u.id}', this)">
+              Desar
+            </button>
+            ${isSelf
+              ? `<span class="tag-self">jo mateix</span>`
+              : `<button class="btn btn-danger btn-small"
+                          style="margin-left:4px;"
+                          onclick="deleteUserRow('${u.id}')">
+                   Esborrar
+                 </button>`
+            }
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    box.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Correu</th>
+            <th>Nom d'usuari</th>
+            <th class="text-right">Admin</th>
+            <th>Creat</th>
+            <th>Actualitzat</th>
+            <th>Accions</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rowsHtml}
+        </tbody>
+      </table>
+      <p class="muted" style="margin-top:6px;">
+        Nota: no pots esborrar el compte amb el qual estàs connectat.
+      </p>
+    `;
+  }
+
+  async function saveUserRow(userId, btn) {
+    const row = btn.closest('tr');
+    if (!row) return;
+
+    const emailInput = row.querySelector('td:nth-child(1) input[type="email"]');
+    const nameInput = row.querySelector('td:nth-child(2) input[type="text"]');
+    const adminCheckbox = row.querySelector('td:nth-child(3) input[type="checkbox"]');
+
+    const email = (emailInput.value || '').trim().toLowerCase();
+    const username = (nameInput.value || '').trim();
+    const is_admin = !!adminCheckbox.checked;
+
+    if (!email) {
+      alert('El correu no pot estar buit.');
+      return;
+    }
+
+    btn.disabled = true;
+
+    try {
+      const res = await apiRequest('userAdmin', {
+        action: 'updateUser',
+        adminEmail: adminUser.email,
+        id: userId,
+        email,
+        username,
+        is_admin
+      });
+
+      if (!res || !res.ok) {
+        alert('No s\'han pogut desar els canvis: ' + (res && res.error ? res.error : 'Error desconegut'));
+      } else {
+        alert('Canvis desats correctament.');
+        reloadUsers();
+      }
+    } catch (e) {
+      alert('Error en desar l\'usuari: ' + e.message);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function deleteUserRow(userId) {
+    const ok = confirm('Vols esborrar aquest usuari de manera definitiva?');
+    if (!ok) return;
+
+    try {
+      const res = await apiRequest('userAdmin', {
+        action: 'deleteUser',
+        adminEmail: adminUser.email,
+        id: userId
+      });
+
+      if (!res || !res.ok) {
+        alert('No s\'ha pogut esborrar l\'usuari: ' + (res && res.error ? res.error : 'Error desconegut'));
+      } else {
+        alert('Usuari esborrat.');
+        reloadUsers();
+      }
+    } catch (e) {
+      alert('Error en esborrar l\'usuari: ' + e.message);
+    }
+  }
+
+  async function createNewUserAdmin() {
+    const emailInput = document.getElementById('newUserEmail');
+    const nameInput = document.getElementById('newUserName');
+    const pwInput = document.getElementById('newUserPassword');
+    const btn = document.getElementById('btnCreateUser');
+
+    const email = (emailInput.value || '').trim().toLowerCase();
+    const username = (nameInput.value || '').trim();
+    const password = (pwInput.value || '').trim();
+
+    showCreateUserMsg(null, null);
+
+    if (!email || !username || !password) {
+      showCreateUserMsg(null, 'Cal omplir correu, nom i contrasenya inicial.');
+      return;
+    }
+
+    btn.disabled = true;
+
+    try {
+      const res = await apiRequest('auth', {
+        action: 'createUser',
+        adminEmail: adminUser.email,
+        email,
+        username,
+        password
+      });
+
+      if (!res || !res.ok) {
+        showCreateUserMsg(
+          null,
+          res && res.error ? res.error : 'No s\'ha pogut crear l\'usuari.'
+        );
+      } else {
+        showCreateUserMsg('Usuari creat correctament.', null);
+        emailInput.value = '';
+        nameInput.value = '';
+        pwInput.value = '';
+        reloadUsers();
+      }
+    } catch (e) {
+      showCreateUserMsg(null, 'Error en crear usuari: ' + e.message);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>
