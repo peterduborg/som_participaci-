@@ -21,7 +21,6 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-
 exports.handler = async (event, context) => {
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -48,7 +47,7 @@ exports.handler = async (event, context) => {
       );
     `);
 
-    // OPTIONAL: Stimmen-Tabelle (falls nicht schon in votes.js erzeugt)
+    // Legacy-Tabelle für Stimmen (kann parallel zur neuen votes-Tabelle existieren)
     await pool.query(`
       CREATE TABLE IF NOT EXISTS proposal_votes (
         id          SERIAL PRIMARY KEY,
@@ -95,11 +94,11 @@ exports.handler = async (event, context) => {
         };
       }
 
-      const title   = (data.title || '').trim();
-      const desc    = (data.description || data.desc || '').trim();
+      const title    = (data.title || '').trim();
+      const desc     = (data.description || data.desc || '').trim();
       const category = (data.category || '').trim();
-      const author  = (data.author || data.username || '').trim() || 'Usuari';
-      const email   = (data.email || data.user_email || '').trim().toLowerCase();
+      const author   = (data.author || data.username || '').trim() || 'Usuari';
+      const email    = (data.email || data.user_email || '').trim().toLowerCase();
 
       if (!title || !desc || !category || !email) {
         return {
@@ -181,13 +180,39 @@ exports.handler = async (event, context) => {
         };
       }
 
-      // Zuerst alle Votes löschen (falls ON DELETE CASCADE nicht greift)
-      await pool.query(
-        'DELETE FROM proposal_votes WHERE proposal_id = $1',
-        [id]
-      );
+      // ------------ NEU: alles, was an der Proposal hängt, aufräumen ------------
 
-      // Danach die Proposal selbst löschen
+      // 1) Neue votes-Tabelle (user_email / proposal_id TEXT / points)
+      try {
+        await pool.query(
+          'DELETE FROM votes WHERE proposal_id = $1',
+          [String(id)]          // proposal_id ist in votes als TEXT gespeichert
+        );
+      } catch (e) {
+        console.warn('DELETE from votes failed (non-critical):', e.message || e);
+      }
+
+      // 2) Kommentare zur Proposal (comment_votes hängen via FK ON DELETE CASCADE dran)
+      try {
+        await pool.query(
+          'DELETE FROM comments WHERE proposal_id = $1',
+          [id]
+        );
+      } catch (e) {
+        console.warn('DELETE from comments failed (non-critical):', e.message || e);
+      }
+
+      // 3) Legacy proposal_votes zur Sicherheit ebenfalls löschen
+      try {
+        await pool.query(
+          'DELETE FROM proposal_votes WHERE proposal_id = $1',
+          [id]
+        );
+      } catch (e) {
+        console.warn('DELETE from proposal_votes failed (non-critical):', e.message || e);
+      }
+
+      // 4) Danach die Proposal selbst löschen
       await pool.query(
         'DELETE FROM proposals WHERE id = $1',
         [id]
