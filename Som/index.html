@@ -863,24 +863,28 @@
   }
 
   async function initAfterLogin() {
-    populateCategories();
-    populateCategorySelect();
-    updatePointsInfo();
+  populateCategories();
+  populateCategorySelect();
+  updatePointsInfo();
 
-    await Promise.all([
-      loadAveragesFromServer(),
-      loadProposalsFromServer(),
-      loadGlobalScoresFromServer(),
-      loadUserVotesFromServer()
-    ]);
+  await Promise.all([
+    loadAveragesFromServer(),
+    loadProposalsFromServer(),
+    loadGlobalScoresFromServer(),
+    loadUserVotesFromServer()
+  ]);
 
-    populateCategories();
-    renderProposals();
-    renderMyVotes();
-    updateResults();
-    updatePointsInfo();
-    showTab('participacio');
-  }
+  // NEU: Votes im Speicher bereinigen (keine Punkte für gelöschte Vorschläge)
+  cleanupOrphanVotesInMemory();
+
+  populateCategories();
+  renderProposals();
+  renderMyVotes();
+  updateResults();
+  updatePointsInfo();
+  showTab('participacio');
+}
+
 
   // ---------- Password + Admin ----------
   function togglePasswordPanel() {
@@ -1394,10 +1398,35 @@
   }
 
   function getCurrentTotalPoints() {
-    const v = currentUser.votes || {};
-    return Object.values(v).reduce((a, b) => a + Math.max(0, Math.abs(b)), 0);
+  const v = currentUser.votes || {};
+
+  // Falls wir die Proposals noch nicht haben, fallback wie bisher
+  if (!proposals || !proposals.length) {
+    return Object.values(v).reduce(
+      (sum, val) => sum + Math.max(0, Math.abs(val || 0)),
+      0
+    );
   }
 
+  const validIds = new Set(proposals.map(p => String(p.id)));
+
+  // Nur Votes für existierende Vorschläge zählen
+  return Object.entries(v).reduce((sum, [pid, val]) => {
+    if (!validIds.has(String(pid))) return sum;
+    return sum + Math.max(0, Math.abs(val || 0));
+  }, 0);
+}
+function cleanupOrphanVotesInMemory() {
+  if (!proposals || !proposals.length || !currentUser.votes) return;
+
+  const validIds = new Set(proposals.map(p => String(p.id)));
+  Object.keys(currentUser.votes).forEach(pid => {
+    if (!validIds.has(String(pid))) {
+      // Vote gehört zu einem gelöschten Vorschlag -> im Speicher löschen
+      delete currentUser.votes[pid];
+    }
+  });
+}
   function updatePointsInfo() {
     const total = getCurrentTotalPoints();
     const assignedSpan = document.getElementById('assignedPoints');
