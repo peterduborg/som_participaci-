@@ -40,7 +40,64 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ ok: false, error: 'Method not allowed' })
     };
   }
+// ---------- NEU: Punkte aus "votes" neu berechnen ----------
+    if (action === 'recalcPoints') {
+      const adminEmail = (data.adminEmail || '').trim().toLowerCase();
 
+      if (!adminEmail) {
+        return {
+          statusCode: 400,
+          headers: corsHeaders,
+          body: JSON.stringify({ ok: false, error: 'Falta el correu de l\'administrador.' })
+        };
+      }
+
+      // Prüfen, ob der Aufrufer Admin ist
+      const adminRes = await pool.query(
+        'SELECT is_admin FROM app_users WHERE LOWER(email) = LOWER($1)',
+        [adminEmail]
+      );
+      if (adminRes.rowCount === 0 || !adminRes.rows[0].is_admin) {
+          return {
+            statusCode: 403,
+            headers: corsHeaders,
+            body: JSON.stringify({ ok: false, error: 'No autoritzat.' })
+          };
+        }
+  
+        // Spalte für Punktsumme sicherstellen
+        await pool.query(`
+          ALTER TABLE app_users
+          ADD COLUMN IF NOT EXISTS points_used integer NOT NULL DEFAULT 0;
+        `);
+  
+        // Punkte pro User aus der votes-Tabelle berechnen und in app_users.points_used schreiben
+        await pool.query(`
+          UPDATE app_users u
+          SET points_used = COALESCE(v.used_points, 0)
+          FROM (
+            SELECT
+              LOWER(user_email)         AS email,
+              SUM(ABS(points))::integer AS used_points
+            FROM votes
+            GROUP BY LOWER(user_email)
+          ) v
+          WHERE LOWER(u.email) = v.email;
+        `);
+  
+        // Alle übrigen Nutzer ohne Votes explizit auf 0 setzen (falls nötig)
+        await pool.query(`
+          UPDATE app_users
+          SET points_used = 0
+          WHERE points_used IS NULL;
+        `);
+  
+        return {
+          statusCode: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ok: true })
+        };
+      }
   if (!event.body) {
     return {
       statusCode: 400,
