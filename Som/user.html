@@ -288,15 +288,24 @@
 
   <!-- ADMIN VIEW -->
   <div id="adminView" class="admin-box" style="display:none;">
-    <div class="top-bar">
-      <div class="user-summary" id="adminSummary">
-        <!-- Wird per JS gesetzt -->
-      </div>
-      <div>
-        <button class="btn btn-secondary btn-small" onclick="reloadUsers()">Actualitzar llista</button>
-        <button class="btn btn-secondary btn-small" onclick="logoutAdmin()">Tancar sessió</button>
-      </div>
+  <div class="top-bar">
+    <div class="user-summary" id="adminSummary">
+      <!-- wird per JS gesetzt -->
     </div>
+    <div>
+      <button class="btn btn-secondary btn-small" onclick="reloadUsers()">Actualitzar llista</button>
+  
+      <!-- NEU: Aufräum-/Recalc-Button -->
+      <button class="btn btn-secondary btn-small"
+              id="btnRecalcPoints"
+              onclick="runPointsCleanup()">
+        Recalcular punts
+      </button>
+  
+      <button class="btn btn-secondary btn-small" onclick="logoutAdmin()">Tancar sessió</button>
+    </div>
+  </div>
+
 
     <!-- NEU: Statistik-Card -->
     <div class="card" id="adminStatsCard">
@@ -357,7 +366,39 @@
 <script>
   const API_BASE = '/.netlify/functions';
   let adminUser = { email: '', username: '', isAdmin: false };
-
+    // NEU: Cleanup-/Recalc-Button
+    async function runPointsCleanup() {
+      if (!adminUser.email || !adminUser.isAdmin) {
+        alert('Has d\'estar identificat com a administrador per recalcular els punts.');
+        return;
+      }
+  
+      const btn = document.getElementById('btnRecalcPoints');
+      if (btn) btn.disabled = true;
+  
+      try {
+        const res = await apiRequest('userAdmin', {
+          action: 'recalcPoints',
+          adminEmail: adminUser.email
+        });
+  
+        if (!res || !res.ok) {
+          alert(
+            'No s\'ha pogut recalcular els punts: ' +
+            (res && res.error ? res.error : 'Error desconegut')
+          );
+        } else {
+          alert('Punts recalculats correctament a partir de la taula "votes".');
+          // ggf. Statistiken & Liste neu laden
+          if (typeof reloadUsers === 'function') reloadUsers();
+          if (typeof loadAdminStats === 'function') loadAdminStats();
+        }
+      } catch (e) {
+        alert('Error en recalcular els punts: ' + e.message);
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
   function showLoginError(msg) {
     const box = document.getElementById('loginError');
     if (!box) return;
@@ -471,6 +512,7 @@
     } catch (e) {
       showLoginError('Error en iniciar sessió: ' + e.message);
     }
+    
   }
 
   function logoutAdmin() {
