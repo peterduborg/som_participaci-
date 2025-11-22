@@ -688,116 +688,174 @@
     }
   }
 
-  // NEU: Admin-Statistiken (User, Proposals, Punkte, Vorschläge/Benutzer)
-  async function loadAdminStats() {
-    const summaryEl = document.getElementById('adminStatsSummary');
-    const detailsEl = document.getElementById('adminStatsDetails');
-    if (!summaryEl) return;
+  /// Admin-Statistiken (User, Proposals, Punkte, Vorschläge/Benutzer + Integritätscheck)
+async function loadAdminStats() {
+  const summaryEl = document.getElementById('adminStatsSummary');
+  const detailsEl = document.getElementById('adminStatsDetails');
+  if (!summaryEl) return;
 
-    summaryEl.textContent = 'Carregant estadístiques...';
-    if (detailsEl) detailsEl.textContent = '';
+  summaryEl.textContent = 'Carregant estadístiques...';
+  if (detailsEl) detailsEl.textContent = '';
 
-    if (!adminUser.email || !adminUser.isAdmin) {
-      summaryEl.textContent = 'Només els administradors poden veure les estadístiques.';
-      return;
+  if (!adminUser.email || !adminUser.isAdmin) {
+    summaryEl.textContent = 'Només els administradors poden veure les estadístiques.';
+    return;
+  }
+
+  try {
+    const [usersRes, proposalsRes, votesScoresRes, userVotesRes] = await Promise.all([
+      apiRequest('userAdmin', {
+        action: 'listUsers',
+        adminEmail: adminUser.email
+      }).catch(() => null),
+      fetch(`${API_BASE}/proposals`, {
+        method: 'GET'
+      }).then(r => (r.ok ? r.json() : null)).catch(() => null),
+      apiRequest('votes', {
+        action: 'getScores'
+      }).catch(() => null),
+      apiRequest('votes', {
+        action: 'getUserVotes',
+        email: adminUser.email
+      }).catch(() => null)
+    ]);
+
+    let userCount = 0;
+    let proposalCount = 0;
+    let globalPoints = 0;
+    let myPointsRaw = 0;
+    let myPointsActive = 0;
+    let proposalsByUser = {};
+    let validProposalIds = new Set();
+
+    // User-Zahl
+    if (usersRes && usersRes.ok && Array.isArray(usersRes.users)) {
+      userCount = usersRes.users.length;
     }
 
-    try {
-      const [usersRes, proposalsRes, votesRes] = await Promise.all([
-        apiRequest('userAdmin', {
-          action: 'listUsers',
-          adminEmail: adminUser.email
-        }).catch(() => null),
-        fetch(`${API_BASE}/proposals`, {
-          method: 'GET'
-        }).then(r => r.ok ? r.json() : null).catch(() => null),
-        apiRequest('votes', {
-          action: 'getScores'
-        }).catch(() => null)
-      ]);
+    // Proposals + Proposals/Benutzer + gültige IDs
+    if (proposalsRes) {
+      const arr = Array.isArray(proposalsRes)
+        ? proposalsRes
+        : (Array.isArray(proposalsRes.proposals) ? proposalsRes.proposals : []);
+      proposalCount = arr.length;
 
-      let userCount = 0;
-      let proposalCount = 0;
-      let totalPoints = 0;
-      let proposalsByUser = {};
+      arr.forEach(p => {
+        const email = ((p.email || p.user_email || '') + '').toLowerCase();
+        if (p.id != null) {
+          validProposalIds.add(String(p.id));
+        }
+        if (!email) return;
+        if (!proposalsByUser[email]) proposalsByUser[email] = 0;
+        proposalsByUser[email]++;
+      });
+    }
 
-      // User-Zahl
-      if (usersRes && usersRes.ok && Array.isArray(usersRes.users)) {
-        userCount = usersRes.users.length;
-      }
+    // Globale Punkte (aus getScores – Score pro Vorschlag, Betrag aufsummiert)
+    if (votesScoresRes) {
+      const arr = Array.isArray(votesScoresRes)
+        ? votesScoresRes
+        : (Array.isArray(votesScoresRes.scores)
+            ? votesScoresRes.scores
+            : (Array.isArray(votesScoresRes.results) ? votesScoresRes.results : []));
+      arr.forEach(r => {
+        const total = r.total_points ?? r.points ?? r.sum ?? r.total ?? 0;
+        globalPoints += Math.abs(Number(total) || 0);
+      });
+    }
 
-      // Proposals + Proposals/Benutzer
-      if (proposalsRes) {
-        const arr = Array.isArray(proposalsRes)
-          ? proposalsRes
-          : (Array.isArray(proposalsRes.proposals) ? proposalsRes.proposals : []);
-        proposalCount = arr.length;
+    // Eigene Votes: Roh + aktiv (nur existierende Proposals)
+    if (userVotesRes) {
+      let votesObj = {};
 
-        arr.forEach(p => {
-          const email = ((p.email || p.user_email || '') + '').toLowerCase();
-          if (!email) return;
-          if (!proposalsByUser[email]) proposalsByUser[email] = 0;
-          proposalsByUser[email]++;
+      const pushVote = v => {
+        const pid = String(v.proposal_id || v.proposalId || v.id);
+        const value = v.points ?? v.value ?? v.vote ?? 0;
+        if (pid) votesObj[pid] = value;
+      };
+
+      if (Array.isArray(userVotesRes)) {
+        userVotesRes.forEach(pushVote);
+      } else if (Array.isArray(userVotesRes.votes)) {
+        userVotesRes.votes.forEach(pushVote);
+      } else if (userVotesRes.votes && typeof userVotesRes.votes === 'object') {
+        Object.keys(userVotesRes.votes).forEach(k => {
+          votesObj[String(k)] = userVotesRes.votes[k];
         });
       }
 
-      // Punkte (aus getScores – Summe der absoluten Projekt-Scores)
-      if (votesRes) {
-        const arr = Array.isArray(votesRes)
-          ? votesRes
-          : (Array.isArray(votesRes.scores)
-              ? votesRes.scores
-              : (Array.isArray(votesRes.results) ? votesRes.results : []));
-        arr.forEach(r => {
-          const total = r.total_points ?? r.points ?? r.sum ?? r.total ?? 0;
-          totalPoints += Math.abs(Number(total) || 0);
-        });
-      }
+      // Roh: alle Votes
+      myPointsRaw = Object.values(votesObj).reduce(
+        (sum, v) => sum + Math.max(0, Math.abs(v || 0)),
+        0
+      );
 
-      // Zusammenfassung
-      summaryEl.innerHTML = `
-        <div class="stats-row">
-          <div class="stat-box">
-            <div class="stat-label">Usuaris</div>
-            <div class="stat-value">${userCount}</div>
+      // Aktiv: nur Votes auf existierende Proposals
+      myPointsActive = Object.entries(votesObj).reduce((sum, [pid, val]) => {
+        if (!validProposalIds.has(String(pid))) return sum;
+        return sum + Math.max(0, Math.abs(val || 0));
+      }, 0);
+    }
+
+    // Zusammenfassung anzeigen
+    summaryEl.innerHTML = `
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-label">Usuaris</div>
+          <div class="stat-value">${userCount}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Propostes totals</div>
+          <div class="stat-value">${proposalCount}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Punts assignats (tots els usuaris)</div>
+          <div class="stat-value">${globalPoints}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Punts pel teu compte (bruts)</div>
+          <div class="stat-value">${myPointsRaw}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Punts pel teu compte (actius)</div>
+          <div class="stat-value">${myPointsActive}</div>
+        </div>
+      </div>
+    `;
+
+    if (detailsEl) {
+      const perUserRows = Object.entries(proposalsByUser)
+        .sort((a, b) => b[1] - a[1])
+        .map(([email, count]) => `<li>${email}: <strong>${count}</strong> propostes</li>`)
+        .join('');
+
+      const diff = myPointsRaw - myPointsActive;
+      const diffInfo = diff !== 0
+        ? `<span style="color:#c00;">
+             Diferència detectada: ${diff} punts bruts estan vinculats a propostes eliminades.
+           </span>`
+        : `<span class="muted">No s'ha detectat cap diferència entre punts bruts i actius.</span>`;
+
+      detailsEl.innerHTML = `
+        <div><strong>Propostes per usuari:</strong></div>
+        <ul style="margin-left:18px;margin-top:4px;">
+          ${perUserRows || '<li>Encara no hi ha propostes registrades.</li>'}
+        </ul>
+        <div style="margin-top:8px;">
+          <strong>Integritat dels punts:</strong>
+          <div>${diffInfo}</div>
+          <div class="muted" style="margin-top:4px;">
+            Els punts actius són els que compten de veritat per al límit de 30 punts i per a les propostes existents.
           </div>
-          <div class="stat-box">
-            <div class="stat-label">Propostes totals</div>
-            <div class="stat-value">${proposalCount}</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-label">Punts (suma |score| per proposta)</div>
-            <div class="stat-value">${totalPoints}</div>
-          </div>
-          <!-- Kommentar-Anzahl könnte hier ergänzt werden, wenn l'API la retorna -->
         </div>
       `;
-
-      if (detailsEl) {
-        const perUserRows = Object.entries(proposalsByUser)
-          .sort((a, b) => b[1] - a[1])
-          .map(([email, count]) => `<li>${email}: <strong>${count}</strong> propostes</li>`)
-          .join('');
-
-        detailsEl.innerHTML = `
-          <div><strong>Propostes per usuari:</strong></div>
-          <ul style="margin-left:18px;margin-top:4px;">
-            ${perUserRows || '<li>Encara no hi ha propostes registrades.</li>'}
-          </ul>
-          <div style="margin-top:8px;">
-            <strong>Integritat dels punts:</strong>
-            <span class="muted">
-              per fer una verificació completa (total global vs. vots individuals)
-              caldria una acció específica a l'API de <code>votes</code> que retorni totes les assignacions.
-            </span>
-          </div>
-        `;
-      }
-    } catch (e) {
-      summaryEl.textContent = 'No s\'han pogut carregar les estadístiques.';
-      if (detailsEl) detailsEl.textContent = e.message || String(e);
     }
+  } catch (e) {
+    summaryEl.textContent = 'No s\'han pogut carregar les estadístiques.';
+    if (detailsEl) detailsEl.textContent = e.message || String(e);
   }
+}
+
 </script>
 </body>
 </html>
