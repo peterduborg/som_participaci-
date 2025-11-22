@@ -223,6 +223,34 @@
       font-size:12px;
     }
     .text-right { text-align:right; }
+
+    /* kleine Statistik-Kacheln */
+    .stats-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:8px;
+    }
+    .stat-box {
+      background:#ffffff;
+      border-radius:10px;
+      border:1px solid #e1e1e1;
+      padding:10px 12px;
+      min-width:140px;
+      flex:0 0 auto;
+    }
+    .stat-label {
+      font-size:11px;
+      color:#777;
+      margin-bottom:2px;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+    .stat-value {
+      font-size:16px;
+      font-weight:700;
+      color:#333;
+    }
   </style>
 </head>
 <body>
@@ -268,6 +296,18 @@
         <button class="btn btn-secondary btn-small" onclick="reloadUsers()">Actualitzar llista</button>
         <button class="btn btn-secondary btn-small" onclick="logoutAdmin()">Tancar sessió</button>
       </div>
+    </div>
+
+    <!-- NEU: Statistik-Card -->
+    <div class="card" id="adminStatsCard">
+      <h3>Estadístiques generals</h3>
+      <p class="muted">
+        Resum de l'activitat a la plataforma: nombre d'usuaris, propostes i punts de votació.
+      </p>
+      <div id="adminStatsSummary" class="muted">
+        Carregant estadístiques...
+      </div>
+      <div id="adminStatsDetails" class="muted" style="margin-top:8px;"></div>
     </div>
 
     <div class="grid">
@@ -426,6 +466,8 @@
       }
 
       reloadUsers();
+      // NEU: nach erfolgreichem Login auch die Statistiken laden
+      loadAdminStats();
     } catch (e) {
       showLoginError('Error en iniciar sessió: ' + e.message);
     }
@@ -565,6 +607,8 @@
       } else {
         alert('Canvis desats correctament.');
         reloadUsers();
+        // Optional: Statistiken neu laden, falls sich Adminrechte ändern
+        loadAdminStats();
       }
     } catch (e) {
       alert('Error en desar l\'usuari: ' + e.message);
@@ -589,6 +633,7 @@
       } else {
         alert('Usuari esborrat.');
         reloadUsers();
+        loadAdminStats();
       }
     } catch (e) {
       alert('Error en esborrar l\'usuari: ' + e.message);
@@ -634,11 +679,123 @@
         nameInput.value = '';
         pwInput.value = '';
         reloadUsers();
+        loadAdminStats();
       }
     } catch (e) {
       showCreateUserMsg(null, 'Error en crear usuari: ' + e.message);
     } finally {
       btn.disabled = false;
+    }
+  }
+
+  // NEU: Admin-Statistiken (User, Proposals, Punkte, Vorschläge/Benutzer)
+  async function loadAdminStats() {
+    const summaryEl = document.getElementById('adminStatsSummary');
+    const detailsEl = document.getElementById('adminStatsDetails');
+    if (!summaryEl) return;
+
+    summaryEl.textContent = 'Carregant estadístiques...';
+    if (detailsEl) detailsEl.textContent = '';
+
+    if (!adminUser.email || !adminUser.isAdmin) {
+      summaryEl.textContent = 'Només els administradors poden veure les estadístiques.';
+      return;
+    }
+
+    try {
+      const [usersRes, proposalsRes, votesRes] = await Promise.all([
+        apiRequest('userAdmin', {
+          action: 'listUsers',
+          adminEmail: adminUser.email
+        }).catch(() => null),
+        fetch(`${API_BASE}/proposals`, {
+          method: 'GET'
+        }).then(r => r.ok ? r.json() : null).catch(() => null),
+        apiRequest('votes', {
+          action: 'getScores'
+        }).catch(() => null)
+      ]);
+
+      let userCount = 0;
+      let proposalCount = 0;
+      let totalPoints = 0;
+      let proposalsByUser = {};
+
+      // User-Zahl
+      if (usersRes && usersRes.ok && Array.isArray(usersRes.users)) {
+        userCount = usersRes.users.length;
+      }
+
+      // Proposals + Proposals/Benutzer
+      if (proposalsRes) {
+        const arr = Array.isArray(proposalsRes)
+          ? proposalsRes
+          : (Array.isArray(proposalsRes.proposals) ? proposalsRes.proposals : []);
+        proposalCount = arr.length;
+
+        arr.forEach(p => {
+          const email = ((p.email || p.user_email || '') + '').toLowerCase();
+          if (!email) return;
+          if (!proposalsByUser[email]) proposalsByUser[email] = 0;
+          proposalsByUser[email]++;
+        });
+      }
+
+      // Punkte (aus getScores – Summe der absoluten Projekt-Scores)
+      if (votesRes) {
+        const arr = Array.isArray(votesRes)
+          ? votesRes
+          : (Array.isArray(votesRes.scores)
+              ? votesRes.scores
+              : (Array.isArray(votesRes.results) ? votesRes.results : []));
+        arr.forEach(r => {
+          const total = r.total_points ?? r.points ?? r.sum ?? r.total ?? 0;
+          totalPoints += Math.abs(Number(total) || 0);
+        });
+      }
+
+      // Zusammenfassung
+      summaryEl.innerHTML = `
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-label">Usuaris</div>
+            <div class="stat-value">${userCount}</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Propostes totals</div>
+            <div class="stat-value">${proposalCount}</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Punts (suma |score| per proposta)</div>
+            <div class="stat-value">${totalPoints}</div>
+          </div>
+          <!-- Kommentar-Anzahl könnte hier ergänzt werden, wenn l'API la retorna -->
+        </div>
+      `;
+
+      if (detailsEl) {
+        const perUserRows = Object.entries(proposalsByUser)
+          .sort((a, b) => b[1] - a[1])
+          .map(([email, count]) => `<li>${email}: <strong>${count}</strong> propostes</li>`)
+          .join('');
+
+        detailsEl.innerHTML = `
+          <div><strong>Propostes per usuari:</strong></div>
+          <ul style="margin-left:18px;margin-top:4px;">
+            ${perUserRows || '<li>Encara no hi ha propostes registrades.</li>'}
+          </ul>
+          <div style="margin-top:8px;">
+            <strong>Integritat dels punts:</strong>
+            <span class="muted">
+              per fer una verificació completa (total global vs. vots individuals)
+              caldria una acció específica a l'API de <code>votes</code> que retorni totes les assignacions.
+            </span>
+          </div>
+        `;
+      }
+    } catch (e) {
+      summaryEl.textContent = 'No s\'han pogut carregar les estadístiques.';
+      if (detailsEl) detailsEl.textContent = e.message || String(e);
     }
   }
 </script>
