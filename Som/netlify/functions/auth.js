@@ -2,7 +2,7 @@ const { Pool } = require('pg');
 
 const connectionString =
   process.env.DATABASE_URL ||
-  process.env.Database_URL ||              // von der Neon-Extension
+  process.env.Database_URL ||
   process.env.NETLIFY_DATABASE_URL ||
   process.env.NETLIFY_DATABASE_URL_UNPOOLED;
 
@@ -12,7 +12,6 @@ console.log(
 );
 
 if (!connectionString) {
-  // lieber sauberer Fehler als 127.0.0.1:5432
   throw new Error('DATABASE_URL / Database_URL / NETLIFY_DATABASE_URL not set');
 }
 
@@ -20,7 +19,6 @@ const pool = new Pool({
   connectionString,
   ssl: { rejectUnauthorized: false }
 });
-
 
 exports.handler = async (event, context) => {
   const corsHeaders = {
@@ -64,17 +62,27 @@ exports.handler = async (event, context) => {
   const action = data.action;
 
   try {
-    // Tabelle für User (Passwort aktuell im Klartext – Demo!)
+    // Tabelle für User mit last_login_at
     await pool.query(`
       CREATE TABLE IF NOT EXISTS app_users (
-        id         SERIAL PRIMARY KEY,
-        email      TEXT UNIQUE NOT NULL,
-        username   TEXT NOT NULL,
-        password   TEXT NOT NULL,
-        is_admin   BOOLEAN NOT NULL DEFAULT false,
-        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+        id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        email           TEXT UNIQUE NOT NULL,
+        username        TEXT NOT NULL,
+        password        TEXT,
+        is_admin        BOOLEAN NOT NULL DEFAULT false,
+        created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+        updated_at      TIMESTAMPTZ,
+        last_login_at   TIMESTAMPTZ
       );
     `);
+
+    // Falls die Tabelle schon existiert, füge last_login_at hinzu (falls noch nicht vorhanden)
+    await pool.query(`
+      ALTER TABLE app_users 
+      ADD COLUMN IF NOT EXISTS last_login_at TIMESTAMPTZ;
+    `).catch(() => {
+      // Spalte existiert bereits, ignorieren
+    });
 
     // Default-Admin tim@gmail.com / 12341234
     const defaultEmail = 'tim@gmail.com';
@@ -107,7 +115,7 @@ exports.handler = async (event, context) => {
       }
 
       const res = await pool.query(
-        'SELECT email, username, password, is_admin FROM app_users WHERE LOWER(email) = LOWER($1)',
+        'SELECT id, email, username, password, is_admin FROM app_users WHERE LOWER(email) = LOWER($1)',
         [email]
       );
       if (res.rowCount === 0) {
@@ -126,6 +134,12 @@ exports.handler = async (event, context) => {
           body: JSON.stringify({ ok: false, error: 'Contrasenya incorrecta' })
         };
       }
+
+      // ✅ UPDATE last_login_at beim erfolgreichen Login
+      await pool.query(
+        'UPDATE app_users SET last_login_at = NOW() WHERE id = $1',
+        [row.id]
+      );
 
       return {
         statusCode: 200,
@@ -229,7 +243,7 @@ exports.handler = async (event, context) => {
       }
 
       await pool.query(
-        'UPDATE app_users SET password = $1 WHERE id = $2',
+        'UPDATE app_users SET password = $1, updated_at = NOW() WHERE id = $2',
         [newPassword, user.id]
       );
 
