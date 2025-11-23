@@ -1,4 +1,3 @@
-// netlify/functions/userAdmin.js
 const { Pool } = require('pg');
 
 const connectionString =
@@ -7,13 +6,8 @@ const connectionString =
   process.env.NETLIFY_DATABASE_URL ||
   process.env.NETLIFY_DATABASE_URL_UNPOOLED;
 
-console.log(
-  'USERADMIN FUNCTION START, connectionString prefix:',
-  (connectionString || 'UNDEFINED').slice(0, 40)
-);
-
 if (!connectionString) {
-  throw new Error('DATABASE_URL / Database_URL / NETLIFY_DATABASE_URL not set');
+  throw new Error('DATABASE_URL not set');
 }
 
 const pool = new Pool({
@@ -28,7 +22,6 @@ exports.handler = async (event, context) => {
     'Access-Control-Allow-Methods': 'POST,OPTIONS'
   };
 
-  // CORS Preflight
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers: corsHeaders, body: '' };
   }
@@ -37,234 +30,116 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 405,
       headers: corsHeaders,
-      body: JSON.stringify({ ok: false, error: 'Method not allowed' })
-    };
-  }
-
-  if (!event.body) {
-    return {
-      statusCode: 400,
-      headers: corsHeaders,
-      body: JSON.stringify({ ok: false, error: 'Missing body' })
+      body: JSON.stringify({ error: 'Method not allowed' })
     };
   }
 
   let data;
   try {
-    data = JSON.parse(event.body);
+    data = JSON.parse(event.body || '{}');
   } catch {
     return {
       statusCode: 400,
       headers: corsHeaders,
-      body: JSON.stringify({ ok: false, error: 'Invalid JSON' })
+      body: JSON.stringify({ error: 'Invalid JSON' })
     };
   }
 
   const action = data.action;
   const adminEmail = (data.adminEmail || '').trim().toLowerCase();
 
-  if (!action) {
-    return {
-      statusCode: 400,
-      headers: corsHeaders,
-      body: JSON.stringify({ ok: false, error: 'Missing action' })
-    };
-  }
-
-  if (!adminEmail) {
-    return {
-      statusCode: 400,
-      headers: corsHeaders,
-      body: JSON.stringify({ ok: false, error: 'Missing adminEmail' })
-    };
-  }
-
   try {
-    // Gleiche Tabelle wie in auth.js, plus updated_at
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS app_users (
-        id         SERIAL PRIMARY KEY,
-        email      TEXT UNIQUE NOT NULL,
-        username   TEXT NOT NULL,
-        password   TEXT NOT NULL,
-        is_admin   BOOLEAN NOT NULL DEFAULT false,
-        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-      );
-    `);
+    // Admin-Check
+    if (!adminEmail) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({ error: 'adminEmail erforderlich' })
+      };
+    }
 
-    await pool.query(`
-      ALTER TABLE app_users
-      ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ;
-    `);
-
-    // Admin prüfen
     const adminRes = await pool.query(
       'SELECT is_admin FROM app_users WHERE LOWER(email) = LOWER($1)',
       [adminEmail]
     );
+
     if (adminRes.rowCount === 0 || !adminRes.rows[0].is_admin) {
       return {
         statusCode: 403,
         headers: corsHeaders,
-        body: JSON.stringify({ ok: false, error: 'Not an admin' })
+        body: JSON.stringify({ error: 'No autoritzat' })
       };
     }
 
-    // ---------- listUsers ----------
+    // ========== LIST USERS ==========
     if (action === 'listUsers') {
-      const result = await pool.query(
-        `SELECT id, email, username, is_admin, created_at, updated_at
-         FROM app_users
-         ORDER BY email ASC`
-      );
+      const query = `
+        SELECT 
+          u.id,
+          u.email,
+          u.username,
+          u.is_admin,
+          u.created_at,
+          u.updated_at,
+          
+          -- Anzahl Propostes
+          COUNT(DISTINCT p.id) AS proposals_count,
+          
+          -- Gesamtpunkte (Summe aller proposal_votes dieses Users)
+          COALESCE(SUM(pv.value), 0)::INTEGER AS points_total,
+          
+          -- Anzahl Kommentare
+          COUNT(DISTINCT c.id) AS comments_count,
+          
+          -- Anzahl Likes (comment_votes mit value > 0)
+          COUNT(DISTINCT CASE WHEN cv.value > 0 THEN cv.comment_id END) AS likes_count,
+          
+          -- Letzter Login (falls vorhanden)
+          NULL::TIMESTAMPTZ AS last_login_at
+
+        FROM app_users u
+        LEFT JOIN proposals p ON LOWER(p.email) = LOWER(u.email)
+        LEFT JOIN proposal_votes pv ON LOWER(pv.email) = LOWER(u.email)
+        LEFT JOIN comments c ON LOWER(c.user_email) = LOWER(u.email)
+        LEFT JOIN comment_votes cv ON LOWER(cv.user_email) = LOWER(u.email)
+
+        GROUP BY u.id, u.email, u.username, u.is_admin, u.created_at, u.updated_at
+        ORDER BY u.created_at DESC
+      `;
+
+      const res = await pool.query(query);
+
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ok: true, users: result.rows })
+        body: JSON.stringify({
+          ok: true,
+          users: res.rows
+        })
       };
     }
 
-    // ---------- updateUser ----------
+    // ========== UPDATE USER ==========
     if (action === 'updateUser') {
-      const { id, email, username, is_admin } = data;
+      const userId = data.id;
+      const email = (data.email || '').trim().toLowerCase();
+      const username = (data.username || '').trim();
+      const is_admin = !!data.is_admin;
 
-      if (!id) {
+      if (!userId || !email || !username) {
         return {
           statusCode: 400,
           headers: corsHeaders,
-          body: JSON.stringify({ ok: false, error: 'Missing user id' })
+          body: JSON.stringify({ error: 'Falten camps' })
         };
       }
 
-      const fields = [];
-      const values = [];
-      let idx = 1;
-
-      if (email != null) {
-        fields.push(`email = $${idx++}`);
-        values.push(String(email).trim().toLowerCase());
-      }
-      if (username != null) {
-        fields.push(`username = $${idx++}`);
-        values.push(String(username).trim());
-      }
-      if (typeof is_admin === 'boolean') {
-        fields.push(`is_admin = $${idx++}`);
-        values.push(is_admin);
-      }
-
-      if (!fields.length) {
-        return {
-          statusCode: 400,
-          headers: corsHeaders,
-          body: JSON.stringify({ ok: false, error: 'No fields to update' })
-        };
-      }
-
-      fields.push(`updated_at = NOW()`); // immer aktualisieren
-      const sql =
-        `UPDATE app_users
-         SET ${fields.join(', ')}
-         WHERE id = $${idx}
-         RETURNING id, email, username, is_admin, created_at, updated_at`;
-
-      values.push(id);
-
-      const updRes = await pool.query(sql, values);
-
-      if (updRes.rowCount === 0) {
-        return {
-          statusCode: 404,
-          headers: corsHeaders,
-          body: JSON.stringify({ ok: false, error: 'User not found' })
-        };
-      }
-
-      return {
-        statusCode: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ok: true, user: updRes.rows[0] })
-      };
-    }
-
-    // ---------- deleteUser ----------
-    if (action === 'deleteUser') {
-      const { id } = data;
-      if (!id) {
-        return {
-          statusCode: 400,
-          headers: corsHeaders,
-          body: JSON.stringify({ ok: false, error: 'Missing user id' })
-        };
-      }
-
-      // eigenen Admin-Account nicht löschen
-      const selfRes = await pool.query(
-        'SELECT id FROM app_users WHERE LOWER(email) = LOWER($1) LIMIT 1',
-        [adminEmail]
+      await pool.query(
+        `UPDATE app_users 
+         SET email = $1, username = $2, is_admin = $3, updated_at = NOW()
+         WHERE id = $4`,
+        [email, username, is_admin, userId]
       );
-      if (selfRes.rowCount && String(selfRes.rows[0].id) === String(id)) {
-        return {
-          statusCode: 400,
-          headers: corsHeaders,
-          body: JSON.stringify({ ok: false, error: 'Admin cannot delete themselves' })
-        };
-      }
-
-      const delRes = await pool.query(
-        'DELETE FROM app_users WHERE id = $1',
-        [id]
-      );
-
-      return {
-        statusCode: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ok: true, deleted: delRes.rowCount })
-      };
-    }
-
-        // ---------- recalcPoints ----------
-    if (action === 'recalcPoints') {
-
-      // Admin prüfen
-      const adminRes2 = await pool.query(
-        'SELECT is_admin FROM app_users WHERE LOWER(email) = LOWER($1)',
-        [adminEmail]
-      );
-      if (adminRes2.rowCount === 0 || !adminRes2.rows[0].is_admin) {
-        return {
-          statusCode: 403,
-          headers: corsHeaders,
-          body: JSON.stringify({ ok: false, error: 'No autoritzat.' })
-        };
-      }
-
-      // Spalte sicherstellen
-      await pool.query(`
-        ALTER TABLE app_users
-        ADD COLUMN IF NOT EXISTS points_used integer NOT NULL DEFAULT 0;
-      `);
-
-      // Punkte aus votes neu aggregieren
-      await pool.query(`
-        UPDATE app_users u
-        SET points_used = COALESCE(v.used_points, 0)
-        FROM (
-          SELECT
-            LOWER(user_email) AS email,
-            SUM(ABS(points))::integer AS used_points
-          FROM votes
-          GROUP BY LOWER(user_email)
-        ) v
-        WHERE LOWER(u.email) = v.email;
-      `);
-
-      // Rest auf 0
-      await pool.query(`
-        UPDATE app_users
-        SET points_used = 0
-        WHERE points_used IS NULL;
-      `);
 
       return {
         statusCode: 200,
@@ -273,19 +148,73 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // ---------- Unbekannte Action ----------
+    // ========== DELETE USER ==========
+    if (action === 'deleteUser') {
+      const userId = data.id;
+
+      if (!userId) {
+        return {
+          statusCode: 400,
+          headers: corsHeaders,
+          body: JSON.stringify({ error: 'User ID fehlt' })
+        };
+      }
+
+      // Prüfen, ob User sich selbst löschen will
+      const userRes = await pool.query(
+        'SELECT email FROM app_users WHERE id = $1',
+        [userId]
+      );
+
+      if (userRes.rowCount > 0) {
+        const userEmail = userRes.rows[0].email.toLowerCase();
+        if (userEmail === adminEmail) {
+          return {
+            statusCode: 400,
+            headers: corsHeaders,
+            body: JSON.stringify({ error: 'No pots esborrar el teu propi compte' })
+          };
+        }
+      }
+
+      // Lösche User
+      await pool.query('DELETE FROM app_users WHERE id = $1', [userId]);
+
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ok: true })
+      };
+    }
+
+    // ========== RECALC POINTS (optional) ==========
+    if (action === 'recalcPoints') {
+      // Hier könntest du z.B. die points_total in app_users aktualisieren
+      // Falls du die Spalte hinzufügst. Aktuell wird sie bei listUsers berechnet.
+      
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          ok: true, 
+          message: 'Punts es calculen automàticament' 
+        })
+      };
+    }
+
+    // ========== UNKNOWN ACTION ==========
     return {
       statusCode: 400,
       headers: corsHeaders,
-      body: JSON.stringify({ ok: false, error: 'Unknown action' })
+      body: JSON.stringify({ error: 'Acció desconeguda' })
     };
 
   } catch (err) {
-    console.error('userAdmin error:', err);
+    console.error('Error in userAdmin:', err);
     return {
       statusCode: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ok: false, error: 'Server error', details: err.message })
+      body: JSON.stringify({ error: err.message || 'Internal Server Error' })
     };
   }
 };
