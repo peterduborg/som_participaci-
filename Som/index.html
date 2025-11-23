@@ -521,24 +521,65 @@
   </style>
 </head>
 <body>
+  .hero-wrapper {
+    display: flex;
+    align-items: stretch;
+    gap: 30px;
+    padding: 40px;
+    background: linear-gradient(135deg, #2f1e4e 0%, #3e255f 100%);
+    border-radius: 18px;
+}
+
+.hero-left {
+    flex: 0 0 45%;
+}
+
+.hero-right {
+    flex: 1;
+    color: white;
+}
+
+.hero-img {
+    width: 100%;
+    border-radius: 18px;
+    display: block;
+}
+
+.main-title {
+    font-size: 38px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+.nota-box {
+    background: #ffddb2;
+    padding: 14px 16px;
+    margin-top: 28px;
+    border-radius: 12px;
+    color: #4a2e00;
+}
+
+.nota-title {
+    margin: 0;
+    font-weight: 700;
+}
+
 <div class="container">
   <div class="top-ribbon"></div>
 
-  <div class="header">
-    <div class="header-left">
-      <div class="som-pill">
-        <span class="som-pill-main">SOM</span>
-        <span class="som-pill-sub">MATADEPERA</span>
-      </div>
-      <div class="header-text">
-        <h1>Participació Ciutadana Matadepera</h1>
-        <p>La teva veu compta – avalua i proposa millores per al nostre poble.</p>
-      </div>
+  <div class="hero-wrapper">
+    <div class="hero-left">
+        <img src="hero-matadepera.png" class="hero-img" alt="Hero Matadepera">
     </div>
-    <div class="header-hero">
-      <!-- Hero-Grafik mit La Mola, Can Roure, Església, Menschen (inkl. Rollstuhl) -->
-      <img src="hero-matadepera.png"
-           alt="Silhoueta de Matadepera amb La Mola, Can Roure, l'església i veïnat participant" />
+
+    <div class="hero-right">
+        <h1 class="main-title">Participació Ciutadana Matadepera</h1>
+        <p class="subtitle">La teva veu compta – avalua i proposa millores per al nostre poble.</p>
     </div>
   </div>
 
