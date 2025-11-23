@@ -82,28 +82,22 @@ exports.handler = async (event, context) => {
           u.created_at,
           u.updated_at,
           
-          -- Anzahl Propostes
-          COUNT(DISTINCT p.id) AS proposals_count,
+          -- Anzahl Propostes (Subquery vermeidet Mehrfachzählung)
+          (SELECT COUNT(*) FROM proposals p WHERE LOWER(p.email) = LOWER(u.email)) AS proposals_count,
           
-          -- Gesamtpunkte (Summe aller proposal_votes dieses Users)
-          COALESCE(SUM(pv.value), 0)::INTEGER AS points_total,
+          -- Gesamtpunkte (Subquery für korrekte Summe)
+          (SELECT COALESCE(SUM(v.points), 0) FROM votes v WHERE LOWER(v.user_email) = LOWER(u.email)) AS points_total,
           
           -- Anzahl Kommentare
-          COUNT(DISTINCT c.id) AS comments_count,
+          (SELECT COUNT(*) FROM comments c WHERE LOWER(c.user_email) = LOWER(u.email)) AS comments_count,
           
           -- Anzahl Likes (comment_votes mit value > 0)
-          COUNT(DISTINCT CASE WHEN cv.value > 0 THEN cv.comment_id END) AS likes_count,
+          (SELECT COUNT(*) FROM comment_votes cv WHERE LOWER(cv.user_email) = LOWER(u.email) AND cv.value > 0) AS likes_count,
           
-          -- Letzter Login (falls vorhanden)
+          -- Letzter Login (falls vorhanden, aktuell NULL)
           NULL::TIMESTAMPTZ AS last_login_at
 
         FROM app_users u
-        LEFT JOIN proposals p ON LOWER(p.email) = LOWER(u.email)
-        LEFT JOIN proposal_votes pv ON LOWER(pv.email) = LOWER(u.email)
-        LEFT JOIN comments c ON LOWER(c.user_email) = LOWER(u.email)
-        LEFT JOIN comment_votes cv ON LOWER(cv.user_email) = LOWER(u.email)
-
-        GROUP BY u.id, u.email, u.username, u.is_admin, u.created_at, u.updated_at
         ORDER BY u.created_at DESC
       `;
 
