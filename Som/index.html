@@ -6,54 +6,109 @@
   <title>Participació Ciutadana Matadepera</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(160deg, #3b2454 0%, #82416f 35%, #f3f4fa 100%);
       min-height: 100vh;
-      padding: 20px;
+      padding: 16px;
+      color: #222;
     }
+
     .container {
       max-width: 1200px;
       margin: 0 auto;
       background: rgba(255,255,255,0.98);
       border-radius: 15px;
       box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      overflow: hidden;
     }
+
+    /* Roter Streifen wie matadepera.cat */
+    .top-ribbon {
+      height: 10px;
+      background: #b21e2b;
+    }
+
     .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #25182f 0%, #3b2454 40%, #5a324b 100%);
       color: white;
-      padding: 20px 30px;
-      border-radius: 15px 15px 0 0;
+      padding: 22px 26px 18px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       gap: 20px;
       flex-wrap: wrap;
     }
-    .header-logo {
-      background: white;
-      padding: 10px;
-      border-radius: 8px;
+
+    .header-left {
+      flex: 1 1 260px;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-    .header-logo img {
-      height: 60px;
-      width: auto;
-      display: block;
+
+    .som-pill {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #3b2618; /* Dunkelbraun wie unterer Bereich der Illustration */
+      box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+      letter-spacing: 0.07em;
     }
+
+    .som-pill-main {
+      font-weight: 800;
+      font-size: 15px;
+      color: #fff;
+    }
+
+    .som-pill-sub {
+      font-weight: 600;
+      font-size: 11px;
+      color: #f8e8d8;
+    }
+
     .header-text h1 {
       font-size: 28px;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
+
+    .header-text p {
+      font-size: 15px;
+      opacity: 0.92;
+    }
+
+    .header-hero {
+      flex: 1 1 320px;
+      max-width: 430px;
+    }
+
+    .header-hero img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    }
+
     .disclaimer {
       background: #fff3cd;
       border-left: 4px solid #ffecb5;
-      margin: 10px 30px;
+      margin: 10px 24px 0;
       padding: 10px 15px;
       border-radius: 5px;
       font-size: 14px;
       color: #856404;
     }
-    .content { padding: 30px; }
+
+    .content {
+      padding: 24px;
+    }
 
     .auth-form { max-width: 480px; margin: 0 auto; }
     .form-group { margin-bottom: 16px; }
@@ -85,10 +140,13 @@
       border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
     }
-    .btn:hover { transform: translateY(-2px); }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; box-shadow: none; transform:none; }
     .btn-secondary { background: #6c757d; }
     .btn-wide { width: 100%; }
     .hidden { display: none; }
@@ -271,7 +329,6 @@
       min-height: 70px;
     }
 
-    /* ===== Hellblaue Hervorhebung aller Vorschläge ===== */
     .proposal {
       background: rgba(102,126,234,0.07);
       padding: 10px 12px;
@@ -342,7 +399,6 @@
 
     .results { margin-top: 15px; }
 
-    /* Resultats-Karten */
     .result-bar {
       background: rgba(102,126,234,0.06);
       padding: 6px 8px;
@@ -386,7 +442,6 @@
       white-space:nowrap;
     }
 
-    /* Kommentare */
     .proposal-comments {
       margin-top: 8px;
       padding-top: 8px;
@@ -433,31 +488,65 @@
       margin-left: 4px;
     }
 
+    /* Responsive-Anpassungen */
     @media (max-width: 900px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .header-hero {
+        max-width: 100%;
+      }
+      .header-hero img {
+        margin-top: 4px;
+      }
       .two-cols { grid-template-columns: 1fr; }
       .user-info { flex-direction: column; align-items:flex-start; }
       .user-actions { width:100%; justify-content:flex-end; }
       .user-actions .btn { width:auto; }
     }
+
     @media (max-width: 600px) {
+      body { padding: 10px; }
+      .content { padding: 18px; }
       .header-text h1 { font-size: 22px; }
-      .content { padding: 20px; }
+      .header-text p { font-size: 14px; }
       .user-info { padding: 12px; }
+    }
+
+    @media (max-width: 480px) {
+      .tabs { flex-direction: column; }
+      .tab-btn { width: 100%; text-align: left; }
     }
   </style>
 </head>
 <body>
 <div class="container">
+  <div class="top-ribbon"></div>
+
   <div class="header">
-    <div class="header-logo"><img src="som.jpg" alt="SOM Matadepera" /></div>
-    <div class="header-text">
-      <h1>Participació Ciutadana Matadepera</h1>
-      <p>La teva veu compta - Avalua i proposa millores</p>
+    <div class="header-left">
+      <div class="som-pill">
+        <span class="som-pill-main">SOM</span>
+        <span class="som-pill-sub">MATADEPERA</span>
+      </div>
+      <div class="header-text">
+        <h1>Participació Ciutadana Matadepera</h1>
+        <p>La teva veu compta – avalua i proposa millores per al nostre poble.</p>
+      </div>
+    </div>
+    <div class="header-hero">
+      <!-- Hero-Grafik mit La Mola, Can Roure, Església, Menschen (inkl. Rollstuhl) -->
+      <img src="hero-matadepera.png"
+           alt="Silhoueta de Matadepera amb La Mola, Can Roure, l'església i veïnat participant" />
     </div>
   </div>
 
   <div class="disclaimer">
-    <strong>⚠️ Nota Important:</strong> Aquesta plataforma és consultiva i no oficial. Les dades recollides s’utilitzaran per elaborar propostes concretes per al municipi, però no substitueixen els canals institucionals de participació de l’Ajuntament.
+    <strong>⚠️ Nota Important:</strong>
+    Aquesta plataforma és consultiva i no oficial. Les dades recollides s’utilitzaran per
+    elaborar propostes concretes per al municipi, però no substitueixen els canals
+    institucionals de participació oficials.
   </div>
 
   <div class="content">
@@ -604,7 +693,6 @@
               </div>
             </div>
 
-            <!-- Erklärung von Prioritats auch hier rechts -->
             <div class="panel">
               <h2>Prioritat i punts de votació</h2>
               <p class="info">Aquesta eina està pensada per combinar:</p>
@@ -625,7 +713,6 @@
             </div>
           </div>
 
-          <!-- Liste der eigenen Vorschläge in voller Breite -->
           <div class="panel">
             <h2>Les meves propostes</h2>
             <div id="myProposalsList" class="info">
@@ -656,7 +743,6 @@
           </div>
 
           <div class="panel">
-            <!-- Erklärung von Prioritats auch hier -->
             <h2>Prioritat i punts de votació</h2>
             <p class="info">Aquesta eina està pensada per combinar:</p>
             <ul class="info" style="margin-left:18px; margin-top:4px;">
@@ -771,7 +857,6 @@
   };
   let selectedResultProposalId = null;
 
-  // ---------- Tabs / Login ----------
   function showTab(tabName) {
     const loginView = document.getElementById('loginView');
     const mainView = document.getElementById('mainView');
@@ -859,34 +944,31 @@
     serverAverages = {};
     document.getElementById('passwordPanel').classList.add('hidden');
     document.getElementById('adminPanel').classList.add('hidden');
-   showTab('login');
+    showTab('login');
   }
 
   async function initAfterLogin() {
-  populateCategories();
-  populateCategorySelect();
-  updatePointsInfo();
+    populateCategories();
+    populateCategorySelect();
+    updatePointsInfo();
 
-  await Promise.all([
-    loadAveragesFromServer(),
-    loadProposalsFromServer(),
-    loadGlobalScoresFromServer(),
-    loadUserVotesFromServer()
-  ]);
+    await Promise.all([
+      loadAveragesFromServer(),
+      loadProposalsFromServer(),
+      loadGlobalScoresFromServer(),
+      loadUserVotesFromServer()
+    ]);
 
-  // NEU: Votes im Speicher bereinigen (keine Punkte für gelöschte Vorschläge)
-  cleanupOrphanVotesInMemory();
+    cleanupOrphanVotesInMemory();
 
-  populateCategories();
-  renderProposals();
-  renderMyVotes();
-  updateResults();
-  updatePointsInfo();
-  showTab('participacio');
-}
+    populateCategories();
+    renderProposals();
+    renderMyVotes();
+    updateResults();
+    updatePointsInfo();
+    showTab('participacio');
+  }
 
-
-  // ---------- Password + Admin ----------
   function togglePasswordPanel() {
     const panel = document.getElementById('passwordPanel');
     if (!panel) return;
@@ -995,7 +1077,6 @@
     }
   }
 
-  // ---------- Kategorien / Zufriedenheit ----------
   function positionThumbLabel(slider, label) {
     const val = parseInt(slider.value || '0', 10);
     label.textContent = val;
@@ -1094,7 +1175,6 @@
     applyAverage(key);
   }
 
-  // ---------- Propostes ----------
   function populateCategorySelect() {
     const sel = document.getElementById('proposalCategory');
     if (!sel) return;
@@ -1342,7 +1422,6 @@
     updatePointsInfo();
   }
 
-  // ---------- Votes / Resultats ----------
   async function loadUserVotesFromServer() {
     if (!currentUser.email) return;
     const res = await apiRequest('votes', {
@@ -1398,35 +1477,34 @@
   }
 
   function getCurrentTotalPoints() {
-  const v = currentUser.votes || {};
+    const v = currentUser.votes || {};
 
-  // Falls wir die Proposals noch nicht haben, fallback wie bisher
-  if (!proposals || !proposals.length) {
-    return Object.values(v).reduce(
-      (sum, val) => sum + Math.max(0, Math.abs(val || 0)),
-      0
-    );
+    if (!proposals || !proposals.length) {
+      return Object.values(v).reduce(
+        (sum, val) => sum + Math.max(0, Math.abs(val || 0)),
+        0
+      );
+    }
+
+    const validIds = new Set(proposals.map(p => String(p.id)));
+
+    return Object.entries(v).reduce((sum, [pid, val]) => {
+      if (!validIds.has(String(pid))) return sum;
+      return sum + Math.max(0, Math.abs(val || 0));
+    }, 0);
   }
 
-  const validIds = new Set(proposals.map(p => String(p.id)));
+  function cleanupOrphanVotesInMemory() {
+    if (!proposals || !proposals.length || !currentUser.votes) return;
 
-  // Nur Votes für existierende Vorschläge zählen
-  return Object.entries(v).reduce((sum, [pid, val]) => {
-    if (!validIds.has(String(pid))) return sum;
-    return sum + Math.max(0, Math.abs(val || 0));
-  }, 0);
-}
-function cleanupOrphanVotesInMemory() {
-  if (!proposals || !proposals.length || !currentUser.votes) return;
+    const validIds = new Set(proposals.map(p => String(p.id)));
+    Object.keys(currentUser.votes).forEach(pid => {
+      if (!validIds.has(String(pid))) {
+        delete currentUser.votes[pid];
+      }
+    });
+  }
 
-  const validIds = new Set(proposals.map(p => String(p.id)));
-  Object.keys(currentUser.votes).forEach(pid => {
-    if (!validIds.has(String(pid))) {
-      // Vote gehört zu einem gelöschten Vorschlag -> im Speicher löschen
-      delete currentUser.votes[pid];
-    }
-  });
-}
   function updatePointsInfo() {
     const total = getCurrentTotalPoints();
     const assignedSpan = document.getElementById('assignedPoints');
@@ -1568,7 +1646,6 @@ function cleanupOrphanVotesInMemory() {
     detail.appendChild(createProposalElement(p));
   }
 
-  // ---------- Comments ----------
   async function toggleCommentsPanel(proposalId, btn) {
     const proposalCard = btn.closest('.proposal');
     if (!proposalCard) return;
