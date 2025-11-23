@@ -136,21 +136,12 @@
       color:#555;
     }
 
-    .grid {
-      display:grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      gap:20px;
-      align-items:flex-start;
-    }
-    @media(max-width: 900px) {
-      .grid { grid-template-columns:1fr; }
-    }
-
     .card {
       background:#f8f9fa;
       border-radius:12px;
       border:1px solid #e0e0e0;
       padding:16px 16px 18px;
+      margin-top:18px;
     }
     .card h3 {
       font-size:18px;
@@ -288,26 +279,22 @@
 
   <!-- ADMIN VIEW -->
   <div id="adminView" class="admin-box" style="display:none;">
-  <div class="top-bar">
-    <div class="user-summary" id="adminSummary">
-      <!-- wird per JS gesetzt -->
+    <div class="top-bar">
+      <div class="user-summary" id="adminSummary">
+        <!-- wird per JS gesetzt -->
+      </div>
+      <div>
+        <button class="btn btn-secondary btn-small" onclick="reloadUsers()">Actualitzar llista</button>
+        <button class="btn btn-secondary btn-small"
+                id="btnRecalcPoints"
+                onclick="runPointsCleanup()">
+          Recalcular punts
+        </button>
+        <button class="btn btn-secondary btn-small" onclick="logoutAdmin()">Tancar sessió</button>
+      </div>
     </div>
-    <div>
-      <button class="btn btn-secondary btn-small" onclick="reloadUsers()">Actualitzar llista</button>
-  
-      <!-- NEU: Aufräum-/Recalc-Button -->
-      <button class="btn btn-secondary btn-small"
-              id="btnRecalcPoints"
-              onclick="runPointsCleanup()">
-        Recalcular punts
-      </button>
-  
-      <button class="btn btn-secondary btn-small" onclick="logoutAdmin()">Tancar sessió</button>
-    </div>
-  </div>
 
-
-    <!-- NEU: Statistik-Card -->
+    <!-- Statistik-Card -->
     <div class="card" id="adminStatsCard">
       <h3>Estadístiques generals</h3>
       <p class="muted">
@@ -316,49 +303,46 @@
       <div id="adminStatsSummary" class="muted">
         Carregant estadístiques...
       </div>
-      <div id="adminStatsDetails" class="muted" style="margin-top:8px;"></div>
     </div>
 
-    <div class="grid">
-      <!-- User-Liste -->
-      <div class="card">
-        <h3>Llista d'usuaris</h3>
-        <p>
-          Aquí pots veure tots els comptes, modificar dades bàsiques i esborrar usuaris (excepte tu mateix).
-        </p>
-        <div id="usersTable" class="muted">
-          Carregant usuaris...
-        </div>
+    <!-- Llista d'usuaris -->
+    <div class="card">
+      <h3>Llista d'usuaris</h3>
+      <p>
+        Aquí pots veure tots els comptes, modificar dades bàsiques i esborrar usuaris (excepte tu mateix).
+      </p>
+      <div id="usersTable" class="muted">
+        Carregant usuaris...
       </div>
+    </div>
 
-      <!-- Neuer User -->
-      <div class="card">
-        <h3>Crear nou usuari</h3>
-        <p>
-          Com a administrador pots donar d'alta comptes nous amb accés a la plataforma principal.
-        </p>
-        <div id="createUserError" class="alert alert-error" style="display:none;"></div>
-        <div id="createUserOk" class="alert alert-info" style="display:none;"></div>
+    <!-- Crear nou usuari (jetzt UNTER der Nutzertabelle) -->
+    <div class="card">
+      <h3>Crear nou usuari</h3>
+      <p>
+        Com a administrador pots donar d'alta comptes nous amb accés a la plataforma principal.
+      </p>
+      <div id="createUserError" class="alert alert-error" style="display:none;"></div>
+      <div id="createUserOk" class="alert alert-info" style="display:none;"></div>
 
-        <div class="form-group">
-          <label>Correu del nou usuari</label>
-          <input type="email" id="newUserEmail" placeholder="nou.usuari@exemple.cat" />
-        </div>
-        <div class="form-group">
-          <label>Nom d'usuari</label>
-          <input type="text" id="newUserName" placeholder="Nom i cognoms" />
-        </div>
-        <div class="form-group">
-          <label>Contrasenya inicial</label>
-          <input type="password" id="newUserPassword" placeholder="Contrasenya temporal" />
-        </div>
-        <button class="btn" id="btnCreateUser" onclick="createNewUserAdmin()">
-          Crear usuari
-        </button>
-        <p class="muted" style="margin-top:8px;">
-          El nou usuari podrà canviar la contrasenya des de la plataforma principal.
-        </p>
+      <div class="form-group">
+        <label>Correu del nou usuari</label>
+        <input type="email" id="newUserEmail" placeholder="nou.usuari@exemple.cat" />
       </div>
+      <div class="form-group">
+        <label>Nom d'usuari</label>
+        <input type="text" id="newUserName" placeholder="Nom i cognoms" />
+      </div>
+      <div class="form-group">
+        <label>Contrasenya inicial</label>
+        <input type="password" id="newUserPassword" placeholder="Contrasenya temporal" />
+      </div>
+      <button class="btn" id="btnCreateUser" onclick="createNewUserAdmin()">
+        Crear usuari
+      </button>
+      <p class="muted" style="margin-top:8px;">
+        El nou usuari podrà canviar la contrasenya des de la plataforma principal.
+      </p>
     </div>
   </div>
 </div>
@@ -366,39 +350,40 @@
 <script>
   const API_BASE = '/.netlify/functions';
   let adminUser = { email: '', username: '', isAdmin: false };
-    // NEU: Cleanup-/Recalc-Button
-    async function runPointsCleanup() {
-      if (!adminUser.email || !adminUser.isAdmin) {
-        alert('Has d\'estar identificat com a administrador per recalcular els punts.');
-        return;
-      }
-  
-      const btn = document.getElementById('btnRecalcPoints');
-      if (btn) btn.disabled = true;
-  
-      try {
-        const res = await apiRequest('userAdmin', {
-          action: 'recalcPoints',
-          adminEmail: adminUser.email
-        });
-  
-        if (!res || !res.ok) {
-          alert(
-            'No s\'ha pogut recalcular els punts: ' +
-            (res && res.error ? res.error : 'Error desconegut')
-          );
-        } else {
-          alert('Punts recalculats correctament a partir de la taula "votes".');
-          // ggf. Statistiken & Liste neu laden
-          if (typeof reloadUsers === 'function') reloadUsers();
-          if (typeof loadAdminStats === 'function') loadAdminStats();
-        }
-      } catch (e) {
-        alert('Error en recalcular els punts: ' + e.message);
-      } finally {
-        if (btn) btn.disabled = false;
-      }
+
+  // Cleanup-/Recalc-Button
+  async function runPointsCleanup() {
+    if (!adminUser.email || !adminUser.isAdmin) {
+      alert('Has d\'estar identificat com a administrador per recalcular els punts.');
+      return;
     }
+
+    const btn = document.getElementById('btnRecalcPoints');
+    if (btn) btn.disabled = true;
+
+    try {
+      const res = await apiRequest('userAdmin', {
+        action: 'recalcPoints',
+        adminEmail: adminUser.email
+      });
+
+      if (!res || !res.ok) {
+        alert(
+          'No s\'ha pogut recalcular els punts: ' +
+          (res && res.error ? res.error : 'Error desconegut')
+        );
+      } else {
+        alert('Punts recalculats correctament a partir de la taula "votes".');
+        if (typeof reloadUsers === 'function') reloadUsers();
+        if (typeof loadAdminStats === 'function') loadAdminStats();
+      }
+    } catch (e) {
+      alert('Error en recalcular els punts: ' + e.message);
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
   function showLoginError(msg) {
     const box = document.getElementById('loginError');
     if (!box) return;
@@ -507,12 +492,10 @@
       }
 
       reloadUsers();
-      // NEU: nach erfolgreichem Login auch die Statistiken laden
       loadAdminStats();
     } catch (e) {
       showLoginError('Error en iniciar sessió: ' + e.message);
     }
-    
   }
 
   function logoutAdmin() {
@@ -566,6 +549,15 @@
                      u.email &&
                      u.email.toLowerCase() === adminUser.email.toLowerCase();
 
+      const proposalsCount = (u.proposals_count ?? u.proposal_count ?? 0);
+      const pointsCount    = (u.points_total ?? u.total_points ?? u.points ?? 0);
+      const commentsCount  = (u.comments_count ?? u.comment_count ?? 0);
+      const likesCount     = (u.likes_count ?? u.like_count ?? 0);
+      const lastLoginRaw   = (u.last_login_at ?? u.last_login ?? u.last_seen_at ?? null);
+      const lastLogin      = lastLoginRaw
+        ? new Date(lastLoginRaw).toLocaleString('ca-ES')
+        : '';
+
       return `
         <tr data-user-id="${u.id}">
           <td><input type="email" value="${u.email}" /></td>
@@ -573,6 +565,11 @@
           <td class="text-right">
             <input type="checkbox" ${isAdminChecked}>
           </td>
+          <td>${proposalsCount}</td>
+          <td>${pointsCount}</td>
+          <td>${commentsCount}</td>
+          <td>${likesCount}</td>
+          <td>${lastLogin || ''}</td>
           <td>${created}</td>
           <td>${updated}</td>
           <td class="actions">
@@ -600,6 +597,11 @@
             <th>Correu</th>
             <th>Nom d'usuari</th>
             <th class="text-right">Admin</th>
+            <th># Propostes</th>
+            <th># Punts</th>
+            <th># Comentaris</th>
+            <th># Likes</th>
+            <th>Última connexió</th>
             <th>Creat</th>
             <th>Actualitzat</th>
             <th>Accions</th>
@@ -649,7 +651,6 @@
       } else {
         alert('Canvis desats correctament.');
         reloadUsers();
-        // Optional: Statistiken neu laden, falls sich Adminrechte ändern
         loadAdminStats();
       }
     } catch (e) {
@@ -730,174 +731,134 @@
     }
   }
 
-  /// Admin-Statistiken (User, Proposals, Punkte, Vorschläge/Benutzer + Integritätscheck)
-async function loadAdminStats() {
-  const summaryEl = document.getElementById('adminStatsSummary');
-  const detailsEl = document.getElementById('adminStatsDetails');
-  if (!summaryEl) return;
+  // Admin-Statistiken (ohne Propostes-per-usuari-Textblock)
+  async function loadAdminStats() {
+    const summaryEl = document.getElementById('adminStatsSummary');
+    if (!summaryEl) return;
 
-  summaryEl.textContent = 'Carregant estadístiques...';
-  if (detailsEl) detailsEl.textContent = '';
+    summaryEl.textContent = 'Carregant estadístiques...';
 
-  if (!adminUser.email || !adminUser.isAdmin) {
-    summaryEl.textContent = 'Només els administradors poden veure les estadístiques.';
-    return;
-  }
-
-  try {
-    const [usersRes, proposalsRes, votesScoresRes, userVotesRes] = await Promise.all([
-      apiRequest('userAdmin', {
-        action: 'listUsers',
-        adminEmail: adminUser.email
-      }).catch(() => null),
-      fetch(`${API_BASE}/proposals`, {
-        method: 'GET'
-      }).then(r => (r.ok ? r.json() : null)).catch(() => null),
-      apiRequest('votes', {
-        action: 'getScores'
-      }).catch(() => null),
-      apiRequest('votes', {
-        action: 'getUserVotes',
-        email: adminUser.email
-      }).catch(() => null)
-    ]);
-
-    let userCount = 0;
-    let proposalCount = 0;
-    let globalPoints = 0;
-    let myPointsRaw = 0;
-    let myPointsActive = 0;
-    let proposalsByUser = {};
-    let validProposalIds = new Set();
-
-    // User-Zahl
-    if (usersRes && usersRes.ok && Array.isArray(usersRes.users)) {
-      userCount = usersRes.users.length;
+    if (!adminUser.email || !adminUser.isAdmin) {
+      summaryEl.textContent = 'Només els administradors poden veure les estadístiques.';
+      return;
     }
 
-    // Proposals + Proposals/Benutzer + gültige IDs
-    if (proposalsRes) {
-      const arr = Array.isArray(proposalsRes)
-        ? proposalsRes
-        : (Array.isArray(proposalsRes.proposals) ? proposalsRes.proposals : []);
-      proposalCount = arr.length;
+    try {
+      const [usersRes, proposalsRes, votesScoresRes, userVotesRes] = await Promise.all([
+        apiRequest('userAdmin', {
+          action: 'listUsers',
+          adminEmail: adminUser.email
+        }).catch(() => null),
+        fetch(`${API_BASE}/proposals`, {
+          method: 'GET'
+        }).then(r => (r.ok ? r.json() : null)).catch(() => null),
+        apiRequest('votes', {
+          action: 'getScores'
+        }).catch(() => null),
+        apiRequest('votes', {
+          action: 'getUserVotes',
+          email: adminUser.email
+        }).catch(() => null)
+      ]);
 
-      arr.forEach(p => {
-        const email = ((p.email || p.user_email || '') + '').toLowerCase();
-        if (p.id != null) {
-          validProposalIds.add(String(p.id));
-        }
-        if (!email) return;
-        if (!proposalsByUser[email]) proposalsByUser[email] = 0;
-        proposalsByUser[email]++;
-      });
-    }
+      let userCount = 0;
+      let proposalCount = 0;
+      let globalPoints = 0;
+      let myPointsRaw = 0;
+      let myPointsActive = 0;
+      let validProposalIds = new Set();
 
-    // Globale Punkte (aus getScores – Score pro Vorschlag, Betrag aufsummiert)
-    if (votesScoresRes) {
-      const arr = Array.isArray(votesScoresRes)
-        ? votesScoresRes
-        : (Array.isArray(votesScoresRes.scores)
-            ? votesScoresRes.scores
-            : (Array.isArray(votesScoresRes.results) ? votesScoresRes.results : []));
-      arr.forEach(r => {
-        const total = r.total_points ?? r.points ?? r.sum ?? r.total ?? 0;
-        globalPoints += Math.abs(Number(total) || 0);
-      });
-    }
+      // User-Zahl
+      if (usersRes && usersRes.ok && Array.isArray(usersRes.users)) {
+        userCount = usersRes.users.length;
+      }
 
-    // Eigene Votes: Roh + aktiv (nur existierende Proposals)
-    if (userVotesRes) {
-      let votesObj = {};
+      // Proposals + gültige IDs
+      if (proposalsRes) {
+        const arr = Array.isArray(proposalsRes)
+          ? proposalsRes
+          : (Array.isArray(proposalsRes.proposals) ? proposalsRes.proposals : []);
+        proposalCount = arr.length;
 
-      const pushVote = v => {
-        const pid = String(v.proposal_id || v.proposalId || v.id);
-        const value = v.points ?? v.value ?? v.vote ?? 0;
-        if (pid) votesObj[pid] = value;
-      };
-
-      if (Array.isArray(userVotesRes)) {
-        userVotesRes.forEach(pushVote);
-      } else if (Array.isArray(userVotesRes.votes)) {
-        userVotesRes.votes.forEach(pushVote);
-      } else if (userVotesRes.votes && typeof userVotesRes.votes === 'object') {
-        Object.keys(userVotesRes.votes).forEach(k => {
-          votesObj[String(k)] = userVotesRes.votes[k];
+        arr.forEach(p => {
+          if (p.id != null) {
+            validProposalIds.add(String(p.id));
+          }
         });
       }
 
-      // Roh: alle Votes
-      myPointsRaw = Object.values(votesObj).reduce(
-        (sum, v) => sum + Math.max(0, Math.abs(v || 0)),
-        0
-      );
+      // Globale Punkte
+      if (votesScoresRes) {
+        const arr = Array.isArray(votesScoresRes)
+          ? votesScoresRes
+          : (Array.isArray(votesScoresRes.scores)
+              ? votesScoresRes.scores
+              : (Array.isArray(votesScoresRes.results) ? votesScoresRes.results : []));
+        arr.forEach(r => {
+          const total = r.total_points ?? r.points ?? r.sum ?? r.total ?? 0;
+          globalPoints += Math.abs(Number(total) || 0);
+        });
+      }
 
-      // Aktiv: nur Votes auf existierende Proposals
-      myPointsActive = Object.entries(votesObj).reduce((sum, [pid, val]) => {
-        if (!validProposalIds.has(String(pid))) return sum;
-        return sum + Math.max(0, Math.abs(val || 0));
-      }, 0);
-    }
+      // Eigene Votes: Roh + aktiv (nur existierende Proposals)
+      if (userVotesRes) {
+        let votesObj = {};
 
-    // Zusammenfassung anzeigen
-    summaryEl.innerHTML = `
-      <div class="stats-row">
-        <div class="stat-box">
-          <div class="stat-label">Usuaris</div>
-          <div class="stat-value">${userCount}</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Propostes totals</div>
-          <div class="stat-value">${proposalCount}</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Punts assignats (tots els usuaris)</div>
-          <div class="stat-value">${globalPoints}</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Punts pel teu compte (bruts)</div>
-          <div class="stat-value">${myPointsRaw}</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Punts pel teu compte (actius)</div>
-          <div class="stat-value">${myPointsActive}</div>
-        </div>
-      </div>
-    `;
+        const pushVote = v => {
+          const pid = String(v.proposal_id || v.proposalId || v.id);
+          const value = v.points ?? v.value ?? v.vote ?? 0;
+          if (pid) votesObj[pid] = value;
+        };
 
-    if (detailsEl) {
-      const perUserRows = Object.entries(proposalsByUser)
-        .sort((a, b) => b[1] - a[1])
-        .map(([email, count]) => `<li>${email}: <strong>${count}</strong> propostes</li>`)
-        .join('');
+        if (Array.isArray(userVotesRes)) {
+          userVotesRes.forEach(pushVote);
+        } else if (Array.isArray(userVotesRes.votes)) {
+          userVotesRes.votes.forEach(pushVote);
+        } else if (userVotesRes.votes && typeof userVotesRes.votes === 'object') {
+          Object.keys(userVotesRes.votes).forEach(k => {
+            votesObj[String(k)] = userVotesRes.votes[k];
+          });
+        }
 
-      const diff = myPointsRaw - myPointsActive;
-      const diffInfo = diff !== 0
-        ? `<span style="color:#c00;">
-             Diferència detectada: ${diff} punts bruts estan vinculats a propostes eliminades.
-           </span>`
-        : `<span class="muted">No s'ha detectat cap diferència entre punts bruts i actius.</span>`;
+        myPointsRaw = Object.values(votesObj).reduce(
+          (sum, v) => sum + Math.max(0, Math.abs(v || 0)),
+          0
+        );
 
-      detailsEl.innerHTML = `
-        <div><strong>Propostes per usuari:</strong></div>
-        <ul style="margin-left:18px;margin-top:4px;">
-          ${perUserRows || '<li>Encara no hi ha propostes registrades.</li>'}
-        </ul>
-        <div style="margin-top:8px;">
-          <strong>Integritat dels punts:</strong>
-          <div>${diffInfo}</div>
-          <div class="muted" style="margin-top:4px;">
-            Els punts actius són els que compten de veritat per al límit de 30 punts i per a les propostes existents.
+        myPointsActive = Object.entries(votesObj).reduce((sum, [pid, val]) => {
+          if (!validProposalIds.has(String(pid))) return sum;
+          return sum + Math.max(0, Math.abs(val || 0));
+        }, 0);
+      }
+
+      summaryEl.innerHTML = `
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-label">Usuaris</div>
+            <div class="stat-value">${userCount}</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Propostes totals</div>
+            <div class="stat-value">${proposalCount}</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Punts assignats (tots els usuaris)</div>
+            <div class="stat-value">${globalPoints}</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Punts pel teu compte (bruts)</div>
+            <div class="stat-value">${myPointsRaw}</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Punts pel teu compte (actius)</div>
+            <div class="stat-value">${myPointsActive}</div>
           </div>
         </div>
       `;
+    } catch (e) {
+      summaryEl.textContent = 'No s\'han pogut carregar les estadístiques.';
     }
-  } catch (e) {
-    summaryEl.textContent = 'No s\'han pogut carregar les estadístiques.';
-    if (detailsEl) detailsEl.textContent = e.message || String(e);
   }
-}
-
 </script>
 </body>
 </html>
