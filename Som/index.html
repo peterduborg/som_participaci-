@@ -6,7 +6,11 @@
   <title>Participació Ciutadana Matadepera</title>
 
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -25,15 +29,12 @@
       overflow: hidden;
     }
 
-    /* Oberer roter Balken wie matadepera.cat */
     .top-ribbon {
       height: 10px;
       background: #b21e2b;
     }
 
-    /* -----------------------------------------------------
-       HERO-BEREICH: Illustration links, Text rechts
-    ----------------------------------------------------- */
+    /* HERO-BEREICH */
     .hero-wrapper {
       display: flex;
       align-items: center;
@@ -80,7 +81,6 @@
       opacity: 0.95;
     }
 
-    /* -------- Mobile Layout -------- */
     @media (max-width: 900px) {
       .hero-wrapper {
         flex-direction: column;
@@ -103,9 +103,6 @@
       }
     }
 
-    /* -----------------------------------------------------
-       HINWEIS-KASTEN MIT ORIGINALTEXT
-    ----------------------------------------------------- */
     .disclaimer {
       background: #fff3cd;
       border-left: 4px solid #ffecb5;
@@ -116,16 +113,11 @@
       color: #856404;
     }
 
-    /* -----------------------------------------------------
-       CONTENT-BEREICH
-    ----------------------------------------------------- */
     .content {
       padding: 24px;
     }
 
-    /* -----------------------------------------------------
-       FORMULARE (Login etc.)
-    ----------------------------------------------------- */
+    /* FORMULAR / BUTTONS */
     .auth-form {
       max-width: 480px;
       margin: 0 auto;
@@ -166,6 +158,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      font-size: 14px;
     }
 
     .btn:hover {
@@ -180,16 +173,16 @@
       transform:none;
     }
 
-    .btn-secondary { background: #6c757d; }
+    .btn-secondary {
+      background: #6c757d;
+      background-image: none;
+    }
+
     .btn-wide { width: 100%; }
 
     .hidden { display: none; }
 
-    /* -----------------------------------------------------
-       BEGINN DEINES ANGEFORDERTEN BEREICHS
-       .user-info & .user-main
-    ----------------------------------------------------- */
-
+    /* USER INFO LEISTE */
     .user-info {
       background: #f0f0f0;
       display:flex;
@@ -221,13 +214,16 @@
       font-weight:700;
       flex-shrink:0;
     }
+
     .user-text { min-width:0; }
+
     .user-text div:first-child {
       font-weight:600;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
+
     .user-text small {
       color:#555;
       white-space:nowrap;
@@ -235,6 +231,7 @@
       text-overflow:ellipsis;
       display:block;
     }
+
     .user-actions {
       display:flex;
       gap:8px;
@@ -242,12 +239,14 @@
       flex-wrap:wrap;
     }
 
+    /* TABS */
     .tabs {
       display: flex;
       gap: 10px;
       margin-bottom: 20px;
       flex-wrap: wrap;
     }
+
     .tab-btn {
       padding: 8px 14px;
       border-radius: 20px;
@@ -256,6 +255,7 @@
       cursor: pointer;
       font-size: 14px;
     }
+
     .tab-btn.active {
       background: #667eea;
       color: white;
@@ -268,11 +268,13 @@
       gap: 25px;
       align-items: flex-start;
     }
+
     .two-panels {
       display:flex;
       flex-direction:column;
       gap:20px;
     }
+
     .panel {
       background: #f8f9fa;
       border-radius: 10px;
@@ -280,14 +282,17 @@
       border: 1px solid #e0e0e0;
       position: relative;
     }
+
     .panel h2 { font-size: 20px; margin-bottom: 10px; }
     .panel h3 { font-size: 16px; margin-bottom: 8px; }
     .panel small { color: #666; display: block; margin-bottom: 10px; }
+
     .info { font-size: 14px; color: #555; }
     .legenda { font-size:13px; color:#555; margin-top:10px; }
     .small-note { font-size: 12px; color: #777; margin-top: 8px; }
 
     .categories { margin-top: 10px; }
+
     .category-block {
       background: #ffffff;
       padding: 10px 12px 12px;
@@ -295,6 +300,7 @@
       border: 1px solid #e0e0e0;
       margin-bottom: 10px;
     }
+
     .category-header {
       display: flex;
       justify-content: space-between;
@@ -302,46 +308,88 @@
       margin-bottom: 8px;
       gap:10px;
     }
-    .category-header h3 { margin: 0; font-size: 15px; }
-    .category-header small { margin:0; }
 
-    .slider-row { display: flex; align-items: center; gap: 10px; }
-    .slider { flex: 1; }
+    .category-header h3 { margin: 0; font-size: 15px; }
+    .category-header small { margin:0; color:#666; font-size:12px; }
+
+    /* SLIDER MIT GEFÜLLTEM BALKEN */
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .slider-wrapper {
+      flex: 1;
+      position: relative;
+    }
+
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 12px;
+      background: #e9ecef;
+      border-radius: 999px;
+      overflow: visible;
+    }
+
+    .slider-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #dc3545, #ffc107, #28a745);
+      border-radius: 999px;
+      transition: width 0.2s ease;
+      pointer-events: none;
+      width: 0%;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 12px;
+      background: transparent;
+      outline: none;
+      cursor: pointer;
+      margin: 0;
+      z-index: 2;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+      border: 3px solid #667eea;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+      border: 3px solid #667eea;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
     .thumb-label {
       font-size: 13px;
       color: #333;
       white-space:nowrap;
       min-width:40px;
       text-align:right;
-    }
-
-    input[type="range"] {
-      -webkit-appearance: none;
-      appearance: none;
-      height: 6px;
-      border-radius: 5px;
-      background: #e0e0e0;
-      outline: none;
-    }
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #667eea;
-      cursor: pointer;
-      border: 2px solid #fff;
-      box-shadow: 0 0 3px rgba(0,0,0,0.3);
-    }
-    input[type="range"]::-moz-range-thumb {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #667eea;
-      cursor: pointer;
-      border: 2px solid #fff;
-      box-shadow: 0 0 3px rgba(0,0,0,0.3);
+      font-weight: 600;
     }
 
     .avg-bar {
@@ -352,12 +400,14 @@
       border-radius: 999px;
       overflow: hidden;
     }
+
     .avg-fill {
       height: 100%;
       background: linear-gradient(90deg,#dc3545,#ffc107,#28a745);
       width: 0%;
       transition: width 0.3s ease;
     }
+
     .avg-label {
       font-size: 12px;
       color: #555;
@@ -377,6 +427,7 @@
       border: 1px solid rgba(102,126,234,0.15);
       margin-bottom: 10px;
     }
+
     .proposal:hover {
       background: rgba(102,126,234,0.13);
     }
@@ -388,19 +439,23 @@
       margin-bottom: 4px;
       gap:10px;
     }
+
     .proposal-title {
       font-weight: 600;
       font-size: 14px;
     }
+
     .proposal-meta {
       font-size: 11px;
       color: #777;
     }
+
     .proposal-desc {
       font-size: 13px;
       margin-bottom: 6px;
       white-space: pre-line;
     }
+
     .proposal-actions {
       display: flex;
       justify-content: space-between;
@@ -408,11 +463,13 @@
       gap: 8px;
       flex-wrap: wrap;
     }
+
     .vote-buttons {
       display: inline-flex;
       gap: 4px;
       flex-wrap: wrap;
     }
+
     .vote-btn {
       padding: 4px 8px;
       border-radius: 999px;
@@ -423,16 +480,19 @@
       min-width: 36px;
       text-align:center;
     }
+
     .vote-btn.active-pos {
       background: #28a745;
       color: white;
       border-color: #28a745;
     }
+
     .vote-btn.active-neg {
       background: #dc3545;
       color: white;
       border-color: #dc3545;
     }
+
     .vote-info {
       font-size: 11px;
       color: #555;
@@ -448,9 +508,11 @@
       border: 1px solid rgba(102,126,234,0.12);
       cursor:pointer;
     }
+
     .result-bar.selected {
       box-shadow: 0 0 0 2px #667eea inset;
     }
+
     .result-label {
       display:flex;
       justify-content:space-between;
@@ -460,12 +522,14 @@
       font-weight:600;
       color:#333;
     }
+
     .result-label span:first-child {
       flex:1;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
+
     .bar-container {
       width:100%;
       height:16px;
@@ -475,6 +539,7 @@
       font-size:11px;
       line-height:16px;
     }
+
     .bar-fill {
       height:100%;
       color:white;
@@ -488,9 +553,11 @@
       padding-top: 8px;
       border-top: 1px solid #ddd;
     }
+
     .comments-list {
       margin-bottom: 8px;
     }
+
     .comment {
       font-size: 13px;
       margin-bottom: 6px;
@@ -498,6 +565,7 @@
       border-radius: 6px;
       background: #f8f9fa;
     }
+
     .comment-header {
       display: flex;
       justify-content: space-between;
@@ -505,53 +573,50 @@
       color: #666;
       margin-bottom: 3px;
     }
+
     .comment-text { margin-bottom: 4px; }
+
     .comment-footer {
       display: flex;
       gap: 10px;
       font-size: 12px;
       align-items: center;
     }
+
     .comment-like,
     .comment-dislike {
       cursor: pointer;
       opacity: 0.5;
       user-select: none;
     }
+
     .comment-like.active,
     .comment-dislike.active {
       opacity: 1;
       color: #ff9800;
     }
+
     .comment-like-count,
     .comment-dislike-count {
       font-size: 11px;
       margin-left: 4px;
     }
 
-    /* Responsive-Anpassungen */
+    .comment-toggle-btn.has-comments {
+      background: #e7f1ff;
+      border-color: #b6d0ff;
+      color: #19478a;
+    }
+
     @media (max-width: 900px) {
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .header-hero {
-        max-width: 100%;
-      }
-      .header-hero img {
-        margin-top: 4px;
-      }
       .two-cols { grid-template-columns: 1fr; }
       .user-info { flex-direction: column; align-items:flex-start; }
       .user-actions { width:100%; justify-content:flex-end; }
-      .user-actions .btn { width:auto; }
     }
 
     @media (max-width: 600px) {
       body { padding: 10px; }
       .content { padding: 18px; }
-      .header-text h1 { font-size: 22px; }
-      .header-text p { font-size: 14px; }
       .user-info { padding: 12px; }
     }
 
@@ -562,73 +627,17 @@
   </style>
 </head>
 <body>
-  .hero-wrapper {
-    display: flex;
-    align-items: stretch;
-    gap: 30px;
-    padding: 40px;
-    background: linear-gradient(135deg, #2f1e4e 0%, #3e255f 100%);
-    border-radius: 18px;
-}
-
-.hero-left {
-    flex: 0 0 45%;
-}
-
-.hero-right {
-    flex: 1;
-    color: white;
-}
-
-.hero-img {
-    width: 100%;
-    border-radius: 18px;
-    display: block;
-}
-
-.main-title {
-    font-size: 38px;
-    font-weight: 800;
-    margin-bottom: 10px;
-}
-
-.subtitle {
-    font-size: 18px;
-    opacity: 0.9;
-}
-
-.nota-box {
-    background: #ffddb2;
-    padding: 14px 16px;
-    margin-top: 28px;
-    border-radius: 12px;
-    color: #4a2e00;
-}
-
-.nota-title {
-    margin: 0;
-    font-weight: 700;
-}
-
 <div class="container">
   <div class="top-ribbon"></div>
 
   <div class="hero-wrapper">
     <div class="hero-left">
-        <img src="hero-matadepera.png" class="hero-img" alt="Hero Matadepera">
+      <img src="hero-matadepera.png" class="hero-img" alt="Hero Matadepera">
     </div>
-
     <div class="hero-right">
-        <h1 class="main-title">Participació Ciutadana Matadepera</h1>
-        <p class="subtitle">La teva veu compta – avalua i proposa millores per al nostre poble.</p>
+      <h1 class="main-title">Participació Ciutadana Matadepera</h1>
+      <p class="subtitle">La teva veu compta – avalua i proposa millores per al nostre poble.</p>
     </div>
-  </div>
-
-  <div class="disclaimer">
-    <strong>⚠️ Nota Important:</strong>
-    Aquesta plataforma és consultiva i no oficial. Les dades recollides s’utilitzaran per
-    elaborar propostes concretes per al municipi, però no substitueixen els canals
-    institucionals de participació oficials.
   </div>
 
   <div class="content">
@@ -898,6 +907,12 @@
     }
   ];
 
+  function escapeHtml(str) {
+    return (str || '').replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+
   async function apiRequest(fn, payload) {
     try {
       const res = await fetch(`${API_BASE}/${fn}`, {
@@ -917,12 +932,6 @@
       alert(`No s'ha pogut contactar amb el servidor (${fn}): ${e}`);
       return null;
     }
-  }
-
-  function escapeHtml(str) {
-    return (str || '').replace(/[&<>"']/g, c => ({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    }[c]));
   }
 
   let proposals = [];
@@ -1181,23 +1190,34 @@
   function createCategoryElement(cat) {
     const wrap = document.createElement('div');
     wrap.className = 'category-block';
+
+    const currentVal = (currentUser.satisfaction || {})[cat.key] || 0;
+
     wrap.innerHTML = `
       <div class="category-header">
         <div>
           <h3>${cat.title}</h3>
           <small>${cat.desc}</small>
         </div>
-        <div style="text-align:right;min-width:60px;">
+        <div style="text-align:right;min-width:80px;">
           <div style="font-size:12px;color:#555;">Mitjana</div>
           <div class="avg-bar"><div class="avg-fill" id="avg_${cat.key}"></div></div>
           <div class="avg-label"><span id="avg_txt_${cat.key}">—</span></div>
         </div>
       </div>
       <div class="slider-row">
-        <input type="range" class="slider" id="slider_${cat.key}" min="0" max="100" step="5"
-          value="${(currentUser.satisfaction || {})[cat.key] || 0}"
-          oninput="updateSlider('${cat.key}', this)" />
-        <div class="thumb-label" id="thumb_${cat.key}">0</div>
+        <div class="slider-wrapper">
+          <div class="slider-container">
+            <div class="slider-fill" id="fill_${cat.key}" style="width:${currentVal}%"></div>
+            <input type="range"
+                   class="slider"
+                   id="slider_${cat.key}"
+                   min="0" max="100" step="5"
+                   value="${currentVal}"
+                   oninput="updateSlider('${cat.key}', this)" />
+          </div>
+        </div>
+        <div class="thumb-label" id="thumb_${cat.key}">${currentVal}</div>
       </div>
       <button class="btn btn-secondary"
         style="margin-top:8px;font-size:12px;padding:6px 10px;"
@@ -1216,9 +1236,6 @@
     CATEGORIES.forEach(cat => {
       const el = createCategoryElement(cat);
       list.appendChild(el);
-      const slider = el.querySelector('.slider');
-      const label = document.getElementById('thumb_' + cat.key);
-      positionThumbLabel(slider, label);
       applyAverage(cat.key);
     });
   }
@@ -1239,8 +1256,12 @@
     const val = parseInt(inputEl.value || '0', 10);
     if (!currentUser.satisfaction) currentUser.satisfaction = {};
     currentUser.satisfaction[key] = val;
+
     const label = document.getElementById('thumb_' + key);
-    positionThumbLabel(inputEl, label);
+    if (label) label.textContent = val;
+
+    const fill = document.getElementById('fill_' + key);
+    if (fill) fill.style.width = val + '%';
 
     if (!currentUser.email) {
       alert('Cal iniciar sessió per guardar la valoració.');
@@ -1339,7 +1360,7 @@
             Punts nets assignats: <span>${myVote}</span>
           </div>
           ${deleteBtnHtml}
-          <button class="btn btn-secondary"
+          <button class="btn btn-secondary comment-toggle-btn"
             style="font-size:11px;padding:4px 8px;"
             onclick="toggleCommentsPanel('${p.id}', this)">
             Comentaris
@@ -1349,8 +1370,8 @@
       <div class="proposal-comments hidden">
         <div class="comments-list"></div>
         <textarea class="comment-input" placeholder="Afegeix el teu comentari..."></textarea>
-        <button class="btn"
-          style="margin-top:6px;font-size:12px;padding:6px 10px;"
+        <button class="btn btn-secondary"
+          style="font-size:11px;padding:4px 8px;margin-top:4px;"
           onclick="submitComment('${p.id}', this)">
           Enviar comentari
         </button>
@@ -1444,7 +1465,7 @@
     CATEGORIES.forEach(c => {
       const boxOther = document.getElementById('props_' + c.key);
       if (boxOther && c.key !== catKey) boxOther.classList.add('hidden');
-      const btnOther = document.querySelector(`button[onclick*="${c.key}"]`);
+      const btnOther = document.querySelector(`button[onclick*="toggleProposals('${c.key}'"]`);
       if (btnOther && c.key !== catKey) {
         btnOther.textContent = "Veure propostes d'aquesta categoria";
       }
@@ -1749,11 +1770,25 @@
       proposalId,
       email: currentUser.email || null
     });
+
     const listDiv = container.querySelector('.comments-list');
     if (!listDiv) return;
+
     listDiv.innerHTML = '';
     const comments = (res && res.comments) ? res.comments : [];
     comments.forEach(c => listDiv.appendChild(createCommentElement(proposalId, c)));
+
+    const card = container.closest('.proposal');
+    if (card) {
+      const btn = card.querySelector('.comment-toggle-btn');
+      if (btn) {
+        if (comments.length > 0) {
+          btn.classList.add('has-comments');
+        } else {
+          btn.classList.remove('has-comments');
+        }
+      }
+    }
   }
 
   function createCommentElement(proposalId, c) {
