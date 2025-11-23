@@ -95,7 +95,8 @@ exports.handler = async (event, context) => {
           (SELECT COUNT(*) FROM comment_votes cv WHERE LOWER(cv.user_email) = LOWER(u.email) AND cv.value > 0) AS likes_count,
           
           -- Letzter Login (falls vorhanden, aktuell NULL)
-          NULL::TIMESTAMPTZ AS last_login_at
+                -- HIER: echtes Feld statt NULL
+                u.last_login_at
 
         FROM app_users u
         ORDER BY u.created_at DESC
