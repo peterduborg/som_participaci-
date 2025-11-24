@@ -339,7 +339,8 @@
       left: 0;
       top: 0;
       height: 100%;
-      background: linear-gradient(90deg, #dc3545, #ffc107, #28a745);
+      /* Dunkles Blau, ab 75% weicher Übergang zu Rot */
+      background: linear-gradient(90deg, #003366 0%, #003366 75%, #cc0000 100%);
       border-radius: 999px;
       transition: width 0.2s ease;
       pointer-events: none;
@@ -403,7 +404,8 @@
 
     .avg-fill {
       height: 100%;
-      background: linear-gradient(90deg,#dc3545,#ffc107,#28a745);
+      /* Mittelgrau für Mittelwert */
+      background: #999999;
       width: 0%;
       transition: width 0.3s ease;
     }
@@ -498,7 +500,10 @@
       color: #555;
     }
 
-    .results { margin-top: 15px; }
+    .results {
+      margin-top: 15px;
+      max-width: 100%;
+    }
 
     .result-bar {
       background: rgba(102,126,234,0.06);
@@ -602,10 +607,11 @@
       margin-left: 4px;
     }
 
+    /* Deutlich blauer Button bei vorhandenen Kommentaren */
     .comment-toggle-btn.has-comments {
-      background: #e7f1ff;
-      border-color: #b6d0ff;
-      color: #19478a;
+      background: #1e3a8a;
+      color: #ffffff;
+      border: 1px solid #1e3a8a;
     }
 
     @media (max-width: 900px) {
@@ -614,10 +620,23 @@
       .user-actions { width:100%; justify-content:flex-end; }
     }
 
+    /* Mobile-Optimierung Resultats-Bereich */
     @media (max-width: 600px) {
       body { padding: 10px; }
       .content { padding: 18px; }
       .user-info { padding: 12px; }
+
+      .result-bar {
+        padding: 6px 6px;
+      }
+      .result-label {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .bar-container {
+        width: 100%;
+        margin-top: 4px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -638,6 +657,13 @@
       <h1 class="main-title">Participació Ciutadana Matadepera</h1>
       <p class="subtitle">La teva veu compta – avalua i proposa millores per al nostre poble.</p>
     </div>
+  </div>
+
+  <div class="disclaimer">
+    <strong>⚠️ Nota Important:</strong>
+    Aquesta plataforma és consultiva i no oficial. Les dades recollides s’utilitzaran per
+    elaborar propostes concretes per al municipi, però no substitueixen els canals
+    institucionals de participació oficials.
   </div>
 
   <div class="content">
@@ -745,7 +771,7 @@
               <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
             </ul>
             <p class="info" style="margin-top:8px;">
-              Així podem canalitzar, avaluar i prioritzar les bones idees per fer créixer encara més l'atractiu del nostre poble, Matadepera.
+              Així podem canalitzar, avaluar и prioritzar les bones idees per fer créixer encara més l'atractiu del nostre poble, Matadepera.
             </p>
             <p class="info" style="margin-top:8px;">
               Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes. Els teus vots poden ser tant a favor com en contra.
@@ -1220,6 +1246,7 @@
         <div class="thumb-label" id="thumb_${cat.key}">${currentVal}</div>
       </div>
       <button class="btn btn-secondary"
+        data-cat="${cat.key}"
         style="margin-top:8px;font-size:12px;padding:6px 10px;"
         onclick="toggleProposals('${cat.key}', this)">
         Veure propostes d'aquesta categoria
@@ -1465,7 +1492,7 @@
     CATEGORIES.forEach(c => {
       const boxOther = document.getElementById('props_' + c.key);
       if (boxOther && c.key !== catKey) boxOther.classList.add('hidden');
-      const btnOther = document.querySelector(`button[onclick*="toggleProposals('${c.key}'"]`);
+      const btnOther = document.querySelector(`button[data-cat="${c.key}"]`);
       if (btnOther && c.key !== catKey) {
         btnOther.textContent = "Veure propostes d'aquesta categoria";
       }
