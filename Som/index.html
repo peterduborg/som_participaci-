@@ -1087,6 +1087,7 @@
 
     populateCategories();
     renderProposals();
+    markCommentButtons();   // <--- NEU
     renderMyVotes();
     updateResults();
     updatePointsInfo();
@@ -1449,6 +1450,24 @@
     list.innerHTML = '';
     mine.forEach(p => list.appendChild(createProposalElement(p)));
   }
+  
+async function markCommentButtons() {
+  for (const p of proposals) {
+    const pid = String(p.id);
+    const res = await apiRequest('comments', { action: 'count', proposalId: pid });
+    const n = (res && typeof res.count === "number") ? res.count : 0;
+
+    const cards = document.querySelectorAll('.proposal');
+    cards.forEach(card => {
+      const btn = card.querySelector('.comment-toggle-btn');
+      if (!btn) return;
+      if (card.textContent.includes(p.title)) {
+        if (n > 0) btn.classList.add('has-comments');
+        else btn.classList.remove('has-comments');
+      }
+    });
+  }
+}
 
   async function addProposal() {
     if (!currentUser.email) {
@@ -1511,6 +1530,7 @@
     document.getElementById('proposalCategory').value = '';
     document.getElementById('proposalDesc').value = '';
     renderProposals();
+    markCommentButtons();   // <--- NEU
     renderMyVotes();
     await loadGlobalScoresFromServer();
     updateResults();
@@ -1578,6 +1598,7 @@
       delete globalScores[proposalId];
     }
     renderProposals();
+    markCommentButtons();   // <--- NEU
     renderMyVotes();
     updateResults();
     updatePointsInfo();
