@@ -1458,7 +1458,6 @@ async function markCommentButtons() {
   if (!proposals || !proposals.length) return;
 
   for (const p of proposals) {
-    // 1. Kommentare über die vorhandene LIST-Action holen
     const res = await apiRequest('comments', {
       action: 'list',
       proposalId: p.id,
@@ -1467,21 +1466,21 @@ async function markCommentButtons() {
 
     const comments = (res && res.comments) ? res.comments : [];
 
-    // 2. Zur passenden Karte gehen (wir nutzen data-Attribut)
-    const card = document.querySelector(`.proposal[data-proposal-id="${p.id}"]`);
-    if (!card) continue;
+    // 🔹 ALLE Karten mit dieser Proposal-ID durchgehen
+    const cards = document.querySelectorAll(`.proposal[data-proposal-id="${p.id}"]`);
+    cards.forEach(card => {
+      const btn = card.querySelector('.comment-toggle-btn');
+      if (!btn) return;
 
-    const btn = card.querySelector('.comment-toggle-btn');
-    if (!btn) continue;
-
-    // 3. Klasse setzen/löschen
-    if (comments.length > 0) {
-      btn.classList.add('has-comments');
-    } else {
-      btn.classList.remove('has-comments');
-    }
+      if (comments.length > 0) {
+        btn.classList.add('has-comments');
+      } else {
+        btn.classList.remove('has-comments');
+      }
+    });
   }
 }
+
 
 
   async function addProposal() {
@@ -1671,6 +1670,7 @@ async function markCommentButtons() {
       .sort((a, b) => (v[String(b.id)] || 0) - (v[String(a.id)] || 0));
     list.innerHTML = '';
     items.forEach(p => list.appendChild(createProposalElement(p)));
+    markCommentButtons();
   }
 
   function getCurrentTotalPoints() {
