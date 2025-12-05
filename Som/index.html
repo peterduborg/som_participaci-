@@ -1379,6 +1379,8 @@
   function createProposalElement(p) {
     const div = document.createElement('div');
     div.className = 'proposal';
+    div.setAttribute('data-proposal-id', p.id);
+
 
     const cat = CATEGORIES.find(c => c.key === p.category);
     const catTitle = cat ? cat.title : p.category;
@@ -1449,25 +1451,38 @@
     }
     list.innerHTML = '';
     mine.forEach(p => list.appendChild(createProposalElement(p)));
+    markCommentButtons();
   }
   
 async function markCommentButtons() {
-  for (const p of proposals) {
-    const pid = String(p.id);
-    const res = await apiRequest('comments', { action: 'count', proposalId: pid });
-    const n = (res && typeof res.count === "number") ? res.count : 0;
+  if (!proposals || !proposals.length) return;
 
-    const cards = document.querySelectorAll('.proposal');
-    cards.forEach(card => {
-      const btn = card.querySelector('.comment-toggle-btn');
-      if (!btn) return;
-      if (card.textContent.includes(p.title)) {
-        if (n > 0) btn.classList.add('has-comments');
-        else btn.classList.remove('has-comments');
-      }
+  for (const p of proposals) {
+    // 1. Kommentare über die vorhandene LIST-Action holen
+    const res = await apiRequest('comments', {
+      action: 'list',
+      proposalId: p.id,
+      email: currentUser.email || null
     });
+
+    const comments = (res && res.comments) ? res.comments : [];
+
+    // 2. Zur passenden Karte gehen (wir nutzen data-Attribut)
+    const card = document.querySelector(`.proposal[data-proposal-id="${p.id}"]`);
+    if (!card) continue;
+
+    const btn = card.querySelector('.comment-toggle-btn');
+    if (!btn) continue;
+
+    // 3. Klasse setzen/löschen
+    if (comments.length > 0) {
+      btn.classList.add('has-comments');
+    } else {
+      btn.classList.remove('has-comments');
+    }
   }
 }
+
 
   async function addProposal() {
     if (!currentUser.email) {
