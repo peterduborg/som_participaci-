@@ -339,12 +339,11 @@
       left: 0;
       top: 0;
       height: 100%;
-      /* Dunkles Blau, ab 75% weicher Übergang zu Rot */
-      background: linear-gradient(90deg, #003366 0%, #003366 75%, #cc0000 100%);
+      background: #003366;   /* nur Blau, Rot kommt per JS ab 85% */
       border-radius: 999px;
       transition: width 0.2s ease;
       pointer-events: none;
-      width: 0%;
+      width: 0;
     }
 
     input[type="range"] {
@@ -636,6 +635,13 @@
       .bar-container {
         width: 100%;
         margin-top: 4px;
+      }
+    }
+    @media (max-width: 600px) {
+      .result-label span:first-child {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
       }
     }
 
@@ -1288,8 +1294,32 @@
     const label = document.getElementById('thumb_' + key);
     if (label) label.textContent = val;
 
-    const fill = document.getElementById('fill_' + key);
-    if (fill) fill.style.width = val + '%';
+  const fill = document.getElementById('fill_' + key);
+      if (fill && inputEl && inputEl.parentElement) {
+        const min = Number(inputEl.min || 0);
+        const max = Number(inputEl.max || 100);
+        const value = Math.min(Math.max(val, min), max);
+    
+        // Breite so berechnen, dass der Balken genau unter dem Thumb endet
+        const container = inputEl.parentElement; // .slider-container
+        const rect = container.getBoundingClientRect();
+        const thumbWidth = 20; // muss zur CSS-Größe des Thumbs passen
+        const innerWidth = rect.width - thumbWidth;
+    
+        const fraction = (value - min) / (max - min);      // 0..1
+        const pxWidth = fraction * innerWidth + thumbWidth / 2;
+        fill.style.width = pxWidth + 'px';
+    
+        // Farb-Logik: bis 85% nur Blau, darüber rechts ein roter "Schweif"
+        if (value <= 85) {
+          fill.style.background = '#003366';
+        } else {
+          const blueStop = (85 - min) / (value - min) * 100; // Anteil Blau innerhalb des Fills
+          fill.style.background =
+            `linear-gradient(90deg,#003366 0%,#003366 ${blueStop}%,#cc0000 100%)`;
+        }
+      }
+
 
     if (!currentUser.email) {
       alert('Cal iniciar sessió per guardar la valoració.');
