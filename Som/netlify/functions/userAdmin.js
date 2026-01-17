@@ -15,7 +15,7 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-exports.handler = async (event, context) => {
+exports.handler = async (event) => {
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -46,16 +46,12 @@ exports.handler = async (event, context) => {
   }
 
   const action = data.action;
-  const adminEmail = (data.adminEmail || '').trim().toLowerCase();
+  const adminEmail = String(data.adminEmail || '').trim().toLowerCase();
 
   try {
     // Admin-Check
     if (!adminEmail) {
-      return {
-        statusCode: 400,
-        headers: corsHeaders,
-        body: JSON.stringify({ error: 'adminEmail erforderlich' })
-      };
+      return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'adminEmail erforderlich' }) };
     }
 
     const adminRes = await pool.query(
@@ -64,11 +60,7 @@ exports.handler = async (event, context) => {
     );
 
     if (adminRes.rowCount === 0 || !adminRes.rows[0].is_admin) {
-      return {
-        statusCode: 403,
-        headers: corsHeaders,
-        body: JSON.stringify({ error: 'No autoritzat' })
-      };
+      return { statusCode: 403, headers: corsHeaders, body: JSON.stringify({ error: 'No autoritzat' }) };
     }
 
     // ========== LIST USERS ==========
@@ -81,52 +73,32 @@ exports.handler = async (event, context) => {
           u.is_admin,
           u.created_at,
           u.updated_at,
-          
-          -- Anzahl Propostes (Subquery vermeidet Mehrfachzählung)
           (SELECT COUNT(*) FROM proposals p WHERE LOWER(p.email) = LOWER(u.email)) AS proposals_count,
-          
-          -- Gesamtpunkte (Subquery für korrekte Summe)
           (SELECT COALESCE(SUM(v.points), 0) FROM votes v WHERE LOWER(v.user_email) = LOWER(u.email)) AS points_total,
-          
-          -- Anzahl Kommentare
           (SELECT COUNT(*) FROM comments c WHERE LOWER(c.user_email) = LOWER(u.email)) AS comments_count,
-          
-          -- Anzahl Likes (comment_votes mit value > 0)
           (SELECT COUNT(*) FROM comment_votes cv WHERE LOWER(cv.user_email) = LOWER(u.email) AND cv.value > 0) AS likes_count,
-          
-          -- Letzter Login (falls vorhanden, aktuell NULL)
-                -- HIER: echtes Feld statt NULL
-                u.last_login_at
-
+          u.last_login_at
         FROM app_users u
         ORDER BY u.created_at DESC
       `;
-
       const res = await pool.query(query);
 
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ok: true,
-          users: res.rows
-        })
+        body: JSON.stringify({ ok: true, users: res.rows })
       };
     }
 
     // ========== UPDATE USER ==========
     if (action === 'updateUser') {
       const userId = data.id;
-      const email = (data.email || '').trim().toLowerCase();
-      const username = (data.username || '').trim();
+      const email = String(data.email || '').trim().toLowerCase();
+      const username = String(data.username || '').trim();
       const is_admin = !!data.is_admin;
 
       if (!userId || !email || !username) {
-        return {
-          statusCode: 400,
-          headers: corsHeaders,
-          body: JSON.stringify({ error: 'Falten camps' })
-        };
+        return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Falten camps' }) };
       }
 
       await pool.query(
@@ -148,31 +120,17 @@ exports.handler = async (event, context) => {
       const userId = data.id;
 
       if (!userId) {
-        return {
-          statusCode: 400,
-          headers: corsHeaders,
-          body: JSON.stringify({ error: 'User ID fehlt' })
-        };
+        return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'User ID fehlt' }) };
       }
 
-      // Prüfen, ob User sich selbst löschen will
-      const userRes = await pool.query(
-        'SELECT email FROM app_users WHERE id = $1',
-        [userId]
-      );
-
+      const userRes = await pool.query('SELECT email FROM app_users WHERE id = $1', [userId]);
       if (userRes.rowCount > 0) {
-        const userEmail = userRes.rows[0].email.toLowerCase();
+        const userEmail = String(userRes.rows[0].email || '').toLowerCase();
         if (userEmail === adminEmail) {
-          return {
-            statusCode: 400,
-            headers: corsHeaders,
-            body: JSON.stringify({ error: 'No pots esborrar el teu propi compte' })
-          };
+          return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'No pots esborrar el teu propi compte' }) };
         }
       }
 
-      // Lösche User
       await pool.query('DELETE FROM app_users WHERE id = $1', [userId]);
 
       return {
@@ -182,27 +140,49 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // ========== RECALC POINTS (optional) ==========
-    if (action === 'recalcPoints') {
-      // Hier könntest du z.B. die points_total in app_users aktualisieren
-      // Falls du die Spalte hinzufügst. Aktuell wird sie bei listUsers berechnet.
-      
+    // ========== RESET PASSWORD (GENAU app_users.password überschreiben) ==========
+    if (action === 'resetPassword') {
+      const userId = data.id;
+      const tempPassword = String(data.tempPassword || '').trim();
+
+      if (!userId || !tempPassword) {
+        return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'id i tempPassword obligatoris' }) };
+      }
+
+      // optional: self-reset verhindern
+      const uRes = await pool.query('SELECT email FROM app_users WHERE id = $1', [userId]);
+      if (uRes.rowCount > 0) {
+        const uEmail = String(uRes.rows[0].email || '').toLowerCase();
+        if (uEmail === adminEmail) {
+          return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'No pots resetejar la teva pròpia contrasenya aquí' }) };
+        }
+      }
+
+      await pool.query(
+        `UPDATE app_users
+         SET password = $1,
+             updated_at = NOW()
+         WHERE id = $2`,
+        [tempPassword, userId]
+      );
+
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          ok: true, 
-          message: 'Punts es calculen automàticament' 
-        })
+        body: JSON.stringify({ ok: true })
       };
     }
 
-    // ========== UNKNOWN ACTION ==========
-    return {
-      statusCode: 400,
-      headers: corsHeaders,
-      body: JSON.stringify({ error: 'Acció desconeguda' })
-    };
+    // ========== RECALC POINTS ==========
+    if (action === 'recalcPoints') {
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ok: true, message: 'Punts es calculen automàticament' })
+      };
+    }
+
+    return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Acció desconeguda' }) };
 
   } catch (err) {
     console.error('Error in userAdmin:', err);
