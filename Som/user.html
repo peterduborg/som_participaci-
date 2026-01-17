@@ -127,6 +127,25 @@
     .alert-error { background:#fdecea; border:1px solid #f5c2c0; color:#842029; }
     .muted { color:#888; font-size:12px; }
     .text-right { text-align:right; }
+
+    /* Statistik-Kacheln (wieder drin) */
+    .stats-row { display:flex; flex-wrap:wrap; gap:12px; margin-top:8px; }
+    .stat-box {
+      background:#ffffff;
+      border-radius:10px;
+      border:1px solid #e1e1e1;
+      padding:10px 12px;
+      min-width:140px;
+      flex:0 0 auto;
+    }
+    .stat-label {
+      font-size:11px;
+      color:#777;
+      margin-bottom:2px;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+    .stat-value { font-size:16px; font-weight:700; color:#333; }
   </style>
 </head>
 <body>
@@ -164,13 +183,25 @@
       <div class="user-summary" id="adminSummary"></div>
       <div>
         <button class="btn btn-secondary btn-small" onclick="reloadUsers()">Actualitzar llista</button>
+        <button class="btn btn-secondary btn-small" id="btnRecalcPoints" onclick="runPointsCleanup()">Recalcular punts</button>
         <button class="btn btn-secondary btn-small" onclick="logoutAdmin()">Tancar sessió</button>
       </div>
     </div>
 
+    <!-- Statistik-Card (wieder eingebaut) -->
+    <div class="card" id="adminStatsCard">
+      <h3>Estadístiques generals</h3>
+      <p class="muted">
+        Resum de l'activitat a la plataforma: nombre d'usuaris, propostes i punts de votació.
+      </p>
+      <div id="adminStatsSummary" class="muted">Carregant estadístiques...</div>
+    </div>
+
     <div class="card">
       <h3>Llista d'usuaris</h3>
-      <p>Aquí pots veure tots els comptes, modificar dades bàsiques, resetejar la contrasenya i esborrar usuaris (excepte tu mateix).</p>
+      <p>
+        Aquí pots veure tots els comptes, modificar dades bàsiques, resetejar la contrasenya i esborrar usuaris (excepte tu mateix).
+      </p>
       <div id="usersTable" class="muted">Carregant usuaris...</div>
       <p class="muted" style="margin-top:6px;">
         Nota: el reset només canvia <strong>app_users.password</strong>. Tota la resta queda igual.
@@ -204,6 +235,17 @@
 <script>
   const API_BASE = '/.netlify/functions';
   let adminUser = { email: '', username: '', isAdmin: false };
+
+  // --- Escaping helpers (damit Quotes in Inputs nichts kaputt machen) ---
+  function escHtml(s) {
+    return String(s ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+  function escAttr(s) { return escHtml(s); }
 
   async function apiRequest(fn, payload) {
     const res = await fetch(`${API_BASE}/${fn}`, {
@@ -255,11 +297,12 @@
       const summary = document.getElementById('adminSummary');
       if (summary) {
         summary.innerHTML =
-          `Sessió iniciada com <strong>${adminUser.username}</strong> ` +
-          `(<span>${adminUser.email}</span>) &middot; rol: <strong>admin</strong>`;
+          `Sessió iniciada com <strong>${escHtml(adminUser.username)}</strong> ` +
+          `(<span>${escHtml(adminUser.email)}</span>) &middot; rol: <strong>admin</strong>`;
       }
 
       reloadUsers();
+      loadAdminStats();
     } catch (e) {
       showLoginError('Error en iniciar sessió: ' + e.message);
     }
@@ -303,25 +346,41 @@
       const isAdminChecked = u.is_admin ? 'checked' : '';
       const isSelf = adminUser.email && u.email && u.email.toLowerCase() === adminUser.email.toLowerCase();
 
+      // Nutzungs-Stats (wieder wie im Original)
+      const proposalsCount = (u.proposals_count ?? u.proposal_count ?? 0);
+      const pointsCount    = (u.points_total ?? u.total_points ?? u.points ?? 0);
+      const commentsCount  = (u.comments_count ?? u.comment_count ?? 0);
+      const likesCount     = (u.likes_count ?? u.like_count ?? 0);
+      const lastLoginRaw   = (u.last_login_at ?? u.last_login ?? u.last_seen_at ?? null);
+      const lastLogin      = lastLoginRaw ? new Date(lastLoginRaw).toLocaleString('ca-ES') : '';
+
       return `
-        <tr data-user-id="${u.id}">
-          <td><input type="email" value="${u.email}" /></td>
-          <td><input type="text" value="${u.username || ''}" /></td>
+        <tr data-user-id="${escAttr(u.id)}">
+          <td><input type="email" value="${escAttr(u.email || '')}" /></td>
+          <td><input type="text" value="${escAttr(u.username || '')}" /></td>
           <td class="text-right"><input type="checkbox" ${isAdminChecked}></td>
-          <td>${created}</td>
-          <td>${updated}</td>
+
+          <td>${escHtml(proposalsCount)}</td>
+          <td>${escHtml(pointsCount)}</td>
+          <td>${escHtml(commentsCount)}</td>
+          <td>${escHtml(likesCount)}</td>
+          <td>${escHtml(lastLogin)}</td>
+
+          <td>${escHtml(created)}</td>
+          <td>${escHtml(updated)}</td>
+
           <td class="actions">
-            <button class="btn btn-secondary btn-small" onclick="saveUserRow('${u.id}', this)">Desar</button>
+            <button class="btn btn-secondary btn-small" onclick="saveUserRow('${escAttr(u.id)}', this)">Desar</button>
 
             ${isSelf
               ? `<span class="tag-self">jo mateix</span>`
               : `
                 <button class="btn btn-reset btn-small" style="margin-left:4px;"
-                        onclick="resetUserPassword('${u.id}', this)">
+                        onclick="resetUserPassword('${escAttr(u.id)}', this)">
                   Reset PW
                 </button>
                 <button class="btn btn-danger btn-small" style="margin-left:4px;"
-                        onclick="deleteUserRow('${u.id}')">
+                        onclick="deleteUserRow('${escAttr(u.id)}')">
                   Esborrar
                 </button>
               `
@@ -338,6 +397,13 @@
             <th>Correu</th>
             <th>Nom d'usuari</th>
             <th class="text-right">Admin</th>
+
+            <th># Propostes</th>
+            <th># Punts</th>
+            <th># Comentaris</th>
+            <th># Likes</th>
+            <th>Última connexió</th>
+
             <th>Creat</th>
             <th>Actualitzat</th>
             <th>Accions</th>
@@ -345,6 +411,9 @@
         </thead>
         <tbody>${rowsHtml}</tbody>
       </table>
+      <p class="muted" style="margin-top:6px;">
+        Nota: no pots esborrar el compte amb el qual estàs connectat.
+      </p>
     `;
   }
 
@@ -360,7 +429,7 @@
     const username = (nameInput.value || '').trim();
     const is_admin = !!adminCheckbox.checked;
 
-    if (!email || !username) { alert('Correu i nom no poden estar buits.'); return; }
+    if (!email) { alert('El correu no pot estar buit.'); return; }
 
     btn.disabled = true;
     try {
@@ -373,7 +442,11 @@
         is_admin
       });
       if (!res || !res.ok) alert('No s\'han pogut desar els canvis.');
-      else { alert('Canvis desats correctament.'); reloadUsers(); }
+      else {
+        alert('Canvis desats correctament.');
+        reloadUsers();
+        loadAdminStats();
+      }
     } catch (e) {
       alert('Error en desar l\'usuari: ' + e.message);
     } finally { btn.disabled = false; }
@@ -386,7 +459,11 @@
     try {
       const res = await apiRequest('userAdmin', { action: 'deleteUser', adminEmail: adminUser.email, id: userId });
       if (!res || !res.ok) alert('No s\'ha pogut esborrar l\'usuari.');
-      else { alert('Usuari esborrat.'); reloadUsers(); }
+      else {
+        alert('Usuari esborrat.');
+        reloadUsers();
+        loadAdminStats();
+      }
     } catch (e) {
       alert('Error en esborrar l\'usuari: ' + e.message);
     }
@@ -435,22 +512,168 @@
     const password = (pwInput.value || '').trim();
 
     showCreateUserMsg(null, null);
-    if (!email || !username || !password) { showCreateUserMsg(null, 'Cal omplir correu, nom i contrasenya inicial.'); return; }
+    if (!email || !username || !password) {
+      showCreateUserMsg(null, 'Cal omplir correu, nom i contrasenya inicial.');
+      return;
+    }
 
     btn.disabled = true;
     try {
-      const res = await apiRequest('auth', { action: 'createUser', adminEmail: adminUser.email, email, username, password });
+      const res = await apiRequest('auth', {
+        action: 'createUser',
+        adminEmail: adminUser.email,
+        email,
+        username,
+        password
+      });
       if (!res || !res.ok) showCreateUserMsg(null, res && res.error ? res.error : 'No s\'ha pogut crear l\'usuari.');
       else {
         showCreateUserMsg('Usuari creat correctament.', null);
         emailInput.value = ''; nameInput.value = ''; pwInput.value = '';
         reloadUsers();
+        loadAdminStats();
       }
     } catch (e) {
       showCreateUserMsg(null, 'Error en crear usuari: ' + e.message);
     } finally { btn.disabled = false; }
   }
+
+  // ===== Recalc Points (wie im Original) =====
+  async function runPointsCleanup() {
+    if (!adminUser.email || !adminUser.isAdmin) {
+      alert('Has d\'estar identificat com a administrador per recalcular els punts.');
+      return;
+    }
+    const btn = document.getElementById('btnRecalcPoints');
+    if (btn) btn.disabled = true;
+
+    try {
+      const res = await apiRequest('userAdmin', { action: 'recalcPoints', adminEmail: adminUser.email });
+      if (!res || !res.ok) {
+        alert('No s\'ha pogut recalcular els punts: ' + (res && res.error ? res.error : 'Error desconegut'));
+      } else {
+        alert('Punts recalculats correctament a partir de la taula "votes".');
+        reloadUsers();
+        loadAdminStats();
+      }
+    } catch (e) {
+      alert('Error en recalcular els punts: ' + e.message);
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  // ===== Admin-Statistiken (Kacheln) =====
+  async function loadAdminStats() {
+    const summaryEl = document.getElementById('adminStatsSummary');
+    if (!summaryEl) return;
+
+    summaryEl.textContent = 'Carregant estadístiques...';
+
+    if (!adminUser.email || !adminUser.isAdmin) {
+      summaryEl.textContent = 'Només els administradors poden veure les estadístiques.';
+      return;
+    }
+
+    try {
+      const [usersRes, proposalsRes, votesScoresRes, userVotesRes] = await Promise.all([
+        apiRequest('userAdmin', { action: 'listUsers', adminEmail: adminUser.email }).catch(() => null),
+        fetch(`${API_BASE}/proposals`, { method: 'GET' }).then(r => (r.ok ? r.json() : null)).catch(() => null),
+        apiRequest('votes', { action: 'getScores' }).catch(() => null),
+        apiRequest('votes', { action: 'getUserVotes', email: adminUser.email }).catch(() => null)
+      ]);
+
+      let userCount = 0;
+      let proposalCount = 0;
+      let globalPoints = 0;
+      let myPointsRaw = 0;
+      let myPointsActive = 0;
+      const validProposalIds = new Set();
+
+      // Users
+      if (usersRes && usersRes.ok && Array.isArray(usersRes.users)) {
+        userCount = usersRes.users.length;
+      }
+
+      // Proposals + gültige IDs
+      if (proposalsRes) {
+        const arr = Array.isArray(proposalsRes)
+          ? proposalsRes
+          : (Array.isArray(proposalsRes.proposals) ? proposalsRes.proposals : []);
+        proposalCount = arr.length;
+        arr.forEach(p => {
+          if (p && p.id != null) validProposalIds.add(String(p.id));
+        });
+      }
+
+      // Globale Punkte
+      if (votesScoresRes) {
+        const arr = Array.isArray(votesScoresRes)
+          ? votesScoresRes
+          : (Array.isArray(votesScoresRes.scores) ? votesScoresRes.scores
+            : (Array.isArray(votesScoresRes.results) ? votesScoresRes.results : []));
+        arr.forEach(r => {
+          const total = r?.total_points ?? r?.points ?? r?.sum ?? r?.total ?? 0;
+          globalPoints += Math.abs(Number(total) || 0);
+        });
+      }
+
+      // Eigene Votes: Roh + aktiv (nur existierende Proposals)
+      if (userVotesRes) {
+        const votesObj = {};
+
+        const pushVote = v => {
+          const pid = String(v?.proposal_id ?? v?.proposalId ?? v?.id ?? '');
+          const value = v?.points ?? v?.value ?? v?.vote ?? 0;
+          if (pid) votesObj[pid] = value;
+        };
+
+        if (Array.isArray(userVotesRes)) {
+          userVotesRes.forEach(pushVote);
+        } else if (Array.isArray(userVotesRes.votes)) {
+          userVotesRes.votes.forEach(pushVote);
+        } else if (userVotesRes.votes && typeof userVotesRes.votes === 'object') {
+          Object.keys(userVotesRes.votes).forEach(k => {
+            votesObj[String(k)] = userVotesRes.votes[k];
+          });
+        }
+
+        myPointsRaw = Object.values(votesObj).reduce((sum, v) => sum + Math.max(0, Math.abs(v || 0)), 0);
+
+        myPointsActive = Object.entries(votesObj).reduce((sum, [pid, val]) => {
+          if (!validProposalIds.has(String(pid))) return sum;
+          return sum + Math.max(0, Math.abs(val || 0));
+        }, 0);
+      }
+
+      summaryEl.innerHTML = `
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-label">Usuaris</div>
+            <div class="stat-value">${escHtml(userCount)}</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Propostes totals</div>
+            <div class="stat-value">${escHtml(proposalCount)}</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Punts assignats (tots)</div>
+            <div class="stat-value">${escHtml(globalPoints)}</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Punts teu compte (bruts)</div>
+            <div class="stat-value">${escHtml(myPointsRaw)}</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Punts teu compte (actius)</div>
+            <div class="stat-value">${escHtml(myPointsActive)}</div>
+          </div>
+        </div>
+      `;
+    } catch (e) {
+      summaryEl.textContent = 'No s\'han pogut carregar les estadístiques.';
+    }
+  }
 </script>
 </body>
 </html>
-
