@@ -150,7 +150,7 @@ exports.handler = async (event) => {
           headers: {
             ...corsHeaders(),
             'Content-Type': row.attachment_mime,
-            'Content-Disposition': `attachment; filename="${row.attachment_filename.replace(/"/g, '')}"`
+            'Content-Disposition': `inline; filename="${row.attachment_filename.replace(/"/g, '')}"`
           },
           isBase64Encoded: true,
           body: Buffer.from(buf).toString('base64')
