@@ -746,12 +746,13 @@
         <button class="btn" onclick="createNewUser()">Crear usuari</button>
       </div>
 
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="resultats" onclick="showTab('resultats')">Propostes favorites</button>
-        <button class="tab-btn" data-tab="propostes" onclick="showTab('propostes')">Les meves propostes</button>
-        <button class="tab-btn" data-tab="vots" onclick="showTab('vots')">Els meus vots</button>
-        <button class="tab-btn" data-tab="Àmbits prioritaris" onclick="showTab('Àmbits prioritaris')">Priorització d'àmbits</button>
-      </div>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="resultats" onclick="showTab('resultats')">Propostes favorites</button>
+      <button class="tab-btn" data-tab="Àmbits prioritaris" onclick="showTab('Àmbits prioritaris')">Priorització d'àmbits</button>
+      <button class="tab-btn" data-tab="propostes" onclick="showTab('propostes')">Les meves propostes</button>
+      <button class="tab-btn" data-tab="vots" onclick="showTab('vots')">Els meus vots</button>
+    </div>
+
 
       <!-- TAB: PARTICIPACIÓ -->
       <div id="Àmbits prioritaris" class="tab-content">
@@ -1091,7 +1092,7 @@
     renderMyVotes();
     updateResults();
     updatePointsInfo();
-    showTab('Àmbits prioritaris');
+    showTab('resultats');
   }
 
   function togglePasswordPanel() {
