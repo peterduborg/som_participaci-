@@ -746,28 +746,23 @@
         <button class="btn" onclick="createNewUser()">Crear usuari</button>
       </div>
 
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="resultats" onclick="showTab('resultats')">Propostes favorites</button>
-      <button class="tab-btn" data-tab="Àmbits prioritaris" onclick="showTab('Àmbits prioritaris')">Priorització d'àmbits</button>
-      <button class="tab-btn" data-tab="propostes" onclick="showTab('propostes')">Les meves propostes</button>
-      <button class="tab-btn" data-tab="vots" onclick="showTab('vots')">Els meus vots</button>
-    </div>
+      <!-- TABS (REIHENFOLGE: 1<->4 getauscht, Labels umbenannt) -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="resultats" onclick="showTab('resultats')">Propostes favorites</button>
+        <button class="tab-btn" data-tab="propostes" onclick="showTab('propostes')">Les meves propostes</button>
+        <button class="tab-btn" data-tab="vots" onclick="showTab('vots')">Els meus vots</button>
+        <button class="tab-btn" data-tab="Àmbits prioritaris" onclick="showTab('Àmbits prioritaris')">Priorització d'àmbits</button>
+      </div>
 
-
-      <!-- TAB: PARTICIPACIÓ -->
-      <div id="Àmbits prioritaris" class="tab-content">
+      <!-- TAB: RESULTATS (jetzt "Propostes favorites") -->
+      <div id="resultats" class="tab-content">
         <div class="two-cols">
           <div class="panel">
-            <h2>Necessitat d'acció per categories</h2>
-            <small>Avalua com veus la situació actual en cadascun d'aquests àmbits. Valors alts = més necessitat d'actuar.</small>
-            <small>0 = No cal cap acció · 50 = Caldria millorar · 100 = Urgència màxima </small>
-            <div class="categories" id="categoriesList">Carregant categories...</div>
-            <div class="legenda">
-              <strong>Llegenda:</strong> 0 = No cal cap acció · 50 = Caldria millorar · 100 = Urgència màxima
-            </div>
-            <div class="small-note">
-              Pots modificar les teves valoracions sempre que vulguis; es poden sumar amb la resta de ciutadania.
-            </div>
+            <h2>Resultats agregats</h2>
+            <p class="info">
+              Aquí es mostren els resultats a partir dels punts assignats per totes les persones participants.
+            </p>
+            <div class="results" id="resultsChart">Encara no hi ha resultats.</div>
           </div>
 
           <div class="panel">
@@ -779,18 +774,21 @@
               <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
             </ul>
             <p class="info" style="margin-top:8px;">
-              Així podem canalitzar, avaluar и prioritzar les bones idees per fer créixer encara més l'atractiu del nostre poble, Matadepera.
+              Així podem canalitzar, avaluar i prioritzar les bones idees per fer créixer encara més l'atractiu del nostre poble, Matadepera.
             </p>
             <p class="info" style="margin-top:8px;">
               Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes. Els teus vots poden ser tant a favor com en contra.
             </p>
             <p class="small-note" style="margin-top:10px;">
-              <strong>Punts assignats totals:</strong>
-              <span id="assignedPoints">0</span>/30
+              <strong>Has fet servir <span id="usedPointsInfo">0</span> punts dels teus 30 disponibles.</strong>
             </p>
-            <p class="small-note" style="margin-top:4px;">
-              <strong>Has fet servir <span id="usedPointsInfoTop">0</span> punts dels teus 30 disponibles.</strong>
-            </p>
+
+            <hr style="margin:12px 0;">
+
+            <h3>Detall de la proposta seleccionada</h3>
+            <div id="resultDetail" class="info">
+              Fes clic en un projecte per veure'n el detall, votar-lo, comentar-lo i fer like/dislike als comentaris.
+            </div>
           </div>
         </div>
       </div>
@@ -814,6 +812,14 @@
                   <label>Descripció</label>
                   <textarea id="proposalDesc" placeholder="Descriu la situació actual i què proposes fer per millorar-la."></textarea>
                 </div>
+
+                <!-- NEU: 1 Datei pro Proposal, max 500KB -->
+                <div class="form-group">
+                  <label>Document adjunt (opcional, màx. 500KB)</label>
+                  <input type="file" id="proposalFile" accept=".pdf,image/png,image/jpeg" />
+                  <div class="small-note">Formats: PDF, PNG, JPG. Només 1 fitxer per proposta.</div>
+                </div>
+
                 <button class="btn" id="btnAddProposal" onclick="addProposal()">Afegir proposta</button>
               </div>
             </div>
@@ -856,15 +862,20 @@
         </div>
       </div>
 
-      <!-- TAB: RESULTATS -->
-      <div id="resultats" class="tab-content hidden">
+      <!-- TAB: ÀMBITS (jetzt "Priorització d'àmbits") -->
+      <div id="Àmbits prioritaris" class="tab-content hidden">
         <div class="two-cols">
           <div class="panel">
-            <h2>Resultats agregats</h2>
-            <p class="info">
-              Aquí es mostren els resultats a partir dels punts assignats per totes les persones participants.
-            </p>
-            <div class="results" id="resultsChart">Encara no hi ha resultats.</div>
+            <h2>Necessitat d'acció per categories</h2>
+            <small>Avalua com veus la situació actual en cadascun d'aquests àmbits. Valors alts = més necessitat d'actuar.</small>
+            <small>0 = No cal cap acció · 50 = Caldria millorar · 100 = Urgència màxima </small>
+            <div class="categories" id="categoriesList">Carregant categories...</div>
+            <div class="legenda">
+              <strong>Llegenda:</strong> 0 = No cal cap acció · 50 = Caldria millorar · 100 = Urgència màxima
+            </div>
+            <div class="small-note">
+              Pots modificar les teves valoracions sempre que vulguis; es poden sumar amb la resta de ciutadania.
+            </div>
           </div>
 
           <div class="panel">
@@ -876,21 +887,18 @@
               <li>un sistema d'avaluació col·lectiva de totes les propostes.</li>
             </ul>
             <p class="info" style="margin-top:8px;">
-              Així podem canalitzar, avaluar i prioritzar les bones idees per fer créixer encara més l'atractiu del nostre poble, Matadepera.
+              Així podem canalitzar, avaluar и prioritzar les bones idees per fer créixer encara més l'atractiu del nostre poble, Matadepera.
             </p>
             <p class="info" style="margin-top:8px;">
               Pots assignar un total de <strong>30 punts</strong> de votació sobre el conjunt de propostes. Els teus vots poden ser tant a favor com en contra.
             </p>
             <p class="small-note" style="margin-top:10px;">
-              <strong>Has fet servir <span id="usedPointsInfo">0</span> punts dels teus 30 disponibles.</strong>
+              <strong>Punts assignats totals:</strong>
+              <span id="assignedPoints">0</span>/30
             </p>
-
-            <hr style="margin:12px 0;">
-
-            <h3>Detall de la proposta seleccionada</h3>
-            <div id="resultDetail" class="info">
-              Fes clic en un projecte per veure'n el detall, votar-lo, comentar-lo i fer like/dislike als comentaris.
-            </div>
+            <p class="small-note" style="margin-top:4px;">
+              <strong>Has fet servir <span id="usedPointsInfoTop">0</span> punts dels teus 30 disponibles.</strong>
+            </p>
           </div>
         </div>
       </div>
@@ -902,6 +910,10 @@
 <script>
   const API_BASE = '/.netlify/functions';
   const MAX_POINTS = 30;
+
+  // NEU: Upload-Regeln (muss zu proposals.js passen)
+  const MAX_FILE_BYTES = 500 * 1024;
+  const ALLOWED_MIME = ['application/pdf', 'image/png', 'image/jpeg'];
 
   const CATEGORIES = [
     {
@@ -945,6 +957,26 @@
     return (str || '').replace(/[&<>"']/g, c => ({
       '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
     }[c]));
+  }
+
+  function formatBytes(n) {
+    const v = Number(n || 0);
+    if (!v) return '';
+    if (v < 1024) return v + ' B';
+    if (v < 1024*1024) return Math.round(v/1024) + ' KB';
+    return (v/1024/1024).toFixed(1) + ' MB';
+  }
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => {
+        const res = String(r.result || '');
+        resolve(res.split(',')[1] || '');
+      };
+      r.onerror = () => reject(new Error('FileReader error'));
+      r.readAsDataURL(file);
+    });
   }
 
   async function apiRequest(fn, payload) {
@@ -1092,6 +1124,8 @@
     renderMyVotes();
     updateResults();
     updatePointsInfo();
+
+    // NEU: "Propostes favorites" soll zuerst aktiv sein
     showTab('resultats');
   }
 
@@ -1203,11 +1237,6 @@
     }
   }
 
-  function positionThumbLabel(slider, label) {
-    const val = parseInt(slider.value || '0', 10);
-    label.textContent = val;
-  }
-
   function applyAverage(key) {
     const avg = (serverAverages && typeof serverAverages[key] === 'number')
       ? serverAverages[key] : null;
@@ -1296,32 +1325,31 @@
     const label = document.getElementById('thumb_' + key);
     if (label) label.textContent = val;
 
-  const fill = document.getElementById('fill_' + key);
-      if (fill && inputEl && inputEl.parentElement) {
-        const min = Number(inputEl.min || 0);
-        const max = Number(inputEl.max || 100);
-        const value = Math.min(Math.max(val, min), max);
-    
-        // Breite so berechnen, dass der Balken genau unter dem Thumb endet
-        const container = inputEl.parentElement; // .slider-container
-        const rect = container.getBoundingClientRect();
-        const thumbWidth = 20; // muss zur CSS-Größe des Thumbs passen
-        const innerWidth = rect.width - thumbWidth;
-    
-        const fraction = (value - min) / (max - min);      // 0..1
-        const pxWidth = fraction * innerWidth + thumbWidth / 2;
-        fill.style.width = pxWidth + 'px';
-    
-        // Farb-Logik: bis 85% nur Blau, darüber rechts ein roter "Schweif"
-        if (value <= 85) {
-          fill.style.background = '#003366';
-        } else {
-          const blueStop = (85 - min) / (value - min) * 100; // Anteil Blau innerhalb des Fills
-          fill.style.background =
-            `linear-gradient(90deg,#003366 0%,#003366 ${blueStop}%,#cc0000 100%)`;
-        }
-      }
+    const fill = document.getElementById('fill_' + key);
+    if (fill && inputEl && inputEl.parentElement) {
+      const min = Number(inputEl.min || 0);
+      const max = Number(inputEl.max || 100);
+      const value = Math.min(Math.max(val, min), max);
 
+      // Breite so berechnen, dass der Balken genau unter dem Thumb endet
+      const container = inputEl.parentElement; // .slider-container
+      const rect = container.getBoundingClientRect();
+      const thumbWidth = 20; // muss zur CSS-Größe des Thumbs passen
+      const innerWidth = rect.width - thumbWidth;
+
+      const fraction = (value - min) / (max - min);      // 0..1
+      const pxWidth = fraction * innerWidth + thumbWidth / 2;
+      fill.style.width = pxWidth + 'px';
+
+      // Farb-Logik: bis 85% nur Blau, darüber rechts ein roter "Schweif"
+      if (value <= 85) {
+        fill.style.background = '#003366';
+      } else {
+        const blueStop = (85 - min) / (value - min) * 100; // Anteil Blau innerhalb des Fills
+        fill.style.background =
+          `linear-gradient(90deg,#003366 0%,#003366 ${blueStop}%,#cc0000 100%)`;
+      }
+    }
 
     if (!currentUser.email) {
       alert('Cal iniciar sessió per guardar la valoració.');
@@ -1369,7 +1397,12 @@
         desc: p.description || p.desc || '',
         author: p.author || p.username || '',
         email: (p.email || p.user_email || '').toLowerCase(),
-        createdAt: p.created_at || p.createdAt || new Date().toISOString()
+        createdAt: p.created_at || p.createdAt || new Date().toISOString(),
+
+        // NEU: Attachment-Metadaten (Datei selbst kommt per Download-Endpoint)
+        attachment_filename: p.attachment_filename || null,
+        attachment_mime: p.attachment_mime || null,
+        attachment_size: p.attachment_size || null
       })).filter(p => p.id && p.title);
     } catch (e) {
       alert(`No s'ha pogut carregar les propostes: ${e}`);
@@ -1377,11 +1410,16 @@
     }
   }
 
+  // NEU: Download-Helper
+  function downloadAttachment(proposalId) {
+    const url = `${API_BASE}/proposals?download=1&id=${encodeURIComponent(String(proposalId))}`;
+    window.open(url, '_blank');
+  }
+
   function createProposalElement(p) {
     const div = document.createElement('div');
     div.className = 'proposal';
     div.setAttribute('data-proposal-id', p.id);
-
 
     const cat = CATEGORIES.find(c => c.key === p.category);
     const catTitle = cat ? cat.title : p.category;
@@ -1393,6 +1431,19 @@
            onclick="deleteProposal('${p.id}')">Esborrar</button>`
       : '';
 
+    // NEU: Attachment-UI
+    const hasAtt = !!p.attachment_filename;
+    const attInfoHtml = hasAtt
+      ? `<div class="proposal-meta" style="margin-top:6px;">
+           📎 ${escapeHtml(p.attachment_filename)} ${p.attachment_size ? '(' + escapeHtml(formatBytes(p.attachment_size)) + ')' : ''}
+         </div>`
+      : '';
+
+    const attBtnHtml = hasAtt
+      ? `<button class="btn btn-secondary" style="font-size:11px;padding:4px 8px;"
+           onclick="downloadAttachment('${p.id}')">Descarregar adjunt</button>`
+      : '';
+
     div.innerHTML = `
       <div class="proposal-header">
         <div>
@@ -1402,6 +1453,7 @@
         <div class="proposal-meta">${dateTxt}</div>
       </div>
       <div class="proposal-desc">${escapeHtml(p.desc).replace(/\n/g,'<br>')}</div>
+      ${attInfoHtml}
       <div class="proposal-actions">
         <div class="vote-buttons">
           <button class="vote-btn ${myVote===-3?'active-neg':''}"
@@ -1421,6 +1473,7 @@
           <div class="vote-info">
             Punts nets assignats: <span>${myVote}</span>
           </div>
+          ${attBtnHtml}
           ${deleteBtnHtml}
           <button class="btn btn-secondary comment-toggle-btn"
             style="font-size:11px;padding:4px 8px;"
@@ -1454,35 +1507,33 @@
     mine.forEach(p => list.appendChild(createProposalElement(p)));
     markCommentButtons();
   }
-  
-async function markCommentButtons() {
-  if (!proposals || !proposals.length) return;
 
-  for (const p of proposals) {
-    const res = await apiRequest('comments', {
-      action: 'list',
-      proposalId: p.id,
-      email: currentUser.email || null
-    });
+  async function markCommentButtons() {
+    if (!proposals || !proposals.length) return;
 
-    const comments = (res && res.comments) ? res.comments : [];
+    for (const p of proposals) {
+      const res = await apiRequest('comments', {
+        action: 'list',
+        proposalId: p.id,
+        email: currentUser.email || null
+      });
 
-    // 🔹 ALLE Karten mit dieser Proposal-ID durchgehen
-    const cards = document.querySelectorAll(`.proposal[data-proposal-id="${p.id}"]`);
-    cards.forEach(card => {
-      const btn = card.querySelector('.comment-toggle-btn');
-      if (!btn) return;
+      const comments = (res && res.comments) ? res.comments : [];
 
-      if (comments.length > 0) {
-        btn.classList.add('has-comments');
-      } else {
-        btn.classList.remove('has-comments');
-      }
-    });
+      // 🔹 ALLE Karten mit dieser Proposal-ID durchgehen
+      const cards = document.querySelectorAll(`.proposal[data-proposal-id="${p.id}"]`);
+      cards.forEach(card => {
+        const btn = card.querySelector('.comment-toggle-btn');
+        if (!btn) return;
+
+        if (comments.length > 0) {
+          btn.classList.add('has-comments');
+        } else {
+          btn.classList.remove('has-comments');
+        }
+      });
+    }
   }
-}
-
-
 
   async function addProposal() {
     if (!currentUser.email) {
@@ -1507,6 +1558,34 @@ async function markCommentButtons() {
       author: currentUser.username || 'Usuari',
       email: currentUser.email
     };
+
+    // NEU: Datei optional hinzufügen (1 Datei, max 500KB, pdf/png/jpg)
+    const fileEl = document.getElementById('proposalFile');
+    const file = (fileEl && fileEl.files && fileEl.files.length) ? fileEl.files[0] : null;
+    if (file) {
+      if (file.size > MAX_FILE_BYTES) {
+        alert('El fitxer és massa gran (màx. 500KB).');
+        if (btn) btn.disabled = false;
+        return;
+      }
+      if (!ALLOWED_MIME.includes(file.type)) {
+        alert('Format de fitxer no permès. Només PDF, PNG o JPG.');
+        if (btn) btn.disabled = false;
+        return;
+      }
+      try {
+        const b64 = await fileToBase64(file);
+        payload.attachment = {
+          filename: file.name,
+          mime: file.type,
+          base64: b64
+        };
+      } catch (e) {
+        alert('No s\'ha pogut llegir el fitxer adjunt.');
+        if (btn) btn.disabled = false;
+        return;
+      }
+    }
 
     let res;
     try {
@@ -1537,13 +1616,19 @@ async function markCommentButtons() {
       desc: created.description || created.desc || desc,
       author: created.author || created.username || payload.author,
       email: (created.email || created.user_email || payload.email || '').toLowerCase(),
-      createdAt: created.created_at || created.createdAt || new Date().toISOString()
+      createdAt: created.created_at || created.createdAt || new Date().toISOString(),
+
+      attachment_filename: created.attachment_filename || null,
+      attachment_mime: created.attachment_mime || null,
+      attachment_size: created.attachment_size || null
     };
     proposals.push(newProposal);
 
     document.getElementById('proposalTitle').value = '';
     document.getElementById('proposalCategory').value = '';
     document.getElementById('proposalDesc').value = '';
+    if (fileEl) fileEl.value = '';
+
     renderProposals();
     markCommentButtons();   // <--- NEU
     renderMyVotes();
