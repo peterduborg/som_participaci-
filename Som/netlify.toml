@@ -1,9 +1,21 @@
+# netlify.toml
 [build]
-  functions = "netlify/functions"
   publish = "."
+  functions = "netlify/functions"
 
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["pg"]
 
+# Optional: falls du SPA-Routing brauchst (alles auf index.html)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Optional: falls du die Function sauber erreichbar halten willst (nicht zwingend nötig)
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
+  force = true
