@@ -751,7 +751,9 @@
         <button class="tab-btn active" data-tab="resultats" onclick="showTab('resultats')">Propostes favorites</button>
         <button class="tab-btn" data-tab="propostes" onclick="showTab('propostes')">Les meves propostes</button>
         <button class="tab-btn" data-tab="vots" onclick="showTab('vots')">Els meus vots</button>
-        <button class="tab-btn" data-tab="Àmbits prioritaris" onclick="showTab('Àmbits prioritaris')">Priorització d'àmbits</button>
+
+        <!-- FIX: id/data-tab ohne Leerzeichen -->
+        <button class="tab-btn" data-tab="ambits" onclick="showTab('ambits')">Priorització d'àmbits</button>
       </div>
 
       <!-- TAB: RESULTATS (jetzt "Propostes favorites") -->
@@ -862,8 +864,8 @@
         </div>
       </div>
 
-      <!-- TAB: ÀMBITS (jetzt "Priorització d'àmbits") -->
-      <div id="Àmbits prioritaris" class="tab-content hidden">
+      <!-- TAB: ÀMBITS (FIX: id ohne Leerzeichen) -->
+      <div id="ambits" class="tab-content hidden">
         <div class="two-cols">
           <div class="panel">
             <h2>Necessitat d'acció per categories</h2>
@@ -2141,9 +2143,7 @@
   (function init() {
     showTab('login');
   })();
-</script>
-</body>
-</html>
+
 
 function closeAllEdits() {
   document.querySelectorAll('.proposal').forEach(card => {
@@ -2320,3 +2320,6 @@ async function saveEditProposal(proposalId, btn) {
   alert('Proposta actualitzada correctament.');
   btn.disabled = false;
 }
+</script>
+</body>
+</html>
