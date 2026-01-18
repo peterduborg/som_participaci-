@@ -959,6 +959,14 @@
     }[c]));
   }
 
+  function categoryOptionsHtml(selectedKey) {
+    return CATEGORIES.map(c => {
+      const sel = String(c.key) === String(selectedKey) ? 'selected' : '';
+      return `<option value="${escapeHtml(c.key)}" ${sel}>${escapeHtml(c.title)}</option>`;
+    }).join('');
+  }
+
+  
   function formatBytes(n) {
     const v = Number(n || 0);
     if (!v) return '';
@@ -1420,80 +1428,138 @@
     const div = document.createElement('div');
     div.className = 'proposal';
     div.setAttribute('data-proposal-id', p.id);
-
+  
     const cat = CATEGORIES.find(c => c.key === p.category);
     const catTitle = cat ? cat.title : p.category;
     const myVote = (currentUser.votes || {})[String(p.id)] || 0;
     const dateTxt = p.createdAt ? new Date(p.createdAt).toLocaleDateString('ca-ES') : '';
-    const canDelete = (p.email || '') === (currentUser.email || '').toLowerCase();
-    const deleteBtnHtml = canDelete
+  
+    const isOwner = (p.email || '').toLowerCase() === (currentUser.email || '').toLowerCase();
+  
+    const deleteBtnHtml = isOwner
       ? `<button class="btn btn-secondary" style="font-size:11px;padding:4px 8px;"
            onclick="deleteProposal('${p.id}')">Esborrar</button>`
       : '';
-
-    // NEU: Attachment-UI
+  
+    const editBtnHtml = isOwner
+      ? `<button class="btn btn-secondary" style="font-size:11px;padding:4px 8px;"
+           onclick="beginEditProposal('${p.id}', this)">Editar</button>`
+      : '';
+  
     const hasAtt = !!p.attachment_filename;
     const attInfoHtml = hasAtt
       ? `<div class="proposal-meta" style="margin-top:6px;">
-           📎 ${escapeHtml(p.attachment_filename)} ${p.attachment_size ? '(' + escapeHtml(formatBytes(p.attachment_size)) + ')' : ''}
+           📎 ${escapeHtml(p.attachment_filename)}
+           ${p.attachment_size ? '(' + escapeHtml(formatBytes(p.attachment_size)) + ')' : ''}
          </div>`
       : '';
-
+  
     const attBtnHtml = hasAtt
       ? `<button class="btn btn-secondary" style="font-size:11px;padding:4px 8px;"
-           onclick="downloadAttachment('${p.id}')">Descarregar adjunt</button>`
+           onclick="downloadAttachment('${p.id}')">Obrir adjunt</button>`
       : '';
-
+  
+    const removeAttRow = (isOwner && hasAtt)
+      ? `<label style="display:flex;gap:8px;align-items:center;font-weight:600;">
+           <input type="checkbox" class="edit-remove-attachment" />
+           Eliminar adjunt existent
+         </label>
+         <div class="small-note">Si marques això, s’eliminarà el fitxer adjunt actual.</div>`
+      : '';
+  
     div.innerHTML = `
-      <div class="proposal-header">
-        <div>
-          <div class="proposal-title">${escapeHtml(p.title)}</div>
-          <div class="proposal-meta">${escapeHtml(catTitle)} · ${escapeHtml(p.author || 'Anònim')}</div>
-        </div>
-        <div class="proposal-meta">${dateTxt}</div>
-      </div>
-      <div class="proposal-desc">${escapeHtml(p.desc).replace(/\n/g,'<br>')}</div>
-      ${attInfoHtml}
-      <div class="proposal-actions">
-        <div class="vote-buttons">
-          <button class="vote-btn ${myVote===-3?'active-neg':''}"
-            onclick="setVote('${p.id}',-3,this)">-3</button>
-          <button class="vote-btn ${myVote===-2?'active-neg':''}"
-            onclick="setVote('${p.id}',-2,this)">-2</button>
-          <button class="vote-btn ${myVote===-1?'active-neg':''}"
-            onclick="setVote('${p.id}',-1,this)">-1</button>
-          <button class="vote-btn ${myVote===1?'active-pos':''}"
-            onclick="setVote('${p.id}',1,this)">+1</button>
-          <button class="vote-btn ${myVote===2?'active-pos':''}"
-            onclick="setVote('${p.id}',2,this)">+2</button>
-          <button class="vote-btn ${myVote===3?'active-pos':''}"
-            onclick="setVote('${p.id}',3,this)">+3</button>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-          <div class="vote-info">
-            Punts nets assignats: <span>${myVote}</span>
+      <div class="proposal-view">
+        <div class="proposal-header">
+          <div>
+            <div class="proposal-title">${escapeHtml(p.title)}</div>
+            <div class="proposal-meta">${escapeHtml(catTitle)} · ${escapeHtml(p.author || 'Anònim')}</div>
           </div>
-          ${attBtnHtml}
-          ${deleteBtnHtml}
-          <button class="btn btn-secondary comment-toggle-btn"
-            style="font-size:11px;padding:4px 8px;"
-            onclick="toggleCommentsPanel('${p.id}', this)">
-            Comentaris
+          <div class="proposal-meta">${dateTxt}</div>
+        </div>
+  
+        <div class="proposal-desc">${escapeHtml(p.desc).replace(/\n/g,'<br>')}</div>
+        ${attInfoHtml}
+  
+        <div class="proposal-actions">
+          <div class="vote-buttons">
+            <button class="vote-btn ${myVote===-3?'active-neg':''}"
+              onclick="setVote('${p.id}',-3,this)">-3</button>
+            <button class="vote-btn ${myVote===-2?'active-neg':''}"
+              onclick="setVote('${p.id}',-2,this)">-2</button>
+            <button class="vote-btn ${myVote===-1?'active-neg':''}"
+              onclick="setVote('${p.id}',-1,this)">-1</button>
+            <button class="vote-btn ${myVote===1?'active-pos':''}"
+              onclick="setVote('${p.id}',1,this)">+1</button>
+            <button class="vote-btn ${myVote===2?'active-pos':''}"
+              onclick="setVote('${p.id}',2,this)">+2</button>
+            <button class="vote-btn ${myVote===3?'active-pos':''}"
+              onclick="setVote('${p.id}',3,this)">+3</button>
+          </div>
+  
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <div class="vote-info">
+              Punts nets assignats: <span>${myVote}</span>
+            </div>
+            ${attBtnHtml}
+            ${editBtnHtml}
+            ${deleteBtnHtml}
+            <button class="btn btn-secondary comment-toggle-btn"
+              style="font-size:11px;padding:4px 8px;"
+              onclick="toggleCommentsPanel('${p.id}', this)">
+              Comentaris
+            </button>
+          </div>
+        </div>
+  
+        <div class="proposal-comments hidden">
+          <div class="comments-list"></div>
+          <textarea class="comment-input" placeholder="Afegeix el teu comentari..."></textarea>
+          <button class="btn btn-secondary"
+            style="font-size:11px;padding:4px 8px;margin-top:4px;"
+            onclick="submitComment('${p.id}', this)">
+            Enviar comentari
           </button>
         </div>
       </div>
-      <div class="proposal-comments hidden">
-        <div class="comments-list"></div>
-        <textarea class="comment-input" placeholder="Afegeix el teu comentari..."></textarea>
-        <button class="btn btn-secondary"
-          style="font-size:11px;padding:4px 8px;margin-top:4px;"
-          onclick="submitComment('${p.id}', this)">
-          Enviar comentari
-        </button>
+  
+      <div class="proposal-edit hidden">
+        <h3 style="margin-bottom:8px;">Editar proposta</h3>
+  
+        <div class="form-group">
+          <label>Títol</label>
+          <input type="text" class="edit-title" value="${escapeHtml(p.title)}" />
+        </div>
+  
+        <div class="form-group">
+          <label>Categoria principal</label>
+          <select class="edit-category">
+            ${categoryOptionsHtml(p.category)}
+          </select>
+        </div>
+  
+        <div class="form-group">
+          <label>Descripció</label>
+          <textarea class="edit-desc">${escapeHtml(p.desc)}</textarea>
+        </div>
+  
+        <div class="form-group">
+          <label>Nou document adjunt (opcional, màx. 500KB)</label>
+          <input type="file" class="edit-file" accept=".pdf,image/png,image/jpeg" />
+          <div class="small-note">Si deixes el fitxer buit, es manté l’adjunt actual (si n’hi ha).</div>
+        </div>
+  
+        ${removeAttRow}
+  
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+          <button class="btn" onclick="saveEditProposal('${p.id}', this)">Desar canvis</button>
+          <button class="btn btn-secondary" onclick="cancelEditProposal('${p.id}', this)">Cancel·lar</button>
+        </div>
       </div>
     `;
+  
     return div;
   }
+
 
   function renderProposals() {
     const list = document.getElementById('myProposalsList');
@@ -2078,3 +2144,179 @@
 </script>
 </body>
 </html>
+
+function closeAllEdits() {
+  document.querySelectorAll('.proposal').forEach(card => {
+    const view = card.querySelector('.proposal-view');
+    const edit = card.querySelector('.proposal-edit');
+    if (view && edit && !edit.classList.contains('hidden')) {
+      edit.classList.add('hidden');
+      view.classList.remove('hidden');
+      const fileEl = edit.querySelector('.edit-file');
+      if (fileEl) fileEl.value = '';
+      const rm = edit.querySelector('.edit-remove-attachment');
+      if (rm) rm.checked = false;
+    }
+  });
+}
+
+function beginEditProposal(proposalId, btn) {
+  const card = btn.closest('.proposal');
+  if (!card) return;
+
+  closeAllEdits();
+
+  const view = card.querySelector('.proposal-view');
+  const edit = card.querySelector('.proposal-edit');
+  if (!view || !edit) return;
+
+  view.classList.add('hidden');
+  edit.classList.remove('hidden');
+}
+
+function cancelEditProposal(proposalId, btn) {
+  const card = btn.closest('.proposal');
+  if (!card) return;
+
+  const view = card.querySelector('.proposal-view');
+  const edit = card.querySelector('.proposal-edit');
+  if (!view || !edit) return;
+
+  // reset file + remove checkbox
+  const fileEl = edit.querySelector('.edit-file');
+  if (fileEl) fileEl.value = '';
+  const rm = edit.querySelector('.edit-remove-attachment');
+  if (rm) rm.checked = false;
+
+  edit.classList.add('hidden');
+  view.classList.remove('hidden');
+}
+
+async function saveEditProposal(proposalId, btn) {
+  if (!currentUser.email) {
+    alert('Cal iniciar sessió per editar propostes.');
+    return;
+  }
+
+  const card = btn.closest('.proposal');
+  if (!card) return;
+
+  const edit = card.querySelector('.proposal-edit');
+  if (!edit) return;
+
+  const titleEl = edit.querySelector('.edit-title');
+  const catEl = edit.querySelector('.edit-category');
+  const descEl = edit.querySelector('.edit-desc');
+  const fileEl = edit.querySelector('.edit-file');
+  const rmEl = edit.querySelector('.edit-remove-attachment');
+
+  const title = (titleEl ? titleEl.value : '').trim();
+  const category = (catEl ? catEl.value : '').trim();
+  const desc = (descEl ? descEl.value : '').trim();
+  const removeAttachment = rmEl ? !!rmEl.checked : false;
+
+  if (!title || !category || !desc) {
+    alert('Cal omplir títol, categoria i descripció.');
+    return;
+  }
+
+  btn.disabled = true;
+
+  const payload = {
+    id: proposalId,
+    email: currentUser.email,
+    title,
+    description: desc,
+    category
+  };
+
+  // Attachment: remove OR replace OR keep
+  if (removeAttachment) {
+    payload.attachmentRemove = true;
+  } else {
+    const file = (fileEl && fileEl.files && fileEl.files.length) ? fileEl.files[0] : null;
+    if (file) {
+      if (file.size > MAX_FILE_BYTES) {
+        alert('El fitxer és massa gran (màx. 500KB).');
+        btn.disabled = false;
+        return;
+      }
+      if (!ALLOWED_MIME.includes(file.type)) {
+        alert('Format de fitxer no permès. Només PDF, PNG o JPG.');
+        btn.disabled = false;
+        return;
+      }
+      try {
+        const b64 = await fileToBase64(file);
+        payload.attachment = { filename: file.name, mime: file.type, base64: b64 };
+      } catch (e) {
+        alert('No s\'ha pogut llegir el fitxer adjunt.');
+        btn.disabled = false;
+        return;
+      }
+    }
+  }
+
+  let res;
+  try {
+    res = await fetch(`${API_BASE}/proposals`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (e) {
+    alert(`No s’ha pogut contactar amb el servidor de propostes: ${e}`);
+    btn.disabled = false;
+    return;
+  }
+
+  if (!res.ok) {
+    const t = await res.text();
+    alert(`Error API proposals (HTTP ${res.status}): ${t || 'cap detall addicional'}`);
+    btn.disabled = false;
+    return;
+  }
+
+  const data = await res.json();
+  const updated = data && data.proposal ? data.proposal : null;
+  if (!updated) {
+    alert('Resposta inesperada del servidor.');
+    btn.disabled = false;
+    return;
+  }
+
+  // Local array updaten
+  proposals = proposals.map(pr => {
+    if (String(pr.id) !== String(proposalId)) return pr;
+    return {
+      ...pr,
+      title: updated.title,
+      category: updated.category,
+      desc: updated.description || updated.desc || desc,
+      // Attachment meta
+      attachment_filename: updated.attachment_filename || null,
+      attachment_mime: updated.attachment_mime || null,
+      attachment_size: updated.attachment_size || null
+    };
+  });
+
+  // Re-render überall (mine, votes, result-detail)
+  renderProposals();
+  renderMyVotes();
+
+  const wasSelected = (selectedResultProposalId === String(proposalId));
+  if (wasSelected) selectedResultProposalId = null;
+
+  updateResults();
+  markCommentButtons();
+  updatePointsInfo();
+
+  if (wasSelected) {
+    const bar = document.querySelector(`.result-bar[data-proposal-id="${proposalId}"]`);
+    if (bar) bar.click();
+    else toggleResultDetail(String(proposalId), null);
+  }
+
+  alert('Proposta actualitzada correctament.');
+  btn.disabled = false;
+}
